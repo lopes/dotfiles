@@ -28,7 +28,7 @@ client.urgent           $urgent-bg-color   $urgent-bg-color   $text-color       
 bar {
   status_command i3status --transparency -c ~/.config/i3/i3status.conf
   position top
-  font pango:Monospace 11
+  font pango:Sans 10
   separator_symbol " " 
   strip_workspace_numbers yes
   strip_workspace_name yes
@@ -44,15 +44,15 @@ bar {
 
 # WORKSPACES
 set $ws1 "1:"
-set $ws2 "2:"
-set $ws3 "3:"
-set $ws4 "4:"
-set $ws5 "5:"
-set $ws6 "6:"
-set $ws7 "7:"
-set $ws8 "8:"
-set $ws9 "9:"
-set $ws0 "0:"
+set $ws2 "2:"
+set $ws3 "3:"
+set $ws4 "4:"
+set $ws5 "5:"
+set $ws6 "6:"
+set $ws7 "7:"
+set $ws8 "8:"
+set $ws9 "9:"
+set $ws0 "0:"
 
 bindsym $mod+1 workspace number $ws1
 bindsym $mod+2 workspace number $ws2
@@ -83,8 +83,8 @@ for_window [class=(?i)termite] move to workspace $ws0 focus
 
 
 # KEY BINDINGS - APPLICATIONS
-bindsym $mod+space       exec --no-startup-id rofi -show drun -display-window "" -display-drun ""
-bindsym $mod+Tab         exec --no-startup-id rofi -show window -display-window "" -display-drun ""
+bindsym $mod+space       exec --no-startup-id rofi -show drun -width 40 -display-window "" -display-drun ""
+bindsym $mod+Tab         exec --no-startup-id rofi -show window -width 40 -display-window "" -display-drun ""
 # dead_grave could be mapped as grave in other keyboard layouts
 bindsym $mod+dead_grave  exec i3-sensible-terminal
 bindsym $mod+slash  exec pcmanfm

@@ -1,7 +1,5 @@
 configuration {
-  width:          500px;
   lines:          3;
-  columns:        1;
   sidebar-mode:   false;
   hide-scrollbar: true;
 

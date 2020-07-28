@@ -1,41 +1,14 @@
 # dotfiles
-My personal [minimalist] configuration files.
+My personal [minimalist] configuration files.  The main focus is in security and simplicity, so only known softwares are used hacks are avoided.
 
 
 ## Installation
 
 ```sh
-cd $HOME
+cd  # go $HOME now
 git clone https://github.com/lopes/dotfiles
-cd dotfiles
 
-DOTFILES=".config .local .zshrc .bashrc .gitconfig .inputrc .screenrc .vimrc"
-BKP="$HOME/.dotfiles.bkp"
-
-mkdir -p "$BKP"
-for f in $FILES; do
-    test -f "$HOME/$f" && mv -fv "$_" "$BKP"
-done
-test -z "$(ls $BKP)" && rm -rf "$BKP"
-
-for f in $FILES; do
-    cp "./$f" "$HOME/$f"
-done
-cd .. && rm -rf dotfiles
-```
-
-
-## Fonts
-This repository comes with some fonts I like to use.  You can install them by moving the `.local` directory to your HOME and running the command below.
-
-```sh
-fc-cache -f -v
-```
-
-You may need to reload your terminal for the changes make effect.  To test the font use the command below.
-
-```sh
-echo "The quick brown fox jumps over the lazy dog" | pango-view --font="Cascadia Code" /dev/stdin
+cp -r dotifiles/.{bashrc,config,git,inputrc,local,screenrc,vimrc,xinitrc,zshrc} .
 ```
 
 
