@@ -1,0 +1,64 @@
+[options]
+allow_bold = true
+audible_bell = false
+clickable_url = true
+dynamic_title = true
+font = Monospace 12
+fullscreen = false
+icon_name = terminal
+mouse_autohide = true
+scrollback_lines = 20000
+search_wrap = true
+hyperlinks = true
+
+browser = firefox
+
+cursor_blink = on
+cursor_shape = block
+scrollbar = off
+
+
+[colors]
+# by nord-termite
+cursor = #d8dee9
+cursor_foreground = #2e3440
+
+foreground = #d8dee9
+foreground_bold = #d8dee9
+#background = #2e3440
+
+# 20% background transparency (requires a compositor)
+background = rgba(46,52,64,0.8)
+
+highlight = #4c566a
+
+color0 = #3b4252
+color1 = #bf616a
+color2 = #a3be8c
+color3 = #ebcb8b
+color4 = #81a1c1
+color5 = #b48ead
+color6 = #88c0d0
+color7 = #e5e9f0
+color8 = #4c566a
+color9 = #bf616a
+color10 = #a3be8c
+color11 = #ebcb8b
+color12 = #81a1c1
+color13 = #b48ead
+color14 = #8fbcbb
+color15 = #eceff4
+
+
+[hints]
+#font = Monospace 12
+#foreground = #dcdccc
+#background = #3f3f3f
+#active_foreground = #e68080
+#active_background = #3f3f3f
+#padding = 2
+#border = #3f3f3f
+#border_width = 0.5
+#roundness = 2.0
+
+# vim: ft=dosini cms=#%s

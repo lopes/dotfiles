@@ -1,0 +1,176 @@
+# i3 config file (v4)
+# GENERAL
+set $mod Mod1
+font pango:Sans 11
+hide_edge_borders both
+default_border pixel
+
+
+# i3-gaps only
+smart_gaps on
+smart_borders on
+gaps inner 2
+gaps outer 1
+
+
+# STYLE
+set $bg-color            #2f343f
+set $inactive-bg-color   #3f343f
+set $text-color          #f3f4f5
+set $inactive-text-color #676e7d
+set $urgent-bg-color     #bf616a
+
+client.focused          $bg-color          $bg-color          $text-color          #a3be8c
+client.unfocused        $inactive-bg-color $inactive-bg-color $inactive-text-color #a3be8c
+client.focused_inactive $inactive-bg-color $inactive-bg-color $inactive-text-color #a3be8c
+client.urgent           $urgent-bg-color   $urgent-bg-color   $text-color          #a3be8c
+
+bar {
+  status_command i3status --transparency -c ~/.config/i3/i3status.conf
+  position top
+  font pango:Monospace 11
+  separator_symbol " " 
+  strip_workspace_numbers yes
+  strip_workspace_name yes
+  colors {
+    background $bg-color
+    focused_workspace  $bg-color          $bg-color          $text-color
+    inactive_workspace $inactive-bg-color $inactive-bg-color $inactive-text-color
+    urgent_workspace   $urgent-bg-color   $inactive-bg-color $text-color
+    binding_mode       $urgent-bg-color   $inactive-bg-color $text-color
+  }
+}
+
+
+# WORKSPACES
+set $ws1 "1:"
+set $ws2 "2:"
+set $ws3 "3:"
+set $ws4 "4:"
+set $ws5 "5:"
+set $ws6 "6:"
+set $ws7 "7:"
+set $ws8 "8:"
+set $ws9 "9:"
+set $ws0 "0:"
+
+bindsym $mod+1 workspace number $ws1
+bindsym $mod+2 workspace number $ws2
+bindsym $mod+3 workspace number $ws3
+bindsym $mod+4 workspace number $ws4
+bindsym $mod+5 workspace number $ws5
+bindsym $mod+6 workspace number $ws6
+bindsym $mod+7 workspace number $ws7
+bindsym $mod+8 workspace number $ws8
+bindsym $mod+9 workspace number $ws9
+bindsym $mod+0 workspace number $ws0
+
+bindsym $mod+Shift+1 move container to workspace number $ws1
+bindsym $mod+Shift+2 move container to workspace number $ws2
+bindsym $mod+Shift+3 move container to workspace number $ws3
+bindsym $mod+Shift+4 move container to workspace number $ws4
+bindsym $mod+Shift+5 move container to workspace number $ws5
+bindsym $mod+Shift+6 move container to workspace number $ws6
+bindsym $mod+Shift+7 move container to workspace number $ws7
+bindsym $mod+Shift+8 move container to workspace number $ws8
+bindsym $mod+Shift+9 move container to workspace number $ws9
+bindsym $mod+Shift+0 move container to workspace number $ws0
+
+for_window [class=(?i)firefox] move to workspace $ws1 focus
+for_window [class=(?i)pcmanfm] move to workspace $ws2 focus
+for_window [class=(?i)code]    move to workspace $ws3 focus
+for_window [class=(?i)termite] move to workspace $ws0 focus
+
+
+# KEY BINDINGS - APPLICATIONS
+bindsym $mod+space       exec --no-startup-id rofi -show drun -display-window "" -display-drun ""
+bindsym $mod+Tab         exec --no-startup-id rofi -show window -display-window "" -display-drun ""
+# dead_grave could be mapped as grave in other keyboard layouts
+bindsym $mod+dead_grave  exec i3-sensible-terminal
+bindsym $mod+slash  exec pcmanfm
+
+bindsym $mod+bracketleft  exec maim --hidecursor ~/Pictures/screenshots/shot-$(date +%s).png
+bindsym $mod+bracketright exec maim -i $(xdotool getactivewindow) --hidecursor ~/Pictures/screenshots/shot-$(date +%s).png
+bindsym $mod+backslash    exec maim -s | xclip -selection clipboard -t image/png
+
+
+# KEY BINDINGS - I3 CONTROL
+bindsym $mod+Shift+q kill
+bindsym $mod+Shift+w reload
+bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'Exit i3 and finish X session?' -B 'Yes' 'i3-msg exit'"
+bindsym $mod+Shift+r restart
+
+bindsym $mod+f       fullscreen toggle
+bindsym $mod+Shift+f floating   toggle
+floating_modifier    $mod
+
+bindsym $mod+v split v
+bindsym $mod+b split h
+
+bindsym $mod+s layout stacking
+bindsym $mod+a layout tabbed
+bindsym $mod+d layout toggle split
+
+bindsym $mod+u focus parent
+bindsym $mod+i focus mode_toggle
+bindsym $mod+o focus child
+
+bindsym $mod+h     focus left
+bindsym $mod+j     focus down
+bindsym $mod+k     focus up
+bindsym $mod+l     focus right
+bindsym $mod+Left  focus left
+bindsym $mod+Down  focus down
+bindsym $mod+Up    focus up
+bindsym $mod+Right focus right
+
+bindsym $mod+Shift+h     move left
+bindsym $mod+Shift+j     move down
+bindsym $mod+Shift+k     move up
+bindsym $mod+Shift+l     move right
+bindsym $mod+Shift+Left  move left
+bindsym $mod+Shift+Down  move down
+bindsym $mod+Shift+Up    move up
+bindsym $mod+Shift+Right move right
+
+bindsym $mod+r mode "resize"
+mode "resize" {
+  bindsym h resize shrink width 10 px or 10 ppt
+  bindsym j resize grow height 10 px or 10 ppt
+  bindsym k resize shrink height 10 px or 10 ppt
+  bindsym l resize grow width 10 px or 10 ppt
+
+  bindsym Left resize shrink width 10 px or 10 ppt
+  bindsym Down resize grow height 10 px or 10 ppt
+  bindsym Up resize shrink height 10 px or 10 ppt
+  bindsym Right resize grow width 10 px or 10 ppt
+
+  bindsym Return mode "default"
+  bindsym Escape mode "default"
+  bindsym $mod+r mode "default"
+}
+
+
+# AUTOSTART APPS
+exec --no-startup-id picom --config ~/.config/picom/picom.conf
+exec --no-startup-id nitrogen --restore
+
+
+
+# PENDING REVIEW #############################################################
+
+# xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
+# screen before suspend. Use loginctl lock-session to lock your screen.
+exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
+
+# NetworkManager is the most popular way to manage wireless networks on Linux,
+# and nm-applet is a desktop environment-independent system tray GUI for it.
+exec --no-startup-id nm-applet
+
+# Use pactl to adjust volume in PulseAudio.
+set $refresh_i3status killall -SIGUSR1 i3status
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
+bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
+

@@ -1,0 +1,17 @@
+{
+    "colorcolumn": 80,
+    "colorscheme": "monokai",
+    "diffgutter": true,
+    "ft:html": {
+        "tabsize": 2
+    },
+    "ignorecase": true,
+    "rmtrailingws": true,
+    "savecursor": true,
+    "savehistory": false,
+    "scrollbar": true,
+    "scrollspeed": 1,
+    "softwrap": true,
+    "tabmovement": true,
+    "tabstospaces": true
+}

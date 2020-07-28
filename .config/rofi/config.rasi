@@ -1,0 +1,13 @@
+configuration {
+  width:          500px;
+  lines:          3;
+  columns:        1;
+  sidebar-mode:   false;
+  hide-scrollbar: true;
+
+  font:       "Sans 14";
+  show-icons: true;
+  theme:      "~/.config/rofi/arc-dark.rasi";
+
+  terminal: "Termite";
+}
