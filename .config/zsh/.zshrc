@@ -8,9 +8,7 @@ setopt HIST_EXPIRE_DUPS_FIRST
 setopt HIST_IGNORE_DUPS
 setopt HIST_FIND_NO_DUPS
 setopt HIST_REDUCE_BLANKS
-setopt HIST_VERIFY
 setopt CORRECT
-setopt CORRECT_ALL
 
 stty stop undef
 autoload -Uz compinit; compinit
@@ -23,3 +21,14 @@ _comp_options+=(globdots)
 test -d $HOME/.local/bin && PATH="$_:$PATH"
 
 source "$ZDOTDIR/.zaliases"
+
+
+bindkey -v
+
+bindkey -M menuselect 'h' vi-backward-char
+bindkey -M menuselect 'j' vi-up-line-or-history
+bindkey -M menuselect 'k' vi-forward-char
+bindkey -M menuselect 'l' vi-down-line-or-history
+
+bindkey '^r' history-incremental-search-backward
+

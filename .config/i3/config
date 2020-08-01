@@ -83,8 +83,8 @@ for_window [class=(?i)termite] move to workspace $ws0 focus
 
 
 # KEY BINDINGS - APPLICATIONS
-bindsym $mod+space       exec --no-startup-id rofi -show drun -width 40 -display-window "" -display-drun ""
-bindsym $mod+Tab         exec --no-startup-id rofi -show window -width 40 -display-window "" -display-drun ""
+bindsym $mod+space exec --no-startup-id rofi -show drun -width 40 -display-drun ""
+bindsym $mod+Tab   exec --no-startup-id rofi -show window -width 40 -display-window ""
 # dead_grave could be mapped as grave in other keyboard layouts
 bindsym $mod+dead_grave  exec i3-sensible-terminal
 bindsym $mod+slash  exec pcmanfm
@@ -99,6 +99,8 @@ bindsym $mod+Shift+q kill
 bindsym $mod+Shift+w reload
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'Exit i3 and finish X session?' -B 'Yes' 'i3-msg exit'"
 bindsym $mod+Shift+r restart
+
+bindsym $mod+Shift+x exec --no-startup-id i3lock -n -e -f -c '#2e3440' -i ~/Pictures/wallpapers/apod-20120119.png 
 
 bindsym $mod+f       fullscreen toggle
 bindsym $mod+Shift+f floating   toggle
@@ -154,6 +156,7 @@ mode "resize" {
 # AUTOSTART APPS
 exec --no-startup-id picom --config ~/.config/picom/picom.conf
 exec --no-startup-id nitrogen --restore
+exec --no-startup-id xautolock -secure -detectsleep -time 10 -locker "i3lock -n -e -f -c '#2e3440' -i ~/Pictures/wallpapers/apod-20120119.png"
 
 
 

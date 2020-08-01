@@ -9,7 +9,7 @@ cd  # go $HOME now
 git clone https://github.com/lopes/dotfiles
 
 cp -r dotifiles/.{bashrc,config,git,inputrc,local,screenrc,vimrc,xinitrc,zshrc} .
-mkdir .local/cache/zsh
+mkdir .cache/zsh
 ```
 
 
