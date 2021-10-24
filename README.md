@@ -1,15 +1,16 @@
 # dotfiles
-My personal [minimalist] configuration files.  The main focus is in security and simplicity, so only known softwares are used hacks are avoided.
+My personal **minimalist** configuration files.  The main focus is in security and simplicity, so only known softwares are used hacks are avoided.
+
+This setup puts the `~/.local/bin` directory in the system's path, thus the user is able to put scripts and programs there and call them anywhere.
 
 
 ## Installation
 
 ```sh
-cd  # go $HOME now
+cd  # go $HOME
 git clone https://github.com/lopes/dotfiles
-
-cp -r dotifiles/.{bashrc,config,git,inputrc,local,screenrc,vimrc,xinitrc,zshrc} .
-mkdir .cache/zsh
+cp -r dotfiles/.{config,screenrc,vimrc,zshenv}
+mkdir -p .cache/zsh .local/bin
 ```
 
 
@@ -50,6 +51,8 @@ Just documenting some shortcuts of my daily use.
 - `g~w`: toggle the case for word under cursor
 - `control-v`: go to visual mode - `esc` to exit
 
+> Some Vim commands can be combined to alter their behavior, for instance `d$` cut all characters from the cursor to the end of line.
+
 ### Less, man
 - `/sentence`: search for `sentence`
 
@@ -60,4 +63,11 @@ Just documenting some shortcuts of my daily use.
 - `$mod-enter`: open a new terminal
 - `$mod-space`: open app launcher
 
-> Some Vim commands can be combined to alter their behavior, for instance `d$` cut all characters from the cursor to the end of line.
+
+## Termux
+Install basic packages, make sure that `zsh` is the default shell, and then follow the instructions above to install dotfiles.
+
+```sh
+pkg install zsh git man
+chsh -s zsh
+```

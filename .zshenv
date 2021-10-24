@@ -29,5 +29,3 @@ export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 export HISTFILE="$XDG_CACHE_HOME/zsh/zhistory"
 export SAVEHIST=15000
 export HISTSIZE=2000
-export PROMPT='%F{red}%(?..%? )%f%n%F{240}@%f%m%F{240} %40<..<%2~%<< %#%f '
-
