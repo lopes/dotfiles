@@ -1,4 +1,4 @@
-# zsh aliases
+# linux-friendly aliases
 
 alias sh="zsh"
 
@@ -23,6 +23,9 @@ alias ifconfig="ip address"
 alias route="ip route"
 alias arp="ip neighbor"
 alias netstat="ss"
+alias mtr="mtr -ny 0"
+alias httptest="curl -Lso /dev/null -w 'status-code: %{http_code}\n'"
+alias httping="httping --timestamp -zlY --threshold-red 900 --threshold-yellow 400 "
 
 alias diff="diff --color"
 alias wget="wget -c"
@@ -35,9 +38,9 @@ alias hexdump="hexdump -C"
 alias od="od -A x -t x1z -v"
 alias vi="vim"
 
-alias cd..="/bin/cd .."
-alias sl="/bin/ls"
-alias l="/bin/ls"
+alias cd..="\cd .."
+alias sl="\ls"
+alias l="\ls"
 
 alias sudo="nocorrect sudo"
 alias shutdown="sudo shutdown"

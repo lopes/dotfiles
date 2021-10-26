@@ -1,0 +1,1 @@
+# bsd-friendly aliases

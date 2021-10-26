@@ -19,7 +19,6 @@ zmodload zsh/complist
 _comp_options+=(globdots)
 
 test -d $HOME/.local/bin && PATH="$_:$PATH"
-source "$ZDOTDIR/.zaliases"
 export PROMPT='%F{red}%(?..%? )%f%n%F{240}@%f%m%F{240} %40<..<%2~%<< %#%f '
 
 bindkey -v
@@ -29,3 +28,9 @@ bindkey -M menuselect 'k' vi-forward-char
 bindkey -M menuselect 'l' vi-down-line-or-history
 bindkey '^r' history-incremental-search-backward
 
+# loading aliases
+case "$OSTYPE" in
+    linux*)          source "$ZDOTDIR/../aliases.linux.sh"   ;;
+    *bsd* | darwin*) source "$ZDOTDIR/../aliases.bsd.sh"     ;;
+    msys  | cygwin)  source "$ZDOTDIR/../aliases.windows.sh" ;;
+esac

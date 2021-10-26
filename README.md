@@ -9,7 +9,7 @@ This setup puts the `~/.local/bin` directory in the system's path, thus the user
 ```sh
 cd  # go $HOME
 git clone https://github.com/lopes/dotfiles
-\cp -rf dotfiles/.{config,screenrc,vimrc,zshenv} .
+\cp -rf dotfiles/.{config,screenrc,vimrc,zshenv} ~
 mkdir -p .cache/zsh .local/bin
 ```
 
@@ -76,7 +76,7 @@ chsh -s zsh
 
 ### Shortcuts
 - `Vol.Up-k`: shows or hides extra keys
-- `Vol.Up-q`: just like `Vol.Up-k``
+- `Vol.Up-q`: just like `Vol.Up-k`
 - `Vol.Up-t`: tab key
 - `Vol.Up-e`: escape key
 - `Vol.Up-w`: up arrow key

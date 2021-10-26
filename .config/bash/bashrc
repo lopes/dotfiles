@@ -22,38 +22,9 @@ TMOUT=600
 readonly TMOUT
 export TMOUT
 
-alias ls="ls --color=auto -lhF"
-alias ll="ls -alF"
-alias la="ls -A"
-
-alias p="pwd"
-alias ..="cd .."
-alias ...="cd ../.."
-
-alias rm="rm -iv"
-alias cp="cp -iv"
-alias mv="mv -iv"
-alias mkdir="mkdir -pv"
-
-alias grep="grep --color=auto"
-alias egrep="egrep --color=auto"
-alias fgrep="fgrep --color=auto"
-
-alias diff="diff --color"
-alias wget="wget -c"
-alias ps="ps auxf"
-alias free="free -mlt"
-alias df="df -Tah --total"
-alias mount="mount | column -t"
-alias du="du -ach | sort -h"
-alias aka="alias -p | sed -e 's/^alias //g' | sort"
-alias netstat="netstat -tunalp"
-alias hexdump="hexdump -C"
-alias od="od -A x -t x1z -v"
-
-alias cd..="/bin/cd .."
-alias sl="/bin/ls"
-alias l="/bin/ls"
-
-alias shutdown="sudo /sbin/shutdown -h now"
-alias reboot="sudo /sbin/shutdown -r now"
+# loading aliases
+case "$OSTYPE" in
+    linux*)          source "$HOME/.config/aliases.linux.sh"   ;;
+    *bsd* | darwin*) source "$HOME/.config/aliases.bsd.sh"     ;;
+    msys  | cygwin)  source "$HOME/.config/aliases.windows.sh" ;;
+esac
