@@ -25,7 +25,8 @@ alias arp="ip neighbor"
 alias netstat="ss"
 alias mtr="mtr -ny 0"
 alias httptest="curl -Lso /dev/null -w 'status-code: %{http_code}\n'"
-alias httping="httping --timestamp -zlY --threshold-red 900 --threshold-yellow 400 "
+alias httping="httping --timestamp -zlY --threshold-red 900 --threshold-yellow 400"
+alias ufwlogs="journalctl --follow | grep -i -e  \"ufw\" -e \"src=[0-9]\.A-F:]\+\" -e \"dpt=[0-9]\+\""
 
 alias diff="diff --color"
 alias wget="wget -c"
@@ -45,6 +46,11 @@ alias l="\ls"
 alias sudo="nocorrect sudo"
 alias shutdown="sudo shutdown"
 alias reboot="sudo reboot"
+
+alias pkgu="sudo pacman -Syu"  # update
+alias pkgs="sudo pacman -Ss"   # search
+alias pkgi="sudo pacman -S"    # install
+alias pkgr="sudo pacman -Rs"   # remove
 
 alias gs="git status"
 alias gd="git diff"

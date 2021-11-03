@@ -28,7 +28,11 @@ bindkey -M menuselect 'k' vi-forward-char
 bindkey -M menuselect 'l' vi-down-line-or-history
 bindkey '^r' history-incremental-search-backward
 
-# loading aliases
+# abnt2 keyboard mappings
+bindkey "^[[1~" beginning-of-line
+bindkey "^[[4~" end-of-line
+bindkey "^[[3~" delete-char
+
 case "$OSTYPE" in
     linux*)          source "$ZDOTDIR/../aliases.linux.sh"   ;;
     *bsd* | darwin*) source "$ZDOTDIR/../aliases.bsd.sh"     ;;
