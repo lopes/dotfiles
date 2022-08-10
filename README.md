@@ -1,5 +1,5 @@
 # dotfiles
-My personal **minimalist** configuration files.  The main focus is in security and simplicity, so only known softwares are used hacks are avoided.
+My personal **minimalist** configuration files.  The main focus is in security and simplicity, so only known softwares are used and hacks are avoided.
 
 This setup puts the `~/.local/bin` directory in the system's path, thus the user is able to put scripts and programs there and call them anywhere.
 
