@@ -55,3 +55,6 @@ alias gp="git push"
 
 alias myip_public="dig +short myip.opendns.com @resolver1.opendns.com"
 alias myip_local="ipconfig getifaddr en0"
+
+alias pwgen="openssl rand -base64 256 | tr -d '\n' | head -c"
+alias pyvenv="{[ ! -d "venv" ] && python3 -m venv venv}; source venv/bin/activate"
