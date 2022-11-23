@@ -38,3 +38,5 @@ case "$OSTYPE" in
     *bsd* | darwin*) source "$ZDOTDIR/../aliases.bsd.sh"     ;;
     msys  | cygwin)  source "$ZDOTDIR/../aliases.windows.sh" ;;
 esac
+
+source ~/.config/functions.sh
