@@ -5,7 +5,6 @@ This setup puts the `~/.local/bin` directory in the system's path, thus the user
 
 
 ## Installation
-
 ```sh
 cd  # go $HOME
 git clone https://github.com/lopes/dotfiles
@@ -20,50 +19,50 @@ mkdir -p .cache/zsh .local/bin
 Just documenting some shortcuts of my daily use.
 
 ### Zsh
-- `control-c`: kill foreground process
-- `control-l`: clear the screen
-- `control-r`: search history
-- `control-g`: quits search history
-- `control-u`: clear the entire line
-- `control-a`: go to the begining of the line
-- `control-e`: go to the end of the line
+- `control-c`: Kill foreground process
+- `control-l`: Clear the screen
+- `control-r`: Search history
+- `control-g`: Quits search history
+- `control-u`: Clear the entire line
+- `control-a`: Go to the begining of the line
+- `control-e`: Go to the end of the line
 
 ### Micro
-- `control-s`: save
-- `control-q`: exit
-- `control-k`: cut the entire line
-- `control-c`: copy
-- `control-v`: paste
-- `control-z`: undo changes
-- `control-y`: redo changes
+- `control-s`: Save
+- `control-q`: Exit
+- `control-k`: Cut the entire line
+- `control-c`: Copy
+- `control-v`: Paste
+- `control-z`: Undo changes
+- `control-y`: Redo changes
 
 ### Vim
-- `:wq`: save and exit
-- `:q!`: exit without save
-- `dd`: cut the entire line
-- `yy`: copy the entire line
-- `yw`: copy the word under the cursor
-- `p`: paste copied text
-- `u`: undo changes
-- `control-r`: redo changes
-- `shift-g`: go to the end of file
-- `gg`: go to the begining of file
-- `$`: go to the end of line
-- `^`: go to the begining of line
-- `g~w`: toggle the case for word under cursor
-- `control-v`: go to visual mode - `esc` to exit
+- `:wq`: Save and exit
+- `:q!`: Exit without save
+- `dd`: Cut the entire line
+- `yy`: Copy the entire line
+- `yw`: Copy the word under the cursor
+- `p`: Paste copied text
+- `u`: Undo changes
+- `control-r`: Redo changes
+- `shift-g`: Go to the end of file
+- `gg`: Go to the begining of file
+- `$`: Go to the end of line
+- `^`: Go to the begining of line
+- `g~w`: Toggle the case for word under cursor
+- `control-v`: Go to visual mode - `esc` to exit
 
 > Some Vim commands can be combined to alter their behavior, for instance `d$` cut all characters from the cursor to the end of line.
 
 ### Less, man
-- `/sentence`: search for `sentence`
+- `/sentence`: Search for `sentence`
 
 ### i3
-- `$mod-shift-q`: kill the current window
-- `$mod-shift-e`: exit i3
-- `$mod-shift-r`: reloads i3
-- `$mod-enter`: open a new terminal
-- `$mod-space`: open app launcher
+- `$mod-shift-q`: Kill the current window
+- `$mod-shift-e`: Exit i3
+- `$mod-shift-r`: Reloads i3
+- `$mod-enter`: Open a new terminal
+- `$mod-space`: Open app launcher
 
 
 ## Termux

@@ -32,7 +32,7 @@ alias mtr="mtr -ny 0"
 alias httptest="curl -Lso /dev/null -w 'status-code: %{http_code}\n'"
 alias httping="httping --timestamp -zlY --threshold-red 900 --threshold-yellow 400"
 alias ufwlogs="journalctl --follow | grep -i -e  \"ufw\" -e \"src=[0-9]\.A-F:]\+\" -e \"dpt=[0-9]\+\""
-alias myip_public="dig +short myip.opendns.com @resolver1.opendns.com"
+alias pubip="dig +short myip.opendns.com @resolver1.opendns.com"
 
 alias diff="diff --color"
 alias wget="wget -c"
@@ -58,12 +58,19 @@ alias pkgs="sudo pacman -Ss"   # search
 alias pkgi="sudo pacman -S"    # install
 alias pkgr="sudo pacman -Rs"   # remove
 
-alias gs="git status"
-alias gd="git diff"
+alias ga="git add"
 alias gb="git branch"
-alias gl="git log"
-alias gc="git commit"
-alias gp="git push"
+alias gc="git commit --verbose"
+alias gco="git checkout"
+alias gcf="git config --list"
+alias gd="git diff"
+alias glo="git log --oneline --decorate --graph --all"
+alias gls="git ls-files"
+alias gm="git merge"
+alias gpl="git pull --verbose"
+alias gps="git push --verbose"
+alias gs="git status --short --branch"
 
 alias pwgen="openssl rand -base64 256 | tr -d '\n' | head -c"
 alias pyvenv="{[ ! -d "venv" ] && python3 -m venv venv}; source venv/bin/activate"
+alias aka="alias | grep"

@@ -46,15 +46,22 @@ alias pkgs="brew search"                  # search
 alias pkgi="brew install"                 # install
 alias pkgr="brew uninstall"               # remove
 
-alias gs="git status"
-alias gd="git diff"
+alias ga="git add"
 alias gb="git branch"
-alias gl="git log"
-alias gc="git commit"
-alias gp="git push"
+alias gc="git commit --verbose"
+alias gco="git checkout"
+alias gcf="git config --list"
+alias gd="git diff"
+alias glo="git log --oneline --decorate --graph --all"
+alias gls="git ls-files"
+alias gm="git merge"
+alias gpl="git pull --verbose"
+alias gps="git push --verbose"
+alias gs="git status --short --branch"
 
-alias myip_public="dig +short myip.opendns.com @resolver1.opendns.com"
-alias myip_local="ipconfig getifaddr en0"
+alias pubip="dig +short myip.opendns.com @resolver1.opendns.com"
+alias privip="ipconfig getifaddr en0"
 
 alias pwgen="openssl rand -base64 256 | tr -d '\n' | head -c"
 alias pyvenv="{[ ! -d "venv" ] && python3 -m venv venv}; source venv/bin/activate"
+alias aka="alias | grep"
