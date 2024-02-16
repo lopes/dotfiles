@@ -24,8 +24,12 @@ Just documenting some shortcuts of my daily use.
 - `control-r`: Search history
 - `control-g`: Quits search history
 - `control-u`: Clear the entire line
-- `control-a`: Go to the begining of the line
+- `control-a`: Go to the beginning of the line
 - `control-e`: Go to the end of the line
+- `control-left`: Previous word
+- `control-right`: Next word
+- `command-left`: Beginning of line
+- `command-right`: End of line
 
 ### Micro
 - `control-s`: Save
