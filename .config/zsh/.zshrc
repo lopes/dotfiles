@@ -19,19 +19,17 @@ zmodload zsh/complist
 _comp_options+=(globdots)
 
 test -d $HOME/.local/bin && PATH="$_:$PATH"
-export PROMPT='%F{red}%(?..%? )%f%n%F{240}@%f%m%F{240} %40<..<%2~%<< %#%f '
+export PROMPT='%F{240}[%?] %f%n@%B%M%b %F{240}%20<..<%3~%<<%f %B%#%b '
 
-bindkey -v
-bindkey -M menuselect 'h' vi-backward-char
-bindkey -M menuselect 'j' vi-up-line-or-history
-bindkey -M menuselect 'k' vi-forward-char
-bindkey -M menuselect 'l' vi-down-line-or-history
+bindkey -e  # no vi mode
 bindkey '^r' history-incremental-search-backward
 
-# abnt2 keyboard mappings
-bindkey "^[[1~" beginning-of-line
-bindkey "^[[4~" end-of-line
-bindkey "^[[3~" delete-char
+# mappings for macOS keyboard
+# run `cat` and type your keys to get the sequences
+bindkey '^[[1;5D' backward-word      # control-left
+bindkey '^[[1;5C' forward-word       # control-right
+bindkey '^[[D'    beginning-of-line  # command-left
+bindkey '^[[C'    end-of-line        # command-right
 
 case "$OSTYPE" in
     linux*)          source "$ZDOTDIR/../aliases.linux.sh"   ;;
