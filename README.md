@@ -28,8 +28,8 @@ Just documenting some shortcuts of my daily use.
 - `control-e`: Go to the end of the line
 - `control-left`: Previous word
 - `control-right`: Next word
-- `command-left`: Beginning of line
-- `command-right`: End of line
+- `fn-left`: Beginning of line
+- `fn-right`: End of line
 
 ### Micro
 - `control-s`: Save

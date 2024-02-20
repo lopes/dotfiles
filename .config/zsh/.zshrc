@@ -28,8 +28,8 @@ bindkey '^r' history-incremental-search-backward
 # run `cat` and type your keys to get the sequences
 bindkey '^[[1;5D' backward-word      # control-left
 bindkey '^[[1;5C' forward-word       # control-right
-bindkey '^[[D'    beginning-of-line  # command-left
-bindkey '^[[C'    end-of-line        # command-right
+bindkey '^[[H'    beginning-of-line  # fn-left
+bindkey '^[[F'    end-of-line        # fn-right
 
 case "$OSTYPE" in
     linux*)          source "$ZDOTDIR/../aliases.linux.sh"   ;;
