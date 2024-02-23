@@ -19,7 +19,7 @@ zmodload zsh/complist
 _comp_options+=(globdots)
 
 test -d $HOME/.local/bin && PATH="$_:$PATH"
-export PROMPT='%F{240}[%?] %f%n@%B%M%b %F{240}%20<..<%3~%<<%f %B%#%b '
+export PROMPT='%n@%B%M%b%F{240}:%20<..<%3~%<<%f %B%#%b '
 
 bindkey -e  # no vi mode
 bindkey '^r' history-incremental-search-backward
