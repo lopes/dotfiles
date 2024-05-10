@@ -1,5 +1,5 @@
 [user]
-    name = José Lopes
+    name = Joe Lopes
     email = 2897144+lopes@users.noreply.github.com
 [core]
     editor = vim
@@ -8,3 +8,19 @@
     branch = auto
     diff = auto
     pager = true
+[alias]
+    a = add
+    b = branch
+    cf = config
+    cl = clone
+    co = commit
+    d = diff
+    lo = log
+    ls = ls-files
+    ps = push
+    pl = pull
+    rb = rebase
+    re = reset
+    rh = reset
+    s = status
+    t = tag
