@@ -16,9 +16,9 @@ export LESSHISTFILE="-"
 export INPUTRC="$XDG_CONFIG_HOME/inputrc"
 export XINITRC="$XDG_CONFIG_HOME/X11"
 
-TMOUT=600
-readonly TMOUT
-export TMOUT
+# TMOUT=600
+# readonly TMOUT
+# export TMOUT
 
 export KEYTIMEOUT=1  # used in zsh vi mode
 
