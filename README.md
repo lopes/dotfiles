@@ -10,9 +10,17 @@ cd  # go $HOME
 git clone https://github.com/lopes/dotfiles
 \cp -rf dotfiles/.{config,screenrc,vimrc,zshenv} ~
 mkdir -p .cache/zsh .local/bin
+ln -sf ~/.config/vscode/settings.json ~/Library/Application\ Support/Code/User/settings.json
 ```
 
 > Backslash disables any aliases when preceeds a command.
+
+## Requirements
+Zsh requires the auto-suggestion and syntax-highlighting packages:
+
+```sh
+brew install zsh-autosuggestions zsh-syntax-highlighting
+```
 
 
 ## Shortcuts
