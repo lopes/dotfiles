@@ -5,6 +5,7 @@ set number
 set showmatch
 set laststatus=2
 set nojoinspaces
+set belloff=all
 
 set wildmode=longest,list:full
 

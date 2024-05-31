@@ -24,12 +24,12 @@ export PROMPT='%n@%B%M%b%F{240}:%20<..<%3~%<<%f %B%#%b '
 bindkey -e  # no vi mode
 bindkey '^r' history-incremental-search-backward
 
-# mappings for macOS keyboard
-# run `cat` and type your keys to get the sequences
-bindkey '^[[1;5D' backward-word      # control-left
-bindkey '^[[1;5C' forward-word       # control-right
-bindkey '^[[H'    beginning-of-line  # fn-left
-bindkey '^[[F'    end-of-line        # fn-right
+ # mappings for macOS keyboard
+ # run `cat` and type your keys to get the sequences
+ bindkey '^[^[[D' backward-word        # alt-left
+ bindkey '^[^[[C' forward-word         # alt-rightt
+ # bindkey '^[[1;9D'  beginning-of-line  # cmd-alt-left
+ # bindkey '^[[1;9C'  end-of-line        # cmd-alt-right
 
 case "$OSTYPE" in
     linux*)          source "$ZDOTDIR/../aliases.linux.sh"   ;;
