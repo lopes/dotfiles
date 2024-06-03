@@ -15,6 +15,7 @@
     "workbench.editor.showTabs": "single",
     "workbench.activityBar.location": "hidden",
     "workbench.statusBar.visible": true,
+    "workbench.languageDetection": "off",
 
     "terminal.explorerKind": "external",
     "terminal.external.osxExec": "Alacritty.app",
@@ -22,5 +23,5 @@
     "explorer.compactFolders": false,
 
     "github.copilot.editor.enableAutoCompletions": true,
-    "editor.stickyScroll.enabled": false,
+    "editor.stickyScroll.enabled": false
 }
