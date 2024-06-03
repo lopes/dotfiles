@@ -1,7 +1,7 @@
-# default layout (can be bsp, stack or float)
+# default layout: bsp, stack or float
 yabai -m config layout bsp
 
-# padding set to 3px
+# padding
 yabai -m config top_padding 3
 yabai -m config bottom_padding 3
 yabai -m config left_padding 3
