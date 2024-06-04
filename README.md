@@ -9,8 +9,7 @@ This setup puts the `~/.local/bin` directory in the system's path, thus the user
 cd  # go $HOME
 git clone https://github.com/lopes/dotfiles
 \cp -rf dotfiles/.{config,screenrc,vimrc,zshenv} ~
-mkdir -p .cache/zsh .local/bin
-ln -sf ~/.config/vscode/settings.json ~/Library/Application\ Support/Code/User/settings.json
+mkdir -p .cache/zsh .local/bin ~/Projects
 ```
 
 > Backslash disables any aliases when preceeds a command.
@@ -56,7 +55,7 @@ See `.config/skhd/skhdrc` for the full list.
 | `control-alt-o` | Rotate layout |
 | `control-alt-b` | Rebalance layout |
 | `control-alt-\` | Toggle window float |
-| `control-alt-1..0` | Move window to space 1..10 |
+| `control-alt-1..0` | Move window to space 1-10 |
 | `control-alt-r` | Restart Yabai |
 
 ### Micro

@@ -11,19 +11,18 @@ export XDG_MUSIC_DIR="$HOME/Music"
 export XDG_PICTURES_DIR="$HOME/Pictures"
 export XDG_VIDEOS_DIR="$HOME/Videos"
 
-export GTK2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc-2.0"
 export LESSHISTFILE="-"
+export GTK2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc-2.0"
 export INPUTRC="$XDG_CONFIG_HOME/inputrc"
 export XINITRC="$XDG_CONFIG_HOME/X11"
 
+export EDITOR="vim"
+export VISUAL="vim"
 # TMOUT=600
 # readonly TMOUT
 # export TMOUT
 
 export KEYTIMEOUT=1  # used in zsh vi mode
-
-export EDITOR="vim"
-export VISUAL="vim"
 
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 export HISTFILE="$XDG_CACHE_HOME/zsh/zhistory"

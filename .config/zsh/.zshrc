@@ -24,17 +24,14 @@ test -d $HOME/.local/bin && PATH="$_:$PATH"
 export PROMPT='%n@%B%M%b%F{240}:%20<..<%3~%<<%f %B%#%b '
 
 bindkey -e  # no vi mode
-bindkey '^r' history-incremental-search-backward
 
 # mappings for macOS keyboard
 # run `cat` and type your keys to get the sequences
-bindkey '^[[A' history-search-backward  # up
-bindkey '^[[B' history-search-forward   # down
-bindkey '^[^[[D' backward-word          # alt-left
-bindkey '^[^[[C' forward-word           # alt-rightt
-# bindkey '^[[1;9D'  beginning-of-line  # cmd-alt-left
-# bindkey '^[[1;9C'  end-of-line        # cmd-alt-right
-
+bindkey '^r' history-incremental-search-backward  # ctrl-r
+bindkey '^[[A' history-search-backward            # up
+bindkey '^[[B' history-search-forward             # down
+bindkey '^[^[[D' backward-word                    # alt-left
+bindkey '^[^[[C' forward-word                     # alt-rightt
 
 case "$OSTYPE" in
     linux*)          source "$ZDOTDIR/../aliases.linux.sh"   ;;
@@ -42,7 +39,11 @@ case "$OSTYPE" in
     msys  | cygwin)  source "$ZDOTDIR/../aliases.windows.sh" ;;
 esac
 
+# sourcing private settings, if exist
+# it's a place for private settings, like API keys
+test -f $HOME/.config/zsh/private.sh && source $HOME/.config/zsh/private.sh
+
 # extra functions and plugins for zsh
-source ~/.config/functions.sh
+source $HOME/.config/functions.sh
 source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
