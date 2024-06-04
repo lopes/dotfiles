@@ -44,6 +44,6 @@ esac
 test -f $HOME/.config/zsh/private.sh && source $HOME/.config/zsh/private.sh
 
 # extra functions and plugins for zsh
-source $HOME/.config/functions.sh
-source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+test -f $HOME/.config/functions.sh && source $HOME/.config/functions.sh
+test -f /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh && source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+test -f /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh && source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh

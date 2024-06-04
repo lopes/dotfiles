@@ -1,25 +1,40 @@
 # dotfiles
 My personal **minimalist** configuration files.  The main focus is in security and simplicity, so only known softwares are used and hacks are avoided.
 
-This setup puts the `~/.local/bin` directory in the system's path, thus the user is able to put scripts and programs there and call them anywhere.
+
+## Requirements
+I use the following directories to better organize my work:
+
+- `$HOME/Projects`: Ongoing project files and folders
+- `$HOME/.local/bin`: Standalone binaries, sourced by `$PATH`
+
+> See `.zshenv` for more information on directories.
+
+Besides the directories, I configure Zsh to source [auto-suggestions](https://github.com/zsh-users/zsh-autosuggestions) and [syntax highlighting](https://github.com/zsh-users/zsh-syntax-highlighting) for a better experience.  But if these packages are not installed, nothing should happen.
+
+Finally, I use and recommend [GNU Stow](https://www.gnu.org/software/stow/) for managing dotfiles and it can be easily installed with most package managers around there.
 
 
 ## Installation
+First, make sure the needed directories are in place:
+
 ```sh
-cd  # go $HOME
-git clone https://github.com/lopes/dotfiles
-\cp -rf dotfiles/.{config,screenrc,vimrc,zshenv} ~
 mkdir -p .cache/zsh .local/bin ~/Projects
 ```
-
-> Backslash disables any aliases when preceeds a command.
-
-## Requirements
-Zsh requires the auto-suggestion and syntax-highlighting packages:
+Now, proceed with installation:
 
 ```sh
-brew install zsh-autosuggestions zsh-syntax-highlighting
+cd  Projects
+git clone https://github.com/lopes/dotfiles
+cd dotfiles
+stow --verbose --adopt . --target=$HOME
 ```
+
+>[!WARNING]
+>The previous snippet considers a fresh install.  If you have any configurations in place, use it with caution because the `--adopt` will replace these files by your current ones.
+
+>[!NOTE]
+> GNU Stow allows you to simulate an installation with the `--simmulate` option.
 
 
 ## Shortcuts
