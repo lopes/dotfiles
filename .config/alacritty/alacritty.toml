@@ -1,16 +1,15 @@
+live_config_reload = true
+
 [env]
 TERM = "xterm-256color"
 
 [window]
 padding.x = 10
 padding.y = 10
-
-decorations = "Buttonless"
-
+decorations = "buttonless"
 opacity = 0.75
 blur = true
-
-option_as_alt = "Both"
+option_as_alt = "both"
 
 [font]
 size = 16

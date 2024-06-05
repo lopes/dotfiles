@@ -21,8 +21,8 @@ ctrl + alt - l : yabai -m window --warp east
 
 # misc
 ctrl + alt - t : yabai -m window --toggle zoom-fullscreen           # toggle maximize window
-ctrl + alt - y : yabai -m window --toggle float --grid 4:4:1:1:2:2  # toogle window flo
-ctrl + alt - u : yabai -m space --mirror x-axis                     # flip along x-axisat
+ctrl + alt - y : yabai -m window --toggle float --grid 4:4:1:1:2:2  # toogle window float
+ctrl + alt - u : yabai -m space --mirror x-axis                     # flip along x-axis
 ctrl + alt - i : yabai -m space --mirror y-axis                     # flip along y-axis
 ctrl + alt - o : yabai -m space --rotate 270                        # rotate layout clockwise
 ctrl + alt - p : yabai -m space --balance                           # rebalance windows

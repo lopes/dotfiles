@@ -8,7 +8,8 @@ I use the following directories to better organize my work:
 - `$HOME/Projects`: Ongoing project files and folders
 - `$HOME/.local/bin`: Standalone binaries, sourced by `$PATH`
 
-> See `.zshenv` for more information on directories.
+>[!NOTE]
+>See `.zshenv` for more information on directories.
 
 Besides the directories, I configure Zsh to source [auto-suggestions](https://github.com/zsh-users/zsh-autosuggestions) and [syntax highlighting](https://github.com/zsh-users/zsh-syntax-highlighting) for a better experience.  But if these packages are not installed, nothing should happen.
 
@@ -68,8 +69,8 @@ See `.config/skhd/skhdrc` for the full list.
 | Shortcut | Action |
 |---|---|
 | `control-alt-o` | Rotate layout |
-| `control-alt-b` | Rebalance layout |
-| `control-alt-\` | Toggle window float |
+| `control-alt-p` | Rebalance windows |
+| `control-alt-y` | Toggle window float |
 | `control-alt-1..0` | Move window to space 1-10 |
 | `control-alt-r` | Restart Yabai |
 
