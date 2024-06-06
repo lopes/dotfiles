@@ -40,8 +40,10 @@ ctrl + alt - 5 : yabai -m window --space 5
 ctrl + alt - 6 : yabai -m window --space 6
 ctrl + alt - 7 : yabai -m window --space 7
 ctrl + alt - 8 : yabai -m window --space 8
-ctrl + alt - 9 : yabai -m window --space 9
-ctrl + alt - 0 : yabai -m window --space 10
+
+# experimental: navigate between spaces
+ctrl - 9 : yabai -m space --focus prev # || yabai -m space --focus last
+ctrl - 0 : yabai -m space --focus next # || yabai -m space --focus first
 
 
 ##
