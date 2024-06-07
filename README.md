@@ -64,15 +64,22 @@ Some shortcuts of my daily use.
 | `alt-left` | Previous word |
 | `alt-right` | Next word |
 
-### Yabai (Skhd)
+### yabai (skhd)
 See `.config/skhd/skhdrc` for the full list.
 | Shortcut | Action |
 |---|---|
+| `control-alt-t` | Toggle maximize window |
+| `control-alt-y` | Toggle window float |
+| `control-alt-u` | Flip along x-axis |
+| `control-alt-i` | Flip along y-axis |
 | `control-alt-o` | Rotate layout |
 | `control-alt-p` | Rebalance windows |
-| `control-alt-y` | Toggle window float |
-| `control-alt-1..0` | Move window to space 1-10 |
-| `control-alt-r` | Restart Yabai |
+| `control-shift-[` | Focus on left window |
+| `control-shift-]` | Focus on right window |
+| `control-alt-[` | Switch window to the left |
+| `control-alt-]` | Switch window to the right |
+| `control-alt-1..8` | Move window to space 1-8 |
+| `control-alt-cmd-r` | Restart yabai |
 
 ### Micro
 | Shortcut | Action |
