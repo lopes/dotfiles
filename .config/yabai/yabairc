@@ -1,6 +1,16 @@
 # default layout: bsp, stack or float
 yabai -m config layout bsp
 
+# spaces labels
+yabai -m space 1 --label Productivity
+yabai -m space 2 --label Notes
+yabai -m space 3 --label Browsing
+yabai -m space 4 --label Messaging
+yabai -m space 5 --label Coding
+yabai -m space 6 --label Free
+yabai -m space 7 --label Free
+yabai -m space 8 --label Terminal
+
 # padding
 yabai -m config top_padding 3
 yabai -m config bottom_padding 3

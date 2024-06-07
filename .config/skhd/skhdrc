@@ -2,10 +2,10 @@
 # Intra space commands
 #
 # switch window focus within space
-ctrl + shift - h : yabai -m window --focus west
-ctrl + shift - j : yabai -m window --focus north
-ctrl + shift - k : yabai -m window --focus south
-ctrl + shift - l : yabai -m window --focus east
+# ctrl + shift - h : yabai -m window --focus west
+# ctrl + shift - j : yabai -m window --focus north
+# ctrl + shift - k : yabai -m window --focus south
+# ctrl + shift - l : yabai -m window --focus east
 
 # swap windows within space
 # ctrl + alt - h : yabai -m window --swap west
@@ -13,11 +13,17 @@ ctrl + shift - l : yabai -m window --focus east
 # ctrl + alt - k : yabai -m window --swap south
 # ctrl + alt - l : yabai -m window --swap east
 
-# move window and split
-ctrl + alt - h : yabai -m window --warp west
-ctrl + alt - j : yabai -m window --warp north
-ctrl + alt - k : yabai -m window --warp south
-ctrl + alt - l : yabai -m window --warp east
+# move window and reposition
+# ctrl + alt - h : yabai -m window --warp west
+# ctrl + alt - j : yabai -m window --warp north
+# ctrl + alt - k : yabai -m window --warp south
+# ctrl + alt - l : yabai -m window --warp east
+
+# window focus and move - [ and ]
+ctrl + shift - 0x21 : yabai -m window --focus west
+ctrl + shift - 0x1E : yabai -m window --focus east
+ctrl + alt - 0x21 : yabai -m window --warp west
+ctrl + alt - 0x1E : yabai -m window --warp east
 
 # misc
 ctrl + alt - t : yabai -m window --toggle zoom-fullscreen           # toggle maximize window
