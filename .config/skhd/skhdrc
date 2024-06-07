@@ -1,25 +1,7 @@
 ##
 # Intra space commands
 #
-# switch window focus within space
-# ctrl + shift - h : yabai -m window --focus west
-# ctrl + shift - j : yabai -m window --focus north
-# ctrl + shift - k : yabai -m window --focus south
-# ctrl + shift - l : yabai -m window --focus east
-
-# swap windows within space
-# ctrl + alt - h : yabai -m window --swap west
-# ctrl + alt - j : yabai -m window --swap north
-# ctrl + alt - k : yabai -m window --swap south
-# ctrl + alt - l : yabai -m window --swap east
-
-# move window and reposition
-# ctrl + alt - h : yabai -m window --warp west
-# ctrl + alt - j : yabai -m window --warp north
-# ctrl + alt - k : yabai -m window --warp south
-# ctrl + alt - l : yabai -m window --warp east
-
-# window focus and move - [ and ]
+# window focus and repositioning ([ and ] keys)
 ctrl + shift - 0x21 : yabai -m window --focus west
 ctrl + shift - 0x1E : yabai -m window --focus east
 ctrl + alt - 0x21 : yabai -m window --warp west
@@ -48,24 +30,24 @@ ctrl + alt - 7 : yabai -m window --space 7
 ctrl + alt - 8 : yabai -m window --space 8
 
 # experimental: navigate between spaces
-ctrl - 9 : yabai -m space --focus prev # || yabai -m space --focus last
-ctrl - 0 : yabai -m space --focus next # || yabai -m space --focus first
+# ctrl - 9 : yabai -m space --focus prev # || yabai -m space --focus last
+# ctrl - 0 : yabai -m space --focus next # || yabai -m space --focus first
 
 
 ##
 # Service
 #
-ctrl + alt - r : yabai --restart-service
-ctrl + alt - e : yabai --stop-service
-ctrl + alt - w : yabai --start-service
+ctrl + alt + cmd - r : yabai --restart-service
+# ctrl + alt - q : yabai --stop-service
+# ctrl + alt -  : yabai --start-service
 
 
 ##
 # Multi displays
 #
-#change focus between external displays (left and right)
-ctrl + shift - 0x2B: yabai -m display --focus west  # less than key
-ctrl + shift - 0x2F: yabai -m display --focus east  # greater than key
+#change focus between external displays (left and right arrows)
+ctrl + shift - 0x2B: yabai -m display --focus west
+ctrl + shift - 0x2F: yabai -m display --focus east
 
 # move window to display left and right
 ctrl + alt - 0x2B: yabai -m window --display west; yabai -m display --focus west
