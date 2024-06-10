@@ -20,7 +20,8 @@ Finally, I use and recommend [GNU Stow](https://www.gnu.org/software/stow/) for 
 First, make sure the needed directories are in place:
 
 ```sh
-mkdir -p .cache/zsh .local/bin ~/Projects
+cd
+mkdir -p .cache/zsh .local/bin Projects
 ```
 Now, proceed with installation:
 
