@@ -15,6 +15,7 @@
 !.config/termux/termux.properties
 !.config/yabai/yabairc
 !.config/zsh/.zshrc
+!.gnupg/gpg-agent.conf
 !.gitignore
 !.screenrc
 !.vimrc
