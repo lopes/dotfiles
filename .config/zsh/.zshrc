@@ -20,12 +20,14 @@ zstyle ':completion:*' completer _expand _complete _ignored _approximate
 zmodload zsh/complist
 _comp_options+=(globdots)
 
-test -d $HOME/.local/bin && PATH="$_:$PATH"
-test -d /opt/homebrew/bin && PATH="$_:$PATH"  # homebrew on macOS
 export PROMPT='%n@%B%M%b%F{240}:%20<..<%3~%<<%f %B%#%b '
 
-if command -v gpg; then
-    export GPG_TTY=$(tty)  # required by GPG
+test -d $HOME/.local/bin && PATH="$_:$PATH"
+
+test -d /opt/homebrew/bin && PATH="$_:$PATH" && export BREW_PREFIX="$(brew --prefix)"
+
+if command -v gpg &> /dev/null; then
+    export GPG_TTY="$(tty)"  # required by GPG
 fi
 
 bindkey -e  # no vi mode
@@ -50,5 +52,5 @@ test -f $HOME/.config/zsh/private.sh && source $HOME/.config/zsh/private.sh
 
 # extra functions and plugins for zsh
 test -f $HOME/.config/functions.sh && source $HOME/.config/functions.sh
-test -f /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh && source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-test -f /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh && source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+test -f $BREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh && source $_
+test -f $BREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh && source $_
