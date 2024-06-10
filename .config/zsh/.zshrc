@@ -21,7 +21,12 @@ zmodload zsh/complist
 _comp_options+=(globdots)
 
 test -d $HOME/.local/bin && PATH="$_:$PATH"
+test -d /opt/homebrew/bin && PATH="$_:$PATH"  # homebrew on macOS
 export PROMPT='%n@%B%M%b%F{240}:%20<..<%3~%<<%f %B%#%b '
+
+if command -v gpg; then
+    export GPG_TTY=$(tty)  # required by GPG
+fi
 
 bindkey -e  # no vi mode
 

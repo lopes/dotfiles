@@ -5,7 +5,6 @@
     "ft:html": {
         "tabsize": 2
     },
-    "ignorecase": true,
     "rmtrailingws": true,
     "savecursor": true,
     "savehistory": false,
