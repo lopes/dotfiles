@@ -1,7 +1,7 @@
 [user]
     name = Joe Lopes
     email = 2897144+lopes@users.noreply.github.com
-	signingkey = E157B1DEAA636FF8
+    signingkey = E157B1DEAA636FF8
 [core]
     editor = vim
     autocrlf = input
@@ -27,4 +27,4 @@
     s = status
     t = tag
 [commit]
-	gpgsign = true
+    gpgsign = true

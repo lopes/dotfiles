@@ -47,6 +47,7 @@ Some shortcuts of my daily use.
 |---|---|
 | `cmd-space` | App launcher |
 | `cmd-w/q` | Close/Quit application |
+| `cmd-,` | Open settings |
 | `cmd-n` | New window/file/... |
 | `cmd-shift-3/4/5` | Screenshots |
 | `control-1..0` | Move to Desktop 1-10 |
