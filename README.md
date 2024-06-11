@@ -135,6 +135,7 @@ See `.config/skhd/skhdrc` for the full list.
 | `control-v` | Go to visual mode - `esc` to exit |
 | `/sentence` | Search for `sentence` - works in other tools, like `less` and `man` |
 
+>[!INFO]
 > Some Vim commands can be combined to alter their behavior, for instance `d$` cut all characters from the cursor to the end of line.
 
 
