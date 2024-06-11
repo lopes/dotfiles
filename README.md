@@ -83,6 +83,28 @@ See `.config/skhd/skhdrc` for the full list.
 | `control-alt-1..8` | Move window to space 1-8 |
 | `control-alt-cmd-r` | Restart yabai |
 
+### Obsidian
+| Shortcut | Action |
+|---|---|
+| `cmd-p` | Open command palette |
+| `cmd-e` | Toggle edit/reading view |
+| `cmd-option-i` | Show console |
+| `cmd-option-up` | Add cursor above |
+| `cmd-option-down` | Add cursor below |
+| `cmd-click` | Open file in a new tab |
+| `cmd-\` |  Split right |
+| `cmd-[` | Toggle left sidebar |
+| `cmd-]` | Toggle right sidebar |
+
+
+### VSCode
+| Shortcut | Action |
+|---|---|
+| `cmd-p` | Open the Command Palette |
+| `cmd-b` | Toggle Sidebar |
+| `cmd-\` |  Split right |
+| `control-tab` | Show active tabs |
+
 ### Micro
 | Shortcut | Action |
 |---|---|
