@@ -24,7 +24,11 @@ export PROMPT='%n@%B%M%b%F{240}:%20<..<%3~%<<%f %B%#%b '
 
 test -d $HOME/.local/bin && PATH="$_:$PATH"
 
-test -d /opt/homebrew/bin && PATH="$_:$PATH" && export BREW_PREFIX="$(brew --prefix)"
+# homebrew present in x86 or ARM
+if [ -d "/opt/homebrew/bin" ] || [ -d "/usr/local/Homebrew/bin" ]; then
+  export BREW_PREFIX="$(brew --prefix)"
+  PATH="$BREW_PREFIX/Homebrew/bin:$PATH"
+fi
 
 if command -v gpg &> /dev/null; then
     export GPG_TTY="$(tty)"  # required by GPG
