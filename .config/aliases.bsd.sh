@@ -23,10 +23,10 @@ alias sudo="nocorrect sudo"
 alias shutdown="shutdown"
 alias reboot="reboot"
 
-alias pkgu="brew update && brew upgrade"  # update
-alias pkgs="brew search"                  # search
-alias pkgi="brew install"                 # install
-alias pkgr="brew uninstall"               # remove
+alias pkg_update="brew update && brew upgrade && brew upgrade --cask && brew cleanup"  # update
+alias pkg_search="brew search"                  # search
+alias pkg_install="brew install"                 # install
+alias pkg_uninstall="brew uninstall"               # remove
 
 alias myippub="dig +short myip.opendns.com @resolver1.opendns.com"
 alias myippri="ipconfig getifaddr en0"
