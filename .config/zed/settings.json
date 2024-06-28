@@ -1,0 +1,14 @@
+// For information on how to con figure Zed, see the Zed
+// documentation: https://zed.dev/docs/configuring-zed
+{
+  "ui_font_size": 16,
+  "buffer_font_size": 16,
+  "autosave": "on_focus_change",
+  "confirm_quit": true,
+  "journal": {
+    "path": "~",
+    "hour_format": "hour24"
+  },
+  "tab_size": 2
+}
+

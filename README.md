@@ -36,7 +36,10 @@ stow --verbose --adopt . --target=$HOME
 >The previous snippet considers a fresh install.  If you have any configurations in place, use it with caution because the `--adopt` will replace these files by your current ones.
 
 >[!NOTE]
-> GNU Stow allows you to simulate an installation with the `--simmulate` option.
+>GNU Stow allows you to simulate an installation with the `--simmulate` option.
+
+>[!INFO]
+>Git ignores all files but the ones explicitly declared in `.gitignore` file.  To track new files, they must be added with: `git add -f PATH`.
 
 
 ## Shortcuts
