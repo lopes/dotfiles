@@ -56,6 +56,9 @@ Some shortcuts of my daily use.
 | `control-1..0` | Move to Desktop 1-10 |
 | `control-left/right` | Move to previous/next Desktop |
 
+>[!NOTE]
+>A comprehensive list of macOS shortcuts can be found [here](https://support.apple.com/en-us/102650).
+
 ### Zsh
 | Shortcut | Action |
 |---|---|
