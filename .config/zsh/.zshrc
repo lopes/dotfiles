@@ -24,20 +24,29 @@ export PROMPT='%n@%B%M%b%F{240}:%20<..<%3~%<<%f %B%#%b '
 
 test -d $HOME/.local/bin && PATH="$_:$PATH"
 
-# homebrew present in x86 or ARM
-if [ -d "/opt/homebrew/bin" ] || [ -d "/usr/local/Homebrew/bin" ]; then
-  export BREW_PREFIX="$(brew --prefix)"
-  PATH="$BREW_PREFIX/Homebrew/bin:$PATH"
+# Homebrew + Zsh plugins
+if [ -d "/opt/homebrew" ]; then  # ARM
+  export BREW_PREFIX="/opt/homebrew"
+  test -f $BREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh && source $_
+  test -f $BREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh && source $_
+  PATH="$BREW_PREFIX/bin:$PATH"
+elif [ -d "/usr/local/Homebrew" ]; then  # Intel
+  export BREW_PREFIX="/usr/local/Homebrew"
+  test -f $BREW_PREFIX/../share/zsh-autosuggestions/zsh-autosuggestions.zsh && source $_
+  test -f $BREW_PREFIX/../share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh && source $_
+  PATH="$BREW_PREFIX/bin:$PATH"
 fi
 
-if command -v gpg &> /dev/null; then
-    export GPG_TTY="$(tty)"  # required by GPG
-fi
+# extra functions and plugins for zsh
+test -f $HOME/.config/functions.sh && source $HOME/.config/functions.sh
 
-bindkey -e  # no vi mode
+# sourcing private settings, if exist
+# it's a place for private settings, like API keys
+test -f $HOME/.config/zsh/private.sh && source $HOME/.config/zsh/private.sh
 
 # mappings for macOS keyboard
 # run `cat` and type your keys to get the sequences
+bindkey -e  # no vi mode
 bindkey '^r' history-incremental-search-backward  # ctrl-r
 bindkey '^[[A' history-search-backward            # up
 bindkey '^[[B' history-search-forward             # down
@@ -45,16 +54,7 @@ bindkey '^[^[[D' backward-word                    # alt-left
 bindkey '^[^[[C' forward-word                     # alt-rightt
 
 case "$OSTYPE" in
-    linux*)          source "$ZDOTDIR/../aliases.linux.sh"   ;;
-    *bsd* | darwin*) source "$ZDOTDIR/../aliases.bsd.sh"     ;;
-    msys  | cygwin)  source "$ZDOTDIR/../aliases.windows.sh" ;;
+  linux*)          source "$ZDOTDIR/../aliases.linux.sh"   ;;
+  *bsd* | darwin*) source "$ZDOTDIR/../aliases.bsd.sh"     ;;
+  msys  | cygwin)  source "$ZDOTDIR/../aliases.windows.sh" ;;
 esac
-
-# sourcing private settings, if exist
-# it's a place for private settings, like API keys
-test -f $HOME/.config/zsh/private.sh && source $HOME/.config/zsh/private.sh
-
-# extra functions and plugins for zsh
-test -f $HOME/.config/functions.sh && source $HOME/.config/functions.sh
-test -f $BREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh && source $_
-test -f $BREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh && source $_
