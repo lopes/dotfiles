@@ -37,3 +37,8 @@ yabai -m rule --add app="^Finder$" manage=off
 yabai -m rule --add app="^QuickTime$" manage=off
 yabai -m rule --add app="^AppCleaner$" manage=off
 yabai -m rule --add app="^VLC$" manage=off
+yabai -m rule --add app="^Archive Utility$" manage=off
+yabai -m rule --add app="^Keka$" manage=off
+yabai -m rule --add app="^GPG Keychain$" manage=off
+yabai -m rule --add app="^Raycast$" manage=off
+yabai -m rule --add app="^VMware Fusion$" manage=off
