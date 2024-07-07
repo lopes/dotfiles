@@ -47,11 +47,18 @@ test -f $HOME/.config/zsh/private.sh && source $HOME/.config/zsh/private.sh
 # mappings for macOS keyboard
 # run `cat` and type your keys to get the sequences
 bindkey -e  # no vi mode
-bindkey '^r' history-incremental-search-backward  # ctrl-r
-bindkey '^[[A' history-search-backward            # up
-bindkey '^[[B' history-search-forward             # down
-bindkey '^[^[[D' backward-word                    # alt-left
-bindkey '^[^[[C' forward-word                     # alt-rightt
+
+bindkey '^r'   history-incremental-search-backward  # control-r
+bindkey '^[[A' history-search-backward              # up
+bindkey '^[[B' history-search-forward               # down
+
+bindkey '^[^[[D' backward-word  # alt-left
+bindkey '^[^[[C' forward-word   # alt-right
+
+bindkey '^[[H'  beginning-of-line  # home
+bindkey '^[[F'  end-of-line        # end
+bindkey '^[[3~' delete-char        # del
+
 
 case "$OSTYPE" in
   linux*)          source "$ZDOTDIR/../aliases.linux.sh"   ;;

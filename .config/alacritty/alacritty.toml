@@ -13,3 +13,9 @@ option_as_alt = "both"
 
 [font]
 size = 16
+
+[keyboard]
+bindings = [
+  { key = "PageUp",  action = "ScrollPageUp" },
+  { key = "PageDown", action = "ScrollPageDown" }
+]
