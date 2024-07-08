@@ -1,4 +1,10 @@
+# alacrity configuration file
+# https://alacritty.org/config-alacritty.html
+
 live_config_reload = true
+
+[shell]
+program = "/bin/zsh"
 
 [env]
 TERM = "xterm-256color"
@@ -6,16 +12,28 @@ TERM = "xterm-256color"
 [window]
 padding.x = 10
 padding.y = 10
-decorations = "buttonless"
+decorations = "none"
 opacity = 0.75
 blur = true
 option_as_alt = "both"
 
+[scrolling]
+history = 50000
+
 [font]
 size = 16
 
+[cursor]
+style = { shape="underline", blinking="always" }
+thickness = 0.3
+
+[mouse]
+hide_when_typing = true
+
 [keyboard]
 bindings = [
-  { key = "PageUp",  action = "ScrollPageUp" },
-  { key = "PageDown", action = "ScrollPageDown" }
+  { key="PageUp",   action="ScrollPageUp" },
+  { key="PageDown", action="ScrollPageDown" },
+  { key="Up",   mods="Command", action="ScrollPageUp" },
+  { key="Down", mods="Command", action="ScrollPageDown" },
 ]

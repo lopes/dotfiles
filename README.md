@@ -72,6 +72,11 @@ Some shortcuts of my daily use.
 | `alt-left` | Previous word |
 | `alt-right` | Next word |
 
+### Alacritty
+| Shortcut | Action |
+|---|---|
+| `control-shift-space` | Toggle Vi mode |
+
 ### yabai (skhd)
 See `.config/skhd/skhdrc` for the full list.
 | Shortcut | Action |

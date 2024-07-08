@@ -14,6 +14,10 @@ setopt HIST_VERIFY
 
 stty stop undef
 autoload -Uz compinit; compinit
+zstyle ':completion:*' matcher-list \
+    'm:{[:lower:]}={[:upper:]}' \
+    '+r:|[._-]=* r:|=*' \
+    '+l:|=*'
 zstyle ':completion:*' menu select
 zstyle ':completion:*' group-name ''
 zstyle ':completion:*' completer _expand _complete _ignored _approximate
@@ -58,6 +62,9 @@ bindkey '^[^[[C' forward-word   # alt-right
 bindkey '^[[H'  beginning-of-line  # home
 bindkey '^[[F'  end-of-line        # end
 bindkey '^[[3~' delete-char        # del
+
+bindkey '^[[1;9C' end-of-line        # cmd-right
+bindkey '^[[1;9D' beginning-of-line  # cmd-left
 
 
 case "$OSTYPE" in
