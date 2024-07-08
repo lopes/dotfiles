@@ -15,16 +15,16 @@ setopt HIST_VERIFY
 stty stop undef
 autoload -Uz compinit; compinit
 zstyle ':completion:*' matcher-list \
-    'm:{[:lower:]}={[:upper:]}' \
-    '+r:|[._-]=* r:|=*' \
-    '+l:|=*'
+  'm:{[:lower:]}={[:upper:]}' \
+  '+r:|[._-]=* r:|=*' \
+  '+l:|=*'
 zstyle ':completion:*' menu select
 zstyle ':completion:*' group-name ''
 zstyle ':completion:*' completer _expand _complete _ignored _approximate
 zmodload zsh/complist
 _comp_options+=(globdots)
 
-export PROMPT='%n@%B%M%b%F{240}:%20<..<%3~%<<%f %B%#%b '
+export PROMPT='%n%F{245}@%f%B%M%b%F{245}:%20<..<%3~%<<%f %B%#%b '
 
 test -d $HOME/.local/bin && PATH="$_:$PATH"
 
