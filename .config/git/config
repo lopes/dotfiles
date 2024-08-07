@@ -11,21 +11,17 @@
     pager = true
 [alias]
     a = add
-    b = branch
-    cf = config
-    cl = clone
-    co = commit
-    ct = checkout
-    d = diff
-    lo = log
-    ls = ls-files
-    ps = push
-    pl = pull
-    rb = rebase
-    re = reset
-    rh = reset
     s = status
-    t = tag
+    d = diff
+    cd = checkout
+    home = checkout main
+    mk = checkout -b
+    del = branch -D
+    conf = config --list --show-origin --show-scope
+    lo = log --oneline --decorate --graph --all
+    ls = ls-files
+    save = commit --verbose -S -m
+    undo = reset HEAD~1 --mixed
 [commit]
     gpgsign = true
 [gpg]
