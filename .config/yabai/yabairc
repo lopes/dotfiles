@@ -1,3 +1,5 @@
+# yabai configuration
+
 # default layout: bsp, stack or float
 yabai -m config layout bsp
 

@@ -1,3 +1,5 @@
+# bash configuration
+
 test -z "$PS1" && return
 
 test -f /etc/bashrc && . "$_"

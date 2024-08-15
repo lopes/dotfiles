@@ -1,4 +1,4 @@
-# shell configuration and command execution
+# zsh configuration
 
 setopt EXTENDED_HISTORY
 setopt SHARE_HISTORY

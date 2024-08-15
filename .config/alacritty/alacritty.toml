@@ -1,4 +1,4 @@
-# alacrity configuration file
+# alacrity configuration
 # https://alacritty.org/config-alacritty.html
 
 live_config_reload = true

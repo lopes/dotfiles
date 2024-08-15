@@ -1,5 +1,5 @@
-// For information on how to con figure Zed, see the Zed
-// documentation: https://zed.dev/docs/configuring-zed
+// zed editor configuration
+// https://zed.dev/docs/configuring-zed
 {
   "ui_font_size": 16,
   "buffer_font_size": 16,

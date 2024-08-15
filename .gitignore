@@ -1,6 +1,9 @@
-# nothing will be tracked but the files expressed here
+# git configuration
+
+# allowlist: everything is ignored except the files listed below
 *
 
+!.config/aerospace/aerospace.toml
 !.config/alacritty/alacritty.toml
 !.config/aliases.bsd.sh
 !.config/aliases.linux.sh
@@ -23,4 +26,3 @@
 !.zshenv
 !LICENSE
 !README.md
-

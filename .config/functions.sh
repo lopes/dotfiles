@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# shell functions
 
 function pingts() {
     # timestamped ping
@@ -6,6 +7,6 @@ function pingts() {
 }
 
 function cheat() {
-    # cheat.sh wrapper    
+    # cheat.sh wrapper
     curl -s cheat.sh/"$1" | less -R
 }
