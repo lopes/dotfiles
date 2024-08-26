@@ -55,14 +55,14 @@ cmd-3 = "workspace 3"
 cmd-4 = "workspace 4"
 cmd-5 = "workspace 5"
 
-cmd-shift-1 = ["move-node-to-workspace 1", "workspace 1"]
-cmd-shift-2 = ["move-node-to-workspace 2", "workspace 2"]
-cmd-shift-3 = ["move-node-to-workspace 3", "workspace 3"]
-cmd-shift-4 = ["move-node-to-workspace 4", "workspace 4"]
-cmd-shift-5 = ["move-node-to-workspace 5", "workspace 5"]
+cmd-alt-1 = ["move-node-to-workspace 1", "workspace 1"]
+cmd-alt-2 = ["move-node-to-workspace 2", "workspace 2"]
+cmd-alt-3 = ["move-node-to-workspace 3", "workspace 3"]
+cmd-alt-4 = ["move-node-to-workspace 4", "workspace 4"]
+cmd-alt-5 = ["move-node-to-workspace 5", "workspace 5"]
 
 ctrl-up = "workspace-back-and-forth"
-# cmd-ctrl-tab = "move-workspace-to-monitor --wrap-around next"
+# cmd-alt-tab = "move-workspace-to-monitor --wrap-around next"
 
 
 # windows control
@@ -74,15 +74,15 @@ cmd-ctrl-j = "focus down"
 cmd-ctrl-k = "focus up"
 cmd-ctrl-l = "focus right"
 
-cmd-shift-h = "move left"
-cmd-shift-j = "move down"
-cmd-shift-k = "move up"
-cmd-shift-l = "move right"
+cmd-alt-h = "move left"
+cmd-alt-j = "move down"
+cmd-alt-k = "move up"
+cmd-alt-l = "move right"
 
-ctrl-ctrl-minus = "resize smart -50"
-ctrl-ctrl-equal = "resize smart +50"
+cmd-alt-minus = "resize smart -50"
+cmd-alt-equal = "resize smart +50"
 
-cmd-ctrl-enter = "exec-and-forget open -n /Applications/Alacritty.app"
+cmd-alt-enter = "exec-and-forget open -n /Applications/Alacritty.app"
 
 
 # other modes
