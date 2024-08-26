@@ -35,10 +35,10 @@ alias sudo="nocorrect sudo"
 alias shutdown="sudo shutdown"
 alias reboot="sudo reboot"
 
-alias pkg_update="sudo pacman -Syu"  # update
-alias pkg_search="sudo pacman -Ss"   # search
-alias pkg_install="sudo pacman -S"    # install
-alias pkg_uninstall="sudo pacman -Rs"   # remove
+alias pkg_update="sudo pacman -Syu"    # update
+alias pkg_search="sudo pacman -Ss"     # search
+alias pkg_install="sudo pacman -S"     # install
+alias pkg_uninstall="sudo pacman -Rs"  # remove
 
 alias pwgen="openssl rand -base64 256 | tr -d '\n' | head -c"
 alias pyvenv="{[ ! -d "venv" ] && python3 -m venv venv}; source venv/bin/activate"

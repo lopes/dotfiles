@@ -24,12 +24,14 @@ alias shutdown="shutdown"
 alias reboot="reboot"
 
 alias pkg_update="brew update && brew upgrade && brew upgrade --cask && brew cleanup"  # update
-alias pkg_search="brew search"                  # search
-alias pkg_install="brew install"                 # install
-alias pkg_uninstall="brew uninstall"               # remove
+alias pkg_search="brew search"        # search
+alias pkg_install="brew install"      # install
+alias pkg_uninstall="brew uninstall"  # remove
 
 alias myippub="dig +short myip.opendns.com @resolver1.opendns.com"
 alias myippri="ipconfig getifaddr en0"
 
 alias pwgen="openssl rand -base64 256 | tr -d '\n' | head -c"
 alias pyvenv="{[ ! -d "venv" ] && python3 -m venv venv}; source venv/bin/activate"
+
+alias docker="/Applications/Docker.app/Contents/Resources/bin/docker"  # docker on macOS
