@@ -55,11 +55,11 @@ cmd-3 = "workspace 3"
 cmd-4 = "workspace 4"
 cmd-5 = "workspace 5"
 
-cmd-ctrl-1 = ["move-node-to-workspace 1", "workspace 1"]
-cmd-ctrl-2 = ["move-node-to-workspace 2", "workspace 2"]
-cmd-ctrl-3 = ["move-node-to-workspace 3", "workspace 3"]
-cmd-ctrl-4 = ["move-node-to-workspace 4", "workspace 4"]
-cmd-ctrl-5 = ["move-node-to-workspace 5", "workspace 5"]
+cmd-shift-1 = ["move-node-to-workspace 1", "workspace 1"]
+cmd-shift-2 = ["move-node-to-workspace 2", "workspace 2"]
+cmd-shift-3 = ["move-node-to-workspace 3", "workspace 3"]
+cmd-shift-4 = ["move-node-to-workspace 4", "workspace 4"]
+cmd-shift-5 = ["move-node-to-workspace 5", "workspace 5"]
 
 ctrl-up = "workspace-back-and-forth"
 # cmd-ctrl-tab = "move-workspace-to-monitor --wrap-around next"
@@ -69,15 +69,15 @@ ctrl-up = "workspace-back-and-forth"
 cmd-ctrl-slash = "layout tiles horizontal vertical"
 cmd-ctrl-comma = "layout accordion horizontal vertical"
 
-cmd-h = "focus left"
-cmd-j = "focus down"
-cmd-k = "focus up"
-cmd-l = "focus right"
+cmd-ctrl-h = "focus left"
+cmd-ctrl-j = "focus down"
+cmd-ctrl-k = "focus up"
+cmd-ctrl-l = "focus right"
 
-cmd-ctrl-h = "move left"
-cmd-ctrl-j = "move down"
-cmd-ctrl-k = "move up"
-cmd-ctrl-l = "move right"
+cmd-shift-h = "move left"
+cmd-shift-j = "move down"
+cmd-shift-k = "move up"
+cmd-shift-l = "move right"
 
 ctrl-ctrl-minus = "resize smart -50"
 ctrl-ctrl-equal = "resize smart +50"

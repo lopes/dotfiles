@@ -82,8 +82,8 @@ See `.config/aerospace/aerospace.toml` for the full list.
 | Shortcut | Action |
 |---|---|
 | `cmd-1..5` | Switch workspaces |
-| `cmd-control-1..5` | Move windows to workspace |
-| `cmd-[hjkl]` | Move windows focus to left/down/up/right |
+| `cmd-shift-1..5` | Move windows to workspace |
+| `cmd-control-[hjkl]` | Move windows focus to left/down/up/right |
 | `cmd-control-enter` | Launch terminal |
 
 ### Obsidian
