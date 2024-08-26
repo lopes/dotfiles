@@ -2,8 +2,8 @@
 # https://nikitabobko.github.io/AeroSpace/guide#default-config
 #
 # TODO
-# - ctrl-right: move to the next workspace
-# - ctrl-left: move to the previous workspace
+# - ctrl-right: go to the next workspace
+# - ctrl-left: move go to the previous workspace
 # - ctrl-shift-right: move the current window to the next workspace
 # - ctrl-shift-left: move the current window to the previous workspace
 # - ctrl-shif???-f: toggle fullscreen
@@ -36,8 +36,8 @@ outer.right =      3
 
 [mode.main.binding]
 # Keys:
-# - Letters.        a, b, c, ..., z
-# - Numbers.        0, 1, 2, ..., 9
+# - Letters.        a-z
+# - Numbers.        0-9
 # - Keypad numbers. keypad0, keypad1, keypad2, ..., keypad9
 # - F-keys.         f1, f2, ..., f20
 # - Special keys.   minus, equal, period, comma, slash, backslash, quote, semicolon, backtick,
@@ -48,43 +48,45 @@ outer.right =      3
 # Modifiers: cmd, alt, ctrl, shift
 # Commands: https://nikitabobko.github.io/AeroSpace/commands
 
-ctrl-slash = "layout tiles horizontal vertical"
-ctrl-comma = "layout accordion horizontal vertical"
+# workspace control
+cmd-1 = "workspace 1"
+cmd-2 = "workspace 2"
+cmd-3 = "workspace 3"
+cmd-4 = "workspace 4"
+cmd-5 = "workspace 5"
 
-ctrl-h = "focus left"
-ctrl-j = "focus down"
-ctrl-k = "focus up"
-ctrl-l = "focus right"
-
-ctrl-shift-h = "move left"
-ctrl-shift-j = "move down"
-ctrl-shift-k = "move up"
-ctrl-shift-l = "move right"
-
-ctrl-shift-minus = "resize smart -50"
-ctrl-shift-equal = "resize smart +50"
-
-ctrl-1 = "workspace 1"
-ctrl-2 = "workspace 2"
-ctrl-3 = "workspace 3"
-ctrl-4 = "workspace 4"
-ctrl-5 = "workspace 5"
-ctrl-6 = "workspace 6"
-
-ctrl-shift-1 = ["move-node-to-workspace 1", "workspace 1"]
-ctrl-shift-2 = ["move-node-to-workspace 2", "workspace 2"]
-ctrl-shift-3 = ["move-node-to-workspace 3", "workspace 3"]
-ctrl-shift-4 = ["move-node-to-workspace 4", "workspace 4"]
-ctrl-shift-5 = ["move-node-to-workspace 5", "workspace 5"]
-ctrl-shift-6 = ["move-node-to-workspace 6", "workspace 6"]
+cmd-ctrl-1 = ["move-node-to-workspace 1", "workspace 1"]
+cmd-ctrl-2 = ["move-node-to-workspace 2", "workspace 2"]
+cmd-ctrl-3 = ["move-node-to-workspace 3", "workspace 3"]
+cmd-ctrl-4 = ["move-node-to-workspace 4", "workspace 4"]
+cmd-ctrl-5 = ["move-node-to-workspace 5", "workspace 5"]
 
 ctrl-up = "workspace-back-and-forth"
-ctrl-shift-tab = "move-workspace-to-monitor --wrap-around next"
+# cmd-ctrl-tab = "move-workspace-to-monitor --wrap-around next"
 
-alt-enter = "exec-and-forget open -n /Applications/Alacritty.app"
 
-ctrl-shift-semicolon = "mode service"
+# windows control
+cmd-ctrl-slash = "layout tiles horizontal vertical"
+cmd-ctrl-comma = "layout accordion horizontal vertical"
 
+cmd-h = "focus left"
+cmd-j = "focus down"
+cmd-k = "focus up"
+cmd-l = "focus right"
+
+cmd-ctrl-h = "move left"
+cmd-ctrl-j = "move down"
+cmd-ctrl-k = "move up"
+cmd-ctrl-l = "move right"
+
+ctrl-ctrl-minus = "resize smart -50"
+ctrl-ctrl-equal = "resize smart +50"
+
+cmd-ctrl-enter = "exec-and-forget open -n /Applications/Alacritty.app"
+
+
+# other modes
+cmd-ctrl-semicolon = "mode service"
 
 [mode.service.binding]
 esc = ["reload-config", "mode main"]
@@ -93,10 +95,10 @@ f = ["layout floating tiling", "mode main"] # Toggle between floating and tiling
 # s = ["layout sticky tiling", "mode main"]   # sticky is not yet supported https://github.com/nikitabobko/AeroSpace/issues/2
 # backspace = ["close-all-windows-but-current", "mode main"]
 
-ctrl-shift-h = ["join-with left", "mode main"]
-ctrl-shift-j = ["join-with down", "mode main"]
-ctrl-shift-k = ["join-with up", "mode main"]
-ctrl-shift-l = ["join-with right", "mode main"]
+cmd-ctrl-h = ["join-with left", "mode main"]
+cmd-ctrl-j = ["join-with down", "mode main"]
+cmd-ctrl-k = ["join-with up", "mode main"]
+cmd-ctrl-l = ["join-with right", "mode main"]
 
 
 # binding apps to workspaces
@@ -121,6 +123,6 @@ run = "move-node-to-workspace 4"
 if.app-id = "dev.zed.Zed"
 run = "move-node-to-workspace 5"
 
-[[on-window-detected]]
-if.app-id = "org.alacritty"
-run = "move-node-to-workspace 6"
+# [[on-window-detected]]
+# if.app-id = "org.alacritty"
+# run = "move-node-to-workspace 5"

@@ -77,22 +77,14 @@ Some shortcuts of my daily use.
 |---|---|
 | `control-shift-space` | Toggle Vi mode |
 
-### yabai (skhd)
-See `.config/skhd/skhdrc` for the full list.
+### Aerospace
+See `.config/aerospace/aerospace.toml` for the full list.
 | Shortcut | Action |
 |---|---|
-| `control-alt-t` | Toggle maximize window |
-| `control-alt-y` | Toggle window float |
-| `control-alt-u` | Flip along x-axis |
-| `control-alt-i` | Flip along y-axis |
-| `control-alt-o` | Rotate layout |
-| `control-alt-p` | Rebalance windows |
-| `control-shift-[` | Focus on left window |
-| `control-shift-]` | Focus on right window |
-| `control-alt-[` | Switch window to the left |
-| `control-alt-]` | Switch window to the right |
-| `control-alt-1..8` | Move window to space 1-8 |
-| `control-alt-cmd-r` | Restart yabai |
+| `cmd-1..5` | Switch workspaces |
+| `cmd-control-1..5` | Move windows to workspace |
+| `cmd-[hjkl]` | Move windows focus to left/down/up/right |
+| `cmd-control-enter` | Launch terminal |
 
 ### Obsidian
 | Shortcut | Action |

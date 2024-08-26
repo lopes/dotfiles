@@ -14,9 +14,7 @@
 !.config/git/config
 !.config/inputrc
 !.config/micro/settings.json
-!.config/skhd/skhdrc
 !.config/termux/termux.properties
-!.config/yabai/yabairc
 !.config/zed/settings.json
 !.config/zsh/.zshrc
 !.gnupg/gpg-agent.conf
