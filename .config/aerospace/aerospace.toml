@@ -61,7 +61,7 @@ cmd-alt-3 = ["move-node-to-workspace 3", "workspace 3"]
 cmd-alt-4 = ["move-node-to-workspace 4", "workspace 4"]
 cmd-alt-5 = ["move-node-to-workspace 5", "workspace 5"]
 
-ctrl-up = "workspace-back-and-forth"
+cmd-backtick = "workspace-back-and-forth"
 # cmd-alt-tab = "move-workspace-to-monitor --wrap-around next"
 
 
