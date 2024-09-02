@@ -23,13 +23,13 @@ alias sudo="nocorrect sudo"
 alias shutdown="shutdown"
 alias reboot="reboot"
 
-alias pkg_update="brew update && brew upgrade && brew upgrade --cask && brew cleanup"  # update
-alias pkg_search="brew search"        # search
-alias pkg_install="brew install"      # install
-alias pkg_uninstall="brew uninstall"  # remove
+alias zas="brew"
+alias zasi="brew install"
+alias zasr="brew uninstall"
+alias zass="brew search"
+alias zasu="brew update && brew upgrade && brew upgrade --cask && brew cleanup"
 
-alias myippub="dig +short myip.opendns.com @resolver1.opendns.com"
-alias myippri="ipconfig getifaddr en0"
+alias myip="ipconfig getifaddr en0 && dig +short txt ch whoami.cloudflare @1.0.0.1"
 
 alias pwgen="openssl rand -base64 256 | tr -d '\n' | head -c"
 alias pyvenv="{[ ! -d "venv" ] && python3 -m venv venv}; source venv/bin/activate"
