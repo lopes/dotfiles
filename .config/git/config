@@ -24,6 +24,7 @@
     ls = ls-files
     save = commit --verbose -S -m
     undo = reset HEAD~1 --mixed
+    aka = config --get-regexp ^alias
 [commit]
     gpgsign = true
 [gpg]
