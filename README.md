@@ -100,15 +100,6 @@ See `.config/aerospace/aerospace.toml` for the full list.
 | `cmd-[` | Toggle left sidebar |
 | `cmd-]` | Toggle right sidebar |
 
-
-### VSCode
-| Shortcut | Action |
-|---|---|
-| `cmd-p` | Open the Command Palette |
-| `cmd-b` | Toggle Sidebar |
-| `cmd-\` |  Split right |
-| `control-tab` | Show active tabs |
-
 ### Micro
 | Shortcut | Action |
 |---|---|

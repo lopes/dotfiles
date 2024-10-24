@@ -1,9 +1,5 @@
-# alacrity configuration
-# https://alacritty.org/config-alacritty.html
 
-live_config_reload = true
-
-[shell]
+[terminal.shell]
 program = "/bin/zsh"
 
 [env]
@@ -37,3 +33,11 @@ bindings = [
   { key="Up",   mods="Command", action="ScrollPageUp" },
   { key="Down", mods="Command", action="ScrollPageDown" },
 ]
+
+[general]
+# alacrity configuration
+# https://alacritty.org/config-alacritty.html
+
+live_config_reload = true
+
+[terminal]

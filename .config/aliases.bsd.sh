@@ -23,11 +23,11 @@ alias sudo="nocorrect sudo"
 alias shutdown="shutdown"
 alias reboot="reboot"
 
-alias zas="brew"
-alias zasi="brew install"
-alias zasr="brew uninstall"
-alias zass="brew search"
-alias zasu="brew update && brew upgrade && brew upgrade --cask && brew cleanup"
+alias pkt="brew"
+alias pkti="brew install"
+alias pktr="brew uninstall"
+alias pkts="brew search"
+alias pktu="brew update && brew upgrade && brew upgrade --cask && brew cleanup"
 
 alias myip="ipconfig getifaddr en0 && dig +short txt ch whoami.cloudflare @1.0.0.1"
 
