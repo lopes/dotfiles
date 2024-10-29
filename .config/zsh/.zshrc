@@ -11,6 +11,7 @@ setopt HIST_REDUCE_BLANKS
 setopt CORRECT
 setopt SHARE_HISTORY
 setopt HIST_VERIFY
+setopt PROMPT_SUBST
 
 stty stop undef
 autoload -Uz compinit; compinit
@@ -24,11 +25,11 @@ zstyle ':completion:*' completer _expand _complete _ignored _approximate
 zmodload zsh/complist
 _comp_options+=(globdots)
 
-export PROMPT='%n%F{245}@%f%B%M%b%F{245}:%20<..<%3~%<<%f %B%#%b '
+export PROMPT='%n%F{245}@%f%B%M%b%F{245}:%20<..<%3~%<<$(git_branch)%f%B%#%b '
 
 test -d $HOME/.local/bin && PATH="$_:$PATH"
 
-# Homebrew + Zsh plugins
+# homebrew + zsh plugins
 if [ -d "/opt/homebrew" ]; then  # ARM
   export BREW_PREFIX="/opt/homebrew"
   test -f $BREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh && source $_

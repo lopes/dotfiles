@@ -5,6 +5,7 @@ alias sh="zsh"
 alias aka="alias | grep"
 
 alias p="pwd"
+alias g="git"
 alias ~="cd ~"
 alias ..="cd .."
 alias ...="cd ../.."
