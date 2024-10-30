@@ -12,7 +12,7 @@ function cheat() {
 }
 
 function git_branch() {
-  branch=$(git branch --format='%(refname:short)' 2> /dev/null)
+  branch=$(git rev-parse --abbrev-ref HEAD 2> /dev/null)
   if [[ $branch == "" ]]; then
     echo " "
   else
