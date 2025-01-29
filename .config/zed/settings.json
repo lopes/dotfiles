@@ -5,6 +5,7 @@
   "buffer_font_size": 16,
   "autosave": "on_focus_change",
   "confirm_quit": true,
+  "soft_wrap": "editor_width",
   "journal": {
     "path": "~",
     "hour_format": "hour24"
