@@ -11,21 +11,28 @@
     branch = auto
     diff = auto
     pager = true
-[alias]
+[commit]
+    gpgsign = true
+[gpg]
+    program = /usr/local/bin/gpg
+ [alias]
     a = add
     s = status
     d = diff
-    cd = checkout
-    home = checkout main
-    mk = checkout -b
-    del = branch -D
+    sw = switch
+    main = switch main
+    mk = switch --create
+    del = branch --delete
     conf = config --list --show-origin --show-scope
     lo = log --oneline --decorate --graph --all
     ls = ls-files
     save = commit --verbose -S -m
     undo = reset HEAD~1 --mixed
     aka = config --get-regexp ^alias
-[commit]
-    gpgsign = true
-[gpg]
-    program = /usr/local/bin/gpg
+    restore = restore --staged --worktree           # restore files
+    unstage = reset HEAD --                         # unstage changes
+    amend = commit --amend --no-edit                # amend the last commit
+    graph = log --all --decorate --oneline --graph  # visual log
+    stash-save = stash push                         # stash changes
+    stash-apply = stash pop                         # apply stashed changes
+
