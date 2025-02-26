@@ -108,19 +108,11 @@ if.app-id = "company.thebrowser.Browser"
 run = "move-node-to-workspace 1"
 
 [[on-window-detected]]
-if.app-id = "md.obsidian"
-run = "move-node-to-workspace 2"
-
-[[on-window-detected]]
-if.app-id = "com.apple.mail"
-run = "move-node-to-workspace 3"
-
-[[on-window-detected]]
-if.app-id = "com.apple.iCal"
+if.app-id = "dev.zed.Zed"
 run = "move-node-to-workspace 4"
 
 [[on-window-detected]]
-if.app-id = "dev.zed.Zed"
+if.app-id = "md.obsidian"
 run = "move-node-to-workspace 5"
 
 # [[on-window-detected]]
