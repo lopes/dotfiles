@@ -36,4 +36,5 @@
     graph = log --all --decorate --oneline --graph  # visual log
     stash-save = stash push                         # stash changes
     stash-apply = stash pop                         # apply stashed changes
+    sync = push origin                              # use: sync <branch>
 
