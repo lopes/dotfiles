@@ -15,7 +15,7 @@
     gpgsign = true
 [gpg]
     program = /usr/local/bin/gpg
- [alias]
+[alias]
     a = add
     s = status
     d = diff
@@ -37,4 +37,5 @@
     stash-save = stash push                         # stash changes
     stash-apply = stash pop                         # apply stashed changes
     sync = push origin                              # use: sync <branch>
+    cleanall = clean --force --directory            # cleans the working dir
 
