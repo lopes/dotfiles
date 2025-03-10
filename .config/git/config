@@ -1,41 +1,65 @@
 # git configuration
 
 [user]
-    name = Joe Lopes
-    email = 2897144+lopes@users.noreply.github.com
+    name       = Joe Lopes
+    email      = 2897144+lopes@users.noreply.github.com
     signingkey = E157B1DEAA636FF8
-[core]
-    editor = vim
-    autocrlf = input
-[color]
-    branch = auto
-    diff = auto
-    pager = true
-[commit]
-    gpgsign = true
 [gpg]
     program = /usr/local/bin/gpg
+[core]
+    editor   = vim
+    autocrlf = input
+[commit]
+    gpgsign = true
+    verbose = true
+[branch]
+    sort = -committerdate
+[push]
+    default         = simple
+    autoSetupRemote = true
+    followTags      = true
+[fetch]
+    prune     = true
+    pruneTags = true
+    all       = true
+[diff]
+    algorithm      = histogram
+    colorMoved     = plain
+    mnemonicPrefix = true
+    renames        = true
+[init]
+    defaultBranch = main
+[color]
+    branch = auto
+    diff   = auto
+    pager  = true
+[tag]
+    sort = version:refname
+[help]
+    autocorrect = prompt
+[column]
+    ui = auto
 [alias]
-    a = add
-    s = status
-    d = diff
-    l = log --oneline --decorate --graph --all
-    sw = switch
-    main = switch main
-    mk = switch --create
-    del = branch --delete
-    conf = config --list --show-origin --show-scope
-    ls = ls-files
-    save = commit --verbose -S -m
-    search = log -G
-    undo = reset HEAD~1 --mixed
-    aka = config --get-regexp ^alias
-    restore = restore --staged --worktree           # restore files
-    unstage = reset HEAD --                         # unstage changes
-    amend = commit --amend --no-edit                # amend the last commit
-    graph = log --all --decorate --oneline --graph  # visual log
-    stash-save = stash push                         # stash changes
-    stash-apply = stash pop                         # apply stashed changes
-    sync = push origin                              # use: sync <branch>
-    cleanall = clean --force --directory            # cleans the working dir
+    a           = add
+    s           = status
+    d           = diff
+    l           = log --oneline --decorate --graph --all
+    sw          = switch
+    main        = switch main
+    mk          = switch --create
+    del         = branch --delete
+    conf        = config --list --show-origin --show-scope
+    ls          = ls-files
+    save        = commit --verbose -S -m
+    search      = log -G
+    undo        = reset HEAD~1 --mixed
+    aka         = config --get-regexp ^alias
+    restore     = restore --staged --worktree             # restore files
+    unstage     = reset HEAD --                           # unstage changes
+    amend       = commit --amend --no-edit                # amend the last commit
+    graph       = log --all --decorate --oneline --graph  # visual log
+    stash-save  = stash push                              # stash changes
+    stash-apply = stash pop                               # apply stashed changes
+    sync        = push origin                             # use: sync <branch>
+    cleanall    = clean --force --directory               # cleans the working dir
 
