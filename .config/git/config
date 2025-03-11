@@ -40,26 +40,29 @@
 [column]
     ui = auto
 [alias]
-    a           = add
-    s           = status
-    d           = diff
-    l           = log --oneline --decorate --graph --all
-    sw          = switch
-    main        = switch main
-    mk          = switch --create
-    del         = branch --delete
-    conf        = config --list --show-origin --show-scope
-    ls          = ls-files
-    save        = commit --verbose -S -m
-    search      = log -G
-    undo        = reset HEAD~1 --mixed
-    aka         = config --get-regexp ^alias
-    restore     = restore --staged --worktree             # restore files
-    unstage     = reset HEAD --                           # unstage changes
-    amend       = commit --amend --no-edit                # amend the last commit
-    graph       = log --all --decorate --oneline --graph  # visual log
-    stash-save  = stash push                              # stash changes
-    stash-apply = stash pop                               # apply stashed changes
-    sync        = push origin                             # use: sync <branch>
-    cleanall    = clean --force --directory               # cleans the working dir
+    aall       = add .    # use with caution
+    st         = status
+    df         = diff
+    ls         = ls-files
+
+    lo         = log --oneline --decorate --graph --all
+    search     = log -G
+    graph      = log --all --decorate --oneline --graph   # visual log
+
+    sw         = switch
+    main       = switch main
+    mk         = switch --create
+    del        = branch --delete
+
+    conf       = config --list --show-origin --show-scope
+    aka        = config --get-regexp ^alias
+
+    save       = commit --verbose -S -m
+    undo       = reset HEAD~1 --mixed
+    cleanall   = clean --force --directory  # cleans the working dir
+    amend      = commit --amend --no-edit   # amend the last commit
+    sync       = push origin                # use: sync <branch>
+
+    restore    = restore --staged --worktree  # restore files
+    unstage    = reset HEAD --                # unstage changes
 
