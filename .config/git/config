@@ -4,41 +4,54 @@
     name       = Joe Lopes
     email      = 2897144+lopes@users.noreply.github.com
     signingkey = E157B1DEAA636FF8
+
 [gpg]
     program = /usr/local/bin/gpg
+
 [core]
     editor   = vim
     autocrlf = input
+
 [commit]
     gpgsign = true
     verbose = true
+
 [branch]
     sort = -committerdate
+
 [push]
     default         = simple
     autoSetupRemote = true
     followTags      = true
+
 [fetch]
     prune     = true
     pruneTags = true
     all       = true
+
 [diff]
     algorithm      = histogram
     colorMoved     = plain
     mnemonicPrefix = true
     renames        = true
+
 [init]
     defaultBranch = main
+
 [color]
     branch = auto
     diff   = auto
     pager  = true
+
 [tag]
     sort = version:refname
+
 [help]
     autocorrect = prompt
+
 [column]
     ui = auto
+
 [alias]
     aall       = add .    # use with caution
     st         = status
@@ -57,7 +70,7 @@
     conf       = config --list --show-origin --show-scope
     aka        = config --get-regexp ^alias
 
-    save       = commit --verbose -S -m
+    save       = commit --verbose -S -m     # signed commits with msg
     undo       = reset HEAD~1 --mixed
     cleanall   = clean --force --directory  # cleans the working dir
     amend      = commit --amend --no-edit   # amend the last commit
