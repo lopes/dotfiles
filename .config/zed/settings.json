@@ -3,12 +3,29 @@
 {
   "ui_font_size": 16,
   "buffer_font_size": 16,
+  "buffer_font_family": "Hack Nerd Font Mono",
   "autosave": "on_focus_change",
   "confirm_quit": true,
   "soft_wrap": "editor_width",
+  "tab_size": 2,
   "journal": {
     "path": "~",
     "hour_format": "hour24"
   },
-  "tab_size": 2
+  "terminal": {
+    "alternate_scroll": "off",
+    "blinking": "terminal_controlled",
+    "copy_on_select": false,
+    "dock": "bottom",
+    "detect_venv": {
+      "on": {
+        "directories": [".env", "env", ".venv", "venv"],
+        "activate_script": "default"
+      }
+    },
+    "env": {},
+    "font_family": "Hack Nerd Font Mono",
+    "font_features": null,
+    "font_size": 12
+  }
 }
