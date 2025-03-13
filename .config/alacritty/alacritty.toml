@@ -1,6 +1,11 @@
+# alacrity configuration
+# https://alacritty.org/config-alacritty.html
 
-[terminal.shell]
-program = "/bin/zsh"
+[general]
+live_config_reload = true
+
+[terminal]
+shell = { program = "zsh", args = [] }
 
 [env]
 TERM = "xterm-256color"
@@ -18,6 +23,7 @@ history = 50000
 
 [font]
 size = 16
+normal = { family = "Hack Nerd Font Mono", style = "Regular" }
 
 [cursor]
 style = { shape="underline", blinking="always" }
@@ -33,11 +39,3 @@ bindings = [
   { key="Up",   mods="Command", action="ScrollPageUp" },
   { key="Down", mods="Command", action="ScrollPageDown" },
 ]
-
-[general]
-# alacrity configuration
-# https://alacritty.org/config-alacritty.html
-
-live_config_reload = true
-
-[terminal]
