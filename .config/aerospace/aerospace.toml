@@ -121,5 +121,5 @@ if.app-id = "com.tinyspeck.slackmacgap"
 run = "move-node-to-workspace 5"
 
 # [[on-window-detected]]
-# if.app-id = "org.alacritty"
+# if.app-id = "com.mitchellh.ghostty"
 # run = "move-node-to-workspace 5"
