@@ -72,10 +72,11 @@ Some shortcuts of my daily use.
 | `alt-left` | Previous word |
 | `alt-right` | Next word |
 
-### Alacritty
+### Ghostty
 | Shortcut | Action |
 |---|---|
-| `control-shift-space` | Toggle Vi mode |
+| `cmd-d` | Split horizontally |
+| `cmd-shift-d` | Split vertically |
 
 ### Aerospace
 See `.config/aerospace/aerospace.toml` for the full list.
