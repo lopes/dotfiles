@@ -1,0 +1,30 @@
+# ghostty configuration file
+
+font-family = Hack Nerd Font Mono
+font-style = Regular
+font-size = 16
+
+theme = GitLab-Dark-Grey
+
+cursor-style = underline
+# click to move: alt+click
+cursor-click-to-move = true
+
+background-opacity = 0.75
+background-blur = true
+
+window-decoration = none
+
+quick-terminal-position = left
+quick-terminal-autohide = true
+
+shell-integration = zsh
+shell-integration-features = no-cursor
+
+macos-auto-secure-input = true
+macos-secure-input-indication = true
+macos-option-as-alt = true
+
+auto-update = off
+
+keybind = global:cmd+option+\=toggle_quick_terminal
