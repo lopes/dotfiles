@@ -25,10 +25,6 @@ zstyle ':completion:*' completer _expand _complete _ignored _approximate
 zmodload zsh/complist
 _comp_options+=(globdots)
 
-export PROMPT='%n%F{245}@%f%B%M%b%F{245}:%20<..<%3~%<<$(git_branch)%f%B%#%b '
-
-test -d $HOME/.local/bin && PATH="$_:$PATH"
-
 # homebrew + zsh plugins
 if [ -d "/opt/homebrew" ]; then  # ARM
   export BREW_PREFIX="/opt/homebrew"
@@ -40,6 +36,13 @@ elif [ -d "/usr/local/Homebrew" ]; then  # Intel
   test -f $BREW_PREFIX/../share/zsh-autosuggestions/zsh-autosuggestions.zsh && source $_
   test -f $BREW_PREFIX/../share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh && source $_
   PATH="$BREW_PREFIX/bin:$PATH"
+fi
+
+test -d $HOME/.local/bin && PATH="$_:$PATH"
+
+export PROMPT='%n%F{245}@%f%B%M%b%F{245}:%20<..<%3~%<<$(git_branch)%f%B%#%b '
+if [ "$TERM_PROGRAM" != "Apple_Terminal" ]; then
+  eval "$(oh-my-posh init zsh --config '/opt/homebrew/opt/oh-my-posh/themes/velvet.omp.json')"
 fi
 
 # extra functions and plugins for zsh
@@ -73,7 +76,4 @@ case "$OSTYPE" in
   *bsd* | darwin*) source "$ZDOTDIR/../aliases.bsd.sh"     ;;
   msys  | cygwin)  source "$ZDOTDIR/../aliases.windows.sh" ;;
 esac
-
-# starship
-eval "$(starship init zsh)"
 
