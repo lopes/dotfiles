@@ -42,7 +42,7 @@ test -d $HOME/.local/bin && PATH="$_:$PATH"
 
 export PROMPT='%n%F{245}@%f%B%M%b%F{245}:%20<..<%3~%<<$(git_branch)%f%B%#%b '
 if [ "$TERM_PROGRAM" != "Apple_Terminal" ]; then
-  eval "$(oh-my-posh init zsh --config '/opt/homebrew/opt/oh-my-posh/themes/velvet.omp.json')"
+  eval "$(oh-my-posh init zsh --config "$HOME/.config/oh-my-posh/logs.omp.json")"
 fi
 
 # extra functions and plugins for zsh
@@ -76,4 +76,3 @@ case "$OSTYPE" in
   *bsd* | darwin*) source "$ZDOTDIR/../aliases.bsd.sh"     ;;
   msys  | cygwin)  source "$ZDOTDIR/../aliases.windows.sh" ;;
 esac
-
