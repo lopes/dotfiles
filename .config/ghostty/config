@@ -6,7 +6,6 @@ font-size = 16
 
 theme = GitLab-Dark-Grey
 
-cursor-style = underline
 # click to move: alt+click
 cursor-click-to-move = true
 
@@ -19,7 +18,7 @@ quick-terminal-position = left
 quick-terminal-autohide = true
 
 shell-integration = zsh
-shell-integration-features = no-cursor
+shell-integration-features = no-cursor,no-sudo,title
 
 macos-auto-secure-input = true
 macos-secure-input-indication = true
