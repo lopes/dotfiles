@@ -78,6 +78,9 @@ Some shortcuts of my daily use.
 | `cmd-d` | Split horizontally |
 | `cmd-shift-d` | Split vertically |
 
+>[!NOTE]
+>Run `ghostty +show-config --default --docs` for a comprehensive list of default configuration.
+
 ### Aerospace
 See `.config/aerospace/aerospace.toml` for the full list.
 | Shortcut | Action |
