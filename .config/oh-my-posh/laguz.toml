@@ -5,9 +5,26 @@ console_title_template = '{{ .Folder }}'
 version = 3
 final_space = true
 
+[palette]
+  fg1 = '#EFDCF9'
+  fg2 = '#ae1800'
+  bg1 = '#333238'
+  bg2 = '#434248'
+  bg3 = '#535158'
+  bg4 = '#1068bf'
+  bg5 = '#108548'
+  bg6 = '#ab6100'
+  bg7 = '#dd2b0e'
+
 [transient_prompt]
   template = '❯ '
-  foreground = '#EFDCF9'
+  foreground = 'p:fg1'
+  background = 'transparent'
+  foreground_templates = ['{{ if gt .Code 0 }}p:fg2{{ end }}']
+
+[secondary_prompt]
+  template = '❯❯ '
+  foreground = 'p:fg1'
   background = 'transparent'
 
 [upgrade]
@@ -19,19 +36,20 @@ final_space = true
 [[blocks]]
   type = 'prompt'
   alignment = 'left'
+  newline = true
 
   [[blocks.segments]]
-    template = "\n {{ .Icon }} "
-    foreground = '#EFDCF9'
-    background = '#333238'
+    template = "{{ .Icon }} "
+    foreground = 'p:fg1'
+    background = 'p:bg1'
     type = 'os'
     style = 'powerline'
 
   [[blocks.segments]]
     template = '{{ .Name }} '
-    foreground = '#EFDCF9'
+    foreground = 'p:fg1'
     powerline_symbol = ''
-    background = '#434248'
+    background = 'p:bg2'
     type = 'shell'
     style = 'powerline'
 
@@ -46,17 +64,17 @@ final_space = true
 
   [[blocks.segments]]
     template = '{{ if .SSHSession }}{{ end }} {{ .UserName }} '
-    foreground = '#EFDCF9'
+    foreground = 'p:fg1'
     powerline_symbol = ''
-    background = '#535158'
+    background = 'p:bg3'
     type = 'session'
     style = 'powerline'
 
   [[blocks.segments]]
     template = '{{ .Path }} '
-    foreground = '#EFDCF9'
+    foreground = 'p:fg1'
     powerline_symbol = ''
-    background = '#1068bf'
+    background = 'p:bg4'
     type = 'path'
     style = 'powerline'
 
@@ -68,19 +86,33 @@ final_space = true
       style = 'agnoster_short'
 
   [[blocks.segments]]
-    template = '{{ .HEAD }}{{ if .BranchStatus }} {{ .BranchStatus }}{{ end }}{{ if .Working.Changed }} {{ .Working.String }}{{ end }}{{ if .Staging.Changed }} {{ .Staging.String }}{{ end }}{{ if gt .StashCount 0 }}  {{ .StashCount }}{{ end }} '
-    foreground = '#EFDCF9'
+    template = '{{ .HEAD }}{{ if or (.Working.Changed) (.Staging.Changed) }}  {{ end }}{{ if gt .Behind 0 }}⇣{{ end }}{{ if gt .Ahead 0 }}⇡{{ end }} '
+    foreground = 'p:fg1'
     powerline_symbol = ''
-    background = '#108548'
+    background = 'p:bg5'
     type = 'git'
     style = 'accordion'
-    background_templates = ['{{ if or (.Working.Changed) (.Staging.Changed) }}#ab6100{{ end }}', '{{ if and (gt .Ahead 0) (gt .Behind 0) }}#ab6100{{ end }}', '{{ if gt .Ahead 0 }}#ae1800{{ end }}', '{{ if gt .Behind 0 }}#ae1800{{ end }}']
+    background_templates = ['{{ if or (.Working.Changed) (.Staging.Changed) }}p:bg6{{ end }}', '{{ if and (gt .Ahead 0) (gt .Behind 0) }}p:bg6{{ end }}', '{{ if gt .Ahead 0 }}p:bg7{{ end }}', '{{ if gt .Behind 0 }}p:bg7{{ end }}']
 
     [blocks.segments.properties]
-      branch_template = '{{ trunc 25 .Branch }}'
+      branch_icon = ''
+      commit_icon = '@'
       fetch_stash_count = true
+
+      branch_template = '{{ trunc 25 .Branch }}'
       fetch_status = true
       fetch_upstream_icon = true
+
+  [[blocks.segments]]
+    type = 'executiontime'
+    style = 'accordion'
+    powerline_symbol = ''
+    foreground = 'p:fg1'
+    background = 'p:bg7'
+    template = '{{ div .Ms 1000 }}s '
+
+    [blocks.segments.properties]
+      threshold = 5000
 
 [[blocks]]
   type = 'prompt'
@@ -88,11 +120,11 @@ final_space = true
   newline = true
 
   [[blocks.segments]]
-    template = '{{ if eq .Code 0 }} ❯{{ else }}!❯{{ end }}'
-    foreground = '#EFDCF9'
+    template = '❯'
+    foreground = 'p:fg1'
     type = 'status'
     style = 'diamond'
-    foreground_templates = ['{{ if gt .Code 0 }}#ae1800{{ end }}']
+    foreground_templates = ['{{ if gt .Code 0 }}p:fg2{{ end }}']
 
     [blocks.segments.properties]
       always_enabled = true
