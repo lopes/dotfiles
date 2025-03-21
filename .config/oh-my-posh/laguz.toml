@@ -1,0 +1,98 @@
+# oh-my-posh configuration file - laguz
+# export in json: oh-my-posh config export --output laguz.json
+
+console_title_template = '{{ .Folder }}'
+version = 3
+final_space = true
+
+[transient_prompt]
+  template = '❯ '
+  foreground = '#EFDCF9'
+  background = 'transparent'
+
+[upgrade]
+  source = 'cdn'
+  interval = '168h'
+  auto = false
+  notice = false
+
+[[blocks]]
+  type = 'prompt'
+  alignment = 'left'
+
+  [[blocks.segments]]
+    template = "\n {{ .Icon }} "
+    foreground = '#EFDCF9'
+    background = '#333238'
+    type = 'os'
+    style = 'powerline'
+
+  [[blocks.segments]]
+    template = '{{ .Name }} '
+    foreground = '#EFDCF9'
+    powerline_symbol = ''
+    background = '#434248'
+    type = 'shell'
+    style = 'powerline'
+
+    [blocks.segments.properties]
+      [blocks.segments.properties.mapped_shell_names]
+        bash = 'β'
+        cmd = 'C'
+        fish = 'ƒ'
+        pwsh = 'ψ'
+        wsl = 'ψ'
+        zsh = 'ζ'
+
+  [[blocks.segments]]
+    template = '{{ if .SSHSession }}{{ end }} {{ .UserName }} '
+    foreground = '#EFDCF9'
+    powerline_symbol = ''
+    background = '#535158'
+    type = 'session'
+    style = 'powerline'
+
+  [[blocks.segments]]
+    template = '{{ .Path }} '
+    foreground = '#EFDCF9'
+    powerline_symbol = ''
+    background = '#1068bf'
+    type = 'path'
+    style = 'powerline'
+
+    [blocks.segments.properties]
+      folder_icon = ''
+      folder_separator_icon = ' ❱ '
+      home_icon = '~'
+      max_depth = 2.0
+      style = 'agnoster_short'
+
+  [[blocks.segments]]
+    template = '{{ .HEAD }}{{ if .BranchStatus }} {{ .BranchStatus }}{{ end }}{{ if .Working.Changed }} {{ .Working.String }}{{ end }}{{ if .Staging.Changed }} {{ .Staging.String }}{{ end }}{{ if gt .StashCount 0 }}  {{ .StashCount }}{{ end }} '
+    foreground = '#EFDCF9'
+    powerline_symbol = ''
+    background = '#108548'
+    type = 'git'
+    style = 'accordion'
+    background_templates = ['{{ if or (.Working.Changed) (.Staging.Changed) }}#ab6100{{ end }}', '{{ if and (gt .Ahead 0) (gt .Behind 0) }}#ab6100{{ end }}', '{{ if gt .Ahead 0 }}#ae1800{{ end }}', '{{ if gt .Behind 0 }}#ae1800{{ end }}']
+
+    [blocks.segments.properties]
+      branch_template = '{{ trunc 25 .Branch }}'
+      fetch_stash_count = true
+      fetch_status = true
+      fetch_upstream_icon = true
+
+[[blocks]]
+  type = 'prompt'
+  alignment = 'left'
+  newline = true
+
+  [[blocks.segments]]
+    template = '{{ if eq .Code 0 }} ❯{{ else }}!❯{{ end }}'
+    foreground = '#EFDCF9'
+    type = 'status'
+    style = 'diamond'
+    foreground_templates = ['{{ if gt .Code 0 }}#ae1800{{ end }}']
+
+    [blocks.segments.properties]
+      always_enabled = true
