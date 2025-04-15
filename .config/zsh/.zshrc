@@ -43,7 +43,7 @@ test -d $HOME/.local/bin && PATH="$_:$PATH"
 # prompt
 export PROMPT='%n%F{245}@%f%B%M%b%F{245}:%20<..<%3~%<<$(git_branch)%f%B%#%b '
 if [ "$TERM_PROGRAM" != "Apple_Terminal" ]; then
-  eval "$(oh-my-posh init zsh --config "$HOME/.config/oh-my-posh/laguz.toml")"
+  eval "$(oh-my-posh init zsh --config "$HOME/.config/oh-my-posh/runes.toml")"
 fi
 
 # extra functions and plugins for zsh

@@ -1,14 +1,15 @@
-# oh-my-posh configuration file - laguz
-# export in json: oh-my-posh config export --output laguz.json
+# oh-my-posh configuration file - runes
+# a simple yet descriptive prompt theme with runes assigned to shells.
+# export in json: oh-my-posh config export --output ~/Downloads/runes.json
 
 console_title_template = '{{ .Folder }}'
 version = 3
 final_space = true
 
 [palette]
+# color palette: https://atmos.style/palettes/gitlab-dark
 fg1 = '#fbfafd' # light gray
 fg2 = '#f57f6c' # light red
-
 bg1 = '#333238' # dark gray
 bg2 = '#108548' # dark green
 bg3 = '#52b87a' # green
@@ -57,12 +58,16 @@ background = 'p:bg1'
 
 [blocks.segments.properties]
 [blocks.segments.properties.mapped_shell_names]
-bash = 'β'
-cmd = 'C'
-fish = 'ƒ'
-pwsh = 'ψ'
-wsl = 'ψ'
-zsh = 'ζ'
+cmd = 'ᛗ'    # Mannaz: humanity, individualism
+zsh = 'ᛉ'    # Algiz: protection, defense
+elvish = 'ᛇ' # Eiwaz: transformation, resilience
+fish = 'ᚠ'   # Fehu: wealth, prosperity
+pwsh = 'ᛈ'   # Perthro: mystery, fate
+bash = 'ᛒ'   # Berkano: growth, renewal
+tcsh = 'ᛏ'   # Tiwaz: justice, leadership
+xonsh = 'ᛗ'  # Mannaz: humanity, individualism
+shell = 'ᛚ'  # Laguz: water, lake
+
 
 [[blocks.segments]]
 type = 'session'
@@ -99,7 +104,7 @@ background = 'p:bg2'
 style = 'agnoster_short'
 max_depth = 2.0
 display_root = true
-home_icon = '~'
+home_icon = ''
 folder_icon = ''
 folder_separator_icon = '󰿟'
 
