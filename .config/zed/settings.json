@@ -1,6 +1,9 @@
 // zed editor configuration
 // https://zed.dev/docs/configuring-zed
 {
+  "features": {
+    "edit_prediction_provider": "zed"
+  },
   "theme": "Github Dark Dimmed",
   "ui_font_size": 16,
   "buffer_font_size": 16,
