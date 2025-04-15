@@ -12,10 +12,10 @@ fg1 = '#fbfafd' # light gray
 fg2 = '#f57f6c' # light red
 bg1 = '#333238' # dark gray
 bg2 = '#108548' # dark green
-bg3 = '#52b87a' # green
-bg4 = '#63a6e9' # blue
+bg3 = '#2da160' # green
+bg4 = '#428fdc' # blue
 bg5 = '#d99530' # yellow
-bg6 = '#f57f6c' # red
+bg6 = '#ec5941' # red
 bg7 = '#9475db' # purple
 
 
