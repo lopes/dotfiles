@@ -6,125 +6,164 @@ version = 3
 final_space = true
 
 [palette]
-  fg1 = '#EFDCF9'
-  fg2 = '#ae1800'
-  bg1 = '#333238'
-  bg2 = '#434248'
-  bg3 = '#535158'
-  bg4 = '#1068bf'
-  bg5 = '#108548'
-  bg6 = '#ab6100'
-  bg7 = '#dd2b0e'
+fg1 = '#fbfafd' # light gray
+fg2 = '#f57f6c' # light red
+
+bg1 = '#333238' # dark gray
+bg2 = '#108548' # dark green
+bg3 = '#52b87a' # green
+bg4 = '#63a6e9' # blue
+bg5 = '#d99530' # yellow
+bg6 = '#f57f6c' # red
+bg7 = '#9475db' # purple
+
 
 [transient_prompt]
-  template = '❯ '
-  foreground = 'p:fg1'
-  background = 'transparent'
-  foreground_templates = ['{{ if gt .Code 0 }}p:fg2{{ end }}']
+template = '❯ '
+foreground = 'p:fg1'
+background = 'transparent'
+foreground_templates = ['{{ if gt .Code 0 }}p:fg2{{ end }}']
 
 [secondary_prompt]
-  template = '❯❯ '
-  foreground = 'p:fg1'
-  background = 'transparent'
+template = '❯❯ '
+foreground = 'p:fg1'
+background = 'transparent'
 
 [upgrade]
-  source = 'cdn'
-  interval = '168h'
-  auto = false
-  notice = false
+source = 'cdn'
+interval = '168h'
+auto = false
+notice = false
 
 [[blocks]]
-  type = 'prompt'
-  alignment = 'left'
-  newline = true
+type = 'prompt'
+alignment = 'left'
+newline = true
 
-  [[blocks.segments]]
-    template = "{{ .Icon }} "
-    foreground = 'p:fg1'
-    background = 'p:bg1'
-    type = 'os'
-    style = 'powerline'
+[[blocks.segments]]
+type = 'os'
+style = 'diamond'
+leading_diamond = ''
+template = '{{ .Icon }} '
+foreground = 'p:fg1'
+background = 'p:bg1'
 
-  [[blocks.segments]]
-    template = '{{ .Name }} '
-    foreground = 'p:fg1'
-    powerline_symbol = ''
-    background = 'p:bg2'
-    type = 'shell'
-    style = 'powerline'
+[[blocks.segments]]
+type = 'shell'
+style = 'diamond'
+template = '{{ .Name }} '
+foreground = 'p:fg1'
+background = 'p:bg1'
 
-    [blocks.segments.properties]
-      [blocks.segments.properties.mapped_shell_names]
-        bash = 'β'
-        cmd = 'C'
-        fish = 'ƒ'
-        pwsh = 'ψ'
-        wsl = 'ψ'
-        zsh = 'ζ'
+[blocks.segments.properties]
+[blocks.segments.properties.mapped_shell_names]
+bash = 'β'
+cmd = 'C'
+fish = 'ƒ'
+pwsh = 'ψ'
+wsl = 'ψ'
+zsh = 'ζ'
 
-  [[blocks.segments]]
-    template = '{{ if .SSHSession }}{{ end }} {{ .UserName }} '
-    foreground = 'p:fg1'
-    powerline_symbol = ''
-    background = 'p:bg3'
-    type = 'session'
-    style = 'powerline'
+[[blocks.segments]]
+type = 'session'
+style = 'diamond'
+trailing_diamond = ''
+template = '{{ if .SSHSession }}{{ else }}{{ end }}{{ .UserName }}'
+foreground = 'p:fg1'
+background = 'p:bg1'
 
-  [[blocks.segments]]
-    template = '{{ .Path }} '
-    foreground = 'p:fg1'
-    powerline_symbol = ''
-    background = 'p:bg4'
-    type = 'path'
-    style = 'powerline'
+[[blocks.segments]]
+type = 'aws'
+style = 'powerline'
+powerline_symbol = ''
+foreground = 'p:fg1'
+background = 'p:bg4'
+template = ' {{ .Profile }}{{ if .Region }}@{{ .Region }}{{ end }}'
 
-    [blocks.segments.properties]
-      folder_icon = ''
-      folder_separator_icon = ' ❱ '
-      home_icon = '~'
-      max_depth = 2.0
-      style = 'agnoster_short'
+[[blocks.segments]]
+type = 'gcp'
+style = 'powerline'
+powerline_symbol = ''
+foreground = 'p:fg1'
+background = 'p:bg4'
+template = ' {{ .Project }}::{{ .Account }}'
 
-  [[blocks.segments]]
-    template = '{{ .HEAD }}{{ if or (.Working.Changed) (.Staging.Changed) }}  {{ end }}{{ if gt .Behind 0 }}⇣{{ end }}{{ if gt .Ahead 0 }}⇡{{ end }} '
-    foreground = 'p:fg1'
-    powerline_symbol = ''
-    background = 'p:bg5'
-    type = 'git'
-    style = 'accordion'
-    background_templates = ['{{ if or (.Working.Changed) (.Staging.Changed) }}p:bg6{{ end }}', '{{ if and (gt .Ahead 0) (gt .Behind 0) }}p:bg6{{ end }}', '{{ if gt .Ahead 0 }}p:bg7{{ end }}', '{{ if gt .Behind 0 }}p:bg7{{ end }}']
+[[blocks.segments]]
+type = 'path'
+style = 'diamond'
+template = '{{ .Path }}'
+foreground = 'p:fg1'
+background = 'p:bg2'
 
-    [blocks.segments.properties]
-      branch_icon = ''
-      commit_icon = '@'
-      fetch_stash_count = true
+[blocks.segments.properties]
+style = 'agnoster_short'
+max_depth = 2.0
+display_root = true
+home_icon = '~'
+folder_icon = ''
+folder_separator_icon = '󰿟'
 
-      branch_template = '{{ trunc 25 .Branch }}'
-      fetch_status = true
-      fetch_upstream_icon = true
+[[blocks.segments]]
+type = 'git'
+style = 'accordion'
+powerline_symbol = ''
+template = '{{ .HEAD }}{{ if or (.Working.Changed) (.Staging.Changed) }} {{ end }}{{ if gt .Behind 0 }}⇣{{ end }}{{ if gt .Ahead 0 }}⇡{{ end }}'
+foreground = 'p:fg1'
+background = 'p:bg3'
+background_templates = [
+  '{{ if or (.Working.Changed) (.Staging.Changed) }}p:bg5{{ end }}',
+  '{{ if and (gt .Ahead 0) (gt .Behind 0) }}p:bg5{{ end }}',
+  '{{ if gt .Ahead 0 }}p:bg6{{ end }}',
+  '{{ if gt .Behind 0 }}p:bg6{{ end }}',
+]
 
-  [[blocks.segments]]
-    type = 'executiontime'
-    style = 'accordion'
-    powerline_symbol = ''
-    foreground = 'p:fg1'
-    background = 'p:bg7'
-    template = '{{ div .Ms 1000 }}s '
+[blocks.segments.properties]
+branch_icon = ''
+commit_icon = '@'
+fetch_stash_count = true
+branch_template = '{{ trunc 25 .Branch }}'
+fetch_status = true
+fetch_upstream_icon = true
 
-    [blocks.segments.properties]
-      threshold = 5000
+[[blocks.segments]]
+type = 'python'
+style = 'powerline'
+powerline_symbol = ''
+foreground = 'p:fg1'
+background = 'p:bg7'
+template = '{{ .Major }}.{{ .Minor}} {{ .Venv }}'
+
+[[blocks.segments]]
+type = 'go'
+style = 'powerline'
+powerline_symbol = ''
+foreground = 'p:fg1'
+background = 'p:bg7'
+template = '{{ .Major }}.{{ .Minor}}'
+
+[[blocks.segments]]
+type = 'executiontime'
+style = 'accordion'
+powerline_symbol = ''
+foreground = 'p:fg1'
+background = 'p:bg1'
+template = '{{ div .Ms 1000 }}s'
+always_enabled = true
+
+[blocks.segments.properties]
+threshold = 5000
 
 [[blocks]]
-  type = 'prompt'
-  alignment = 'left'
-  newline = true
+type = 'prompt'
+alignment = 'left'
+newline = true
 
-  [[blocks.segments]]
-    template = '❯'
-    foreground = 'p:fg1'
-    type = 'status'
-    style = 'diamond'
-    foreground_templates = ['{{ if gt .Code 0 }}p:fg2{{ end }}']
+[[blocks.segments]]
+template = '❯'
+foreground = 'p:fg1'
+type = 'status'
+style = 'diamond'
+foreground_templates = ['{{ if gt .Code 0 }}p:fg2{{ end }}']
 
-    [blocks.segments.properties]
-      always_enabled = true
+[blocks.segments.properties]
+always_enabled = true
