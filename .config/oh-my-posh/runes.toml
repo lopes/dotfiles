@@ -7,27 +7,44 @@ version = 3
 final_space = true
 
 [palette]
-# color palette: https://atmos.style/palettes/gitlab-dark
-fg1 = '#fbfafd' # light gray
-fg2 = '#f57f6c' # light red
-bg1 = '#333238' # dark gray
-bg2 = '#108548' # dark green
-bg3 = '#2da160' # green
-bg4 = '#428fdc' # blue
-bg5 = '#d99530' # yellow
-bg6 = '#ec5941' # red
-bg7 = '#9475db' # purple
+# color palette: https://catppuccin.com/palette/
+rosewater = '#f5e0dc'
+flamingo = '#f2cdcd'
+pink = '#f5c2e7'
+mauve = '#cba6f7'
+red = '#f38ba8'
+maroon = '#eba0ac'
+peach = '#fab387'
+yellow = '#f9e2af'
+green = '#a6e3a1'
+teal = '#94e2d5'
+sky = '#89dceb'
+sapphire = '#74c7ec'
+blue = '#89b4fa'
+lavender = '#b4befe'
+text = '#cdd6f4'
+subtext1 = '#bac2de'
+subtext0 = '#a6adc8'
+overlay2 = '#9399b2'
+overlay1 = '#7f849c'
+overlay0 = '#6c7086'
+surface2 = '#585b70'
+surface1 = '#45475a'
+surface0 = '#313244'
+base = '#1e1e2e'
+mantle = '#181825'
+crust = '#11111b'
 
 
 [transient_prompt]
 template = '❯ '
-foreground = 'p:fg1'
+foreground = 'p:text'
 background = 'transparent'
-foreground_templates = ['{{ if gt .Code 0 }}p:fg2{{ end }}']
+foreground_templates = ['{{ if gt .Code 0 }}p:red{{ end }}']
 
 [secondary_prompt]
 template = '❯❯ '
-foreground = 'p:fg1'
+foreground = 'p:text'
 background = 'transparent'
 
 [upgrade]
@@ -46,15 +63,15 @@ type = 'os'
 style = 'diamond'
 leading_diamond = ''
 template = '{{ .Icon }} '
-foreground = 'p:fg1'
-background = 'p:bg1'
+foreground = 'p:text'
+background = 'p:surface0'
 
 [[blocks.segments]]
 type = 'shell'
 style = 'diamond'
 template = '{{ .Name }} '
-foreground = 'p:fg1'
-background = 'p:bg1'
+foreground = 'p:text'
+background = 'p:surface0'
 
 [blocks.segments.properties]
 [blocks.segments.properties.mapped_shell_names]
@@ -74,31 +91,31 @@ type = 'session'
 style = 'diamond'
 trailing_diamond = ''
 template = '{{ if .SSHSession }}{{ else }}{{ end }}{{ .UserName }}'
-foreground = 'p:fg1'
-background = 'p:bg1'
+foreground = 'p:text'
+background = 'p:surface0'
 
 [[blocks.segments]]
 type = 'aws'
 style = 'powerline'
 powerline_symbol = ''
-foreground = 'p:fg1'
-background = 'p:bg4'
+foreground = 'p:base'
+background = 'p:sapphire'
 template = ' {{ .Profile }}{{ if .Region }}@{{ .Region }}{{ end }}'
 
 [[blocks.segments]]
 type = 'gcp'
 style = 'powerline'
 powerline_symbol = ''
-foreground = 'p:fg1'
-background = 'p:bg4'
+foreground = 'p:base'
+background = 'p:sapphire'
 template = ' {{ .Project }}::{{ .Account }}'
 
 [[blocks.segments]]
 type = 'path'
 style = 'diamond'
 template = '{{ .Path }}'
-foreground = 'p:fg1'
-background = 'p:bg2'
+foreground = 'p:base'
+background = 'p:blue'
 
 [blocks.segments.properties]
 style = 'agnoster_short'
@@ -113,13 +130,13 @@ type = 'git'
 style = 'accordion'
 powerline_symbol = ''
 template = '{{ .HEAD }}{{ if or (.Working.Changed) (.Staging.Changed) }} {{ end }}{{ if gt .Behind 0 }}⇣{{ end }}{{ if gt .Ahead 0 }}⇡{{ end }}'
-foreground = 'p:fg1'
-background = 'p:bg3'
+foreground = 'p:base'
+background = 'p:green'
 background_templates = [
-  '{{ if or (.Working.Changed) (.Staging.Changed) }}p:bg5{{ end }}',
-  '{{ if and (gt .Ahead 0) (gt .Behind 0) }}p:bg5{{ end }}',
-  '{{ if gt .Ahead 0 }}p:bg6{{ end }}',
-  '{{ if gt .Behind 0 }}p:bg6{{ end }}',
+  '{{ if or (.Working.Changed) (.Staging.Changed) }}p:yellow{{ end }}',
+  '{{ if and (gt .Ahead 0) (gt .Behind 0) }}p:peach{{ end }}',
+  '{{ if gt .Ahead 0 }}p:red{{ end }}',
+  '{{ if gt .Behind 0 }}p:red{{ end }}',
 ]
 
 [blocks.segments.properties]
@@ -134,24 +151,24 @@ fetch_upstream_icon = true
 type = 'python'
 style = 'powerline'
 powerline_symbol = ''
-foreground = 'p:fg1'
-background = 'p:bg7'
+foreground = 'p:base'
+background = 'p:mauve'
 template = '{{ .Major }}.{{ .Minor}} {{ .Venv }}'
 
 [[blocks.segments]]
 type = 'go'
 style = 'powerline'
 powerline_symbol = ''
-foreground = 'p:fg1'
-background = 'p:bg7'
+foreground = 'p:base'
+background = 'p:mauve'
 template = '{{ .Major }}.{{ .Minor}}'
 
 [[blocks.segments]]
 type = 'executiontime'
 style = 'accordion'
 powerline_symbol = ''
-foreground = 'p:fg1'
-background = 'p:bg1'
+foreground = 'p:text'
+background = 'p:surface1'
 template = '{{ div .Ms 1000 }}s'
 always_enabled = true
 
@@ -165,10 +182,10 @@ newline = true
 
 [[blocks.segments]]
 template = '❯'
-foreground = 'p:fg1'
+foreground = 'p:text'
 type = 'status'
 style = 'diamond'
-foreground_templates = ['{{ if gt .Code 0 }}p:fg2{{ end }}']
+foreground_templates = ['{{ if gt .Code 0 }}p:red{{ end }}']
 
 [blocks.segments.properties]
 always_enabled = true

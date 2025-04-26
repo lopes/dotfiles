@@ -4,7 +4,7 @@ font-family = Hack Nerd Font Mono
 font-style = Regular
 font-size = 16
 
-theme = GitLab-Dark-Grey
+theme = catppuccin-mocha
 
 # click to move: alt+click
 cursor-click-to-move = true
