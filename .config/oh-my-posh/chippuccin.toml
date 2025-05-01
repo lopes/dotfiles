@@ -8,43 +8,42 @@ final_space = true
 
 [palette]
 # color palette: https://catppuccin.com/palette/
-rosewater = '#f5e0dc'
-flamingo = '#f2cdcd'
-pink = '#f5c2e7'
-mauve = '#cba6f7'
-red = '#f38ba8'
-maroon = '#eba0ac'
-peach = '#fab387'
-yellow = '#f9e2af'
-green = '#a6e3a1'
-teal = '#94e2d5'
-sky = '#89dceb'
-sapphire = '#74c7ec'
-blue = '#89b4fa'
-lavender = '#b4befe'
-text = '#cdd6f4'
-subtext1 = '#bac2de'
-subtext0 = '#a6adc8'
-overlay2 = '#9399b2'
-overlay1 = '#7f849c'
-overlay0 = '#6c7086'
-surface2 = '#585b70'
-surface1 = '#45475a'
-surface0 = '#313244'
-base = '#1e1e2e'
-mantle = '#181825'
-crust = '#11111b'
-
+cp_mocha_rosewater = '#f5e0dc'
+cp_mocha_flamingo  = '#f2cdcd'
+cp_mocha_pink      = '#f5c2e7'
+cp_mocha_mauve     = '#cba6f7'
+cp_mocha_red       = '#f38ba8'
+cp_mocha_maroon    = '#eba0ac'
+cp_mocha_peach     = '#fab387'
+cp_mocha_yellow    = '#f9e2af'
+cp_mocha_green     = '#a6e3a1'
+cp_mocha_teal      = '#94e2d5'
+cp_mocha_sky       = '#89dceb'
+cp_mocha_sapphire  = '#74c7ec'
+cp_mocha_blue      = '#89b4fa'
+cp_mocha_lavender  = '#b4befe'
+cp_mocha_text      = '#cdd6f4'
+cp_mocha_subtext1  = '#bac2de'
+cp_mocha_subtext0  = '#a6adc8'
+cp_mocha_overlay2  = '#9399b2'
+cp_mocha_overlay1  = '#7f849c'
+cp_mocha_overlay0  = '#6c7086'
+cp_mocha_surface2  = '#585b70'
+cp_mocha_surface1  = '#45475a'
+cp_mocha_surface0  = '#313244'
+cp_mocha_base      = '#1e1e2e'
+cp_mocha_mantle    = '#181825'
+cp_mocha_crust     = '#11111b'
 
 [transient_prompt]
 template = '❯ '
-foreground = 'p:text'
+foreground = 'p:cp_mocha_text'
 background = 'transparent'
-foreground_templates = ['{{ if gt .Code 0 }}p:red{{ end }}']
+foreground_templates = ['{{ if gt .Code 0 }}p:cp_mocha_red{{ end }}']
 
 [secondary_prompt]
 template = '❯❯ '
-foreground = 'p:text'
+foreground = 'p:cp_mocha_text'
 background = 'transparent'
 
 [upgrade]
@@ -59,63 +58,36 @@ alignment = 'left'
 newline = true
 
 [[blocks.segments]]
-type = 'os'
-style = 'diamond'
-leading_diamond = ''
-template = '{{ .Icon }} '
-foreground = 'p:text'
-background = 'p:surface0'
-
-[[blocks.segments]]
-type = 'shell'
-style = 'diamond'
-template = '{{ .Name }} '
-foreground = 'p:text'
-background = 'p:surface0'
-
-[blocks.segments.properties]
-[blocks.segments.properties.mapped_shell_names]
-cmd = 'ᛗ'    # Mannaz: humanity, individualism
-zsh = 'ᛉ'    # Algiz: protection, defense
-elvish = 'ᛇ' # Eiwaz: transformation, resilience
-fish = 'ᚠ'   # Fehu: wealth, prosperity
-pwsh = 'ᛈ'   # Perthro: mystery, fate
-bash = 'ᛒ'   # Berkano: growth, renewal
-tcsh = 'ᛏ'   # Tiwaz: justice, leadership
-xonsh = 'ᛗ'  # Mannaz: humanity, individualism
-shell = 'ᛚ'  # Laguz: water, lake
-
-
-[[blocks.segments]]
 type = 'session'
 style = 'diamond'
+leading_diamond = ''
 trailing_diamond = ''
-template = '{{ if .SSHSession }}{{ else }}{{ end }}{{ .UserName }}'
-foreground = 'p:text'
-background = 'p:surface0'
+template = '{{ if .SSHSession }}󰒍{{ else }}󰟀{{ end }}'
+foreground = 'p:cp_mocha_text'
+background = 'p:cp_mocha_surface0'
 
 [[blocks.segments]]
 type = 'aws'
 style = 'powerline'
 powerline_symbol = ''
-foreground = 'p:base'
-background = 'p:sapphire'
+foreground = 'p:cp_mocha_base'
+background = 'p:cp_mocha_sky'
 template = ' {{ .Profile }}{{ if .Region }}@{{ .Region }}{{ end }}'
 
 [[blocks.segments]]
 type = 'gcp'
 style = 'powerline'
 powerline_symbol = ''
-foreground = 'p:base'
-background = 'p:sapphire'
+foreground = 'p:cp_mocha_base'
+background = 'p:cp_mocha_sky'
 template = ' {{ .Project }}::{{ .Account }}'
 
 [[blocks.segments]]
 type = 'path'
 style = 'diamond'
 template = '{{ .Path }}'
-foreground = 'p:base'
-background = 'p:blue'
+foreground = 'p:cp_mocha_base'
+background = 'p:cp_mocha_teal'
 
 [blocks.segments.properties]
 style = 'agnoster_short'
@@ -130,13 +102,13 @@ type = 'git'
 style = 'accordion'
 powerline_symbol = ''
 template = '{{ .HEAD }}{{ if or (.Working.Changed) (.Staging.Changed) }} {{ end }}{{ if gt .Behind 0 }}⇣{{ end }}{{ if gt .Ahead 0 }}⇡{{ end }}'
-foreground = 'p:base'
-background = 'p:green'
+foreground = 'p:cp_mocha_base'
+background = 'p:cp_mocha_green'
 background_templates = [
-  '{{ if or (.Working.Changed) (.Staging.Changed) }}p:yellow{{ end }}',
-  '{{ if and (gt .Ahead 0) (gt .Behind 0) }}p:peach{{ end }}',
-  '{{ if gt .Ahead 0 }}p:red{{ end }}',
-  '{{ if gt .Behind 0 }}p:red{{ end }}',
+  '{{ if or (.Working.Changed) (.Staging.Changed) }}p:cp_mocha_yellow{{ end }}',
+  '{{ if and (gt .Ahead 0) (gt .Behind 0) }}p:cp_mocha_peach{{ end }}',
+  '{{ if gt .Ahead 0 }}p:cp_mocha_red{{ end }}',
+  '{{ if gt .Behind 0 }}p:cp_mocha_red{{ end }}',
 ]
 
 [blocks.segments.properties]
@@ -151,24 +123,24 @@ fetch_upstream_icon = true
 type = 'python'
 style = 'powerline'
 powerline_symbol = ''
-foreground = 'p:base'
-background = 'p:mauve'
-template = '{{ .Major }}.{{ .Minor}} {{ .Venv }}'
+foreground = 'p:cp_mocha_base'
+background = 'p:cp_mocha_mauve'
+template = '{{ .Major }}.{{ .Minor}}'
 
 [[blocks.segments]]
 type = 'go'
 style = 'powerline'
 powerline_symbol = ''
-foreground = 'p:base'
-background = 'p:mauve'
+foreground = 'p:cp_mocha_base'
+background = 'p:cp_mocha_flamingo'
 template = '{{ .Major }}.{{ .Minor}}'
 
 [[blocks.segments]]
 type = 'executiontime'
 style = 'accordion'
 powerline_symbol = ''
-foreground = 'p:text'
-background = 'p:surface1'
+foreground = 'p:cp_mocha_text'
+background = 'p:cp_mocha_surface1'
 template = '{{ div .Ms 1000 }}s'
 always_enabled = true
 
@@ -182,10 +154,10 @@ newline = true
 
 [[blocks.segments]]
 template = '❯'
-foreground = 'p:text'
+foreground = 'p:cp_mocha_text'
 type = 'status'
 style = 'diamond'
-foreground_templates = ['{{ if gt .Code 0 }}p:red{{ end }}']
+foreground_templates = ['{{ if gt .Code 0 }}p:cp_mocha_red{{ end }}']
 
 [blocks.segments.properties]
 always_enabled = true
