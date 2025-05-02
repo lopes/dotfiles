@@ -153,8 +153,8 @@ See `.config/aerospace/aerospace.toml` for the full list.
 | `ctrl-v` | Go to visual mode - `esc` to exit |
 | `/sentence` | Search for `sentence` - works in other tools, like `less` and `man` |
 
->[!INFO]
-> Some Vim commands can be combined to alter their behavior, for instance `d$` cut all characters from the cursor to the end of line.
+>[!NOTE]
+>Some Vim commands can be combined to alter their behavior, for instance `d$` cut all characters from the cursor to the end of line.
 
 ### Termux (Android)
 | Shortcut | Action |
