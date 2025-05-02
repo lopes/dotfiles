@@ -4,15 +4,18 @@
 *
 
 !.config/aerospace/aerospace.toml
-!.config/alacritty/alacritty.toml
 !.config/aliases.bsd.sh
 !.config/aliases.linux.sh
 !.config/aliases.unix.sh
 !.config/aliases.windows.sh
 !.config/bash/bashrc
 !.config/git/config
-!.config/micro/settings.json
+!.config/oh-my-posh/chippuccin.toml
 !.config/termux/termux.properties
+!.config/tmux/tmux.conf
+!.config/vim/vimrc
+!.config/vim/colors/catppuccin_mocha.vim
+!.config/zed/keymap.json
 !.config/zed/settings.json
 !.config/zsh/.zshrc
 !.config/zsh/functions.sh
