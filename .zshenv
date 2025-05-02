@@ -24,6 +24,7 @@ export HISTFILE="$XDG_CACHE_HOME/zsh"
 export SAVEHIST=15000
 export HISTSIZE=2000
 export HISTORY_IGNORE="(ls(| *)|pwd|exit|cd(| *)|bg(| *)|fg(| *)|history)"
+export HISTFILE="$XDG_CACHE_HOME/zsh/zsh_history"
 
 export LESSHISTFILE="-"  # no history for less command
 
