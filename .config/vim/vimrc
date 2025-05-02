@@ -1,0 +1,93 @@
+" vim configuration
+
+" general
+syntax on
+set encoding=utf-8
+set ruler
+set number
+set showmatch
+set laststatus=2
+set nojoinspaces
+set belloff=all
+
+" colorscheme
+set termguicolors
+colorscheme catppuccin_mocha
+
+" transparent background
+highlight Normal     ctermbg=NONE guibg=NONE
+highlight NonText    ctermbg=NONE guibg=NONE
+highlight LineNr     ctermbg=NONE guibg=NONE
+highlight SignColumn ctermbg=NONE guibg=NONE
+
+" improved wildmenu
+set wildmode=longest:full,full
+set wildignorecase
+set wildignore=*.o,*~,*.pyc
+
+" indentation
+set autoindent
+set expandtab
+set tabstop=2
+set shiftwidth=0
+set softtabstop=-1 " aligns with shiftwidth
+retab
+
+" search
+set incsearch
+set hlsearch
+set ignorecase
+set smartcase
+set magic
+
+" key mappings
+inoremap <c-s> <esc>:w<cr>
+nnoremap <c-s> :w<cr>
+nnoremap <esc> :noh<return><esc>
+nnoremap <leader>w :w<cr>
+nnoremap <leader>q :q<cr>
+
+" persistent undo
+set undofile
+set undodir=~/.cache/vim/undodir
+set undolevels=1000
+set undoreload=10000
+
+" file handling
+set viminfo='10,\"30,:40,%,n~/.viminfo
+au BufReadPost * if line("'\"")|execute("normal `\"")|endif
+set nobackup
+set noswapfile
+set nowritebackup
+
+" visual improvements
+set cursorline
+set scrolloff=5
+set sidescrolloff=5
+set display+=lastline
+set list listchars=tab:▸\ ,trail:·
+
+" status line
+set statusline=
+set statusline+=%#NormalMode#%{(mode()=='n')?'NORMAL':''}%#InsertMode#%{(mode()=='i')?'INSERT':''}%#VisualMode#%{(mode()=='v')?'VISUAL':''}%#ReplaceMode#%{(mode()=='R')?'REPLACE':''}
+set statusline+=\  " space after mode
+set statusline+=%f\ %m
+set statusline+=%=
+set statusline+=%y\ %{&fenc}
+set statusline+=\ %l:%c
+set statusline+=\ %P
+
+highlight NormalMode  guifg=#a6e3a1 gui=bold
+highlight InsertMode  guifg=#cba6f7 gui=bold
+highlight VisualMode  guifg=#f9e2af gui=bold
+highlight ReplaceMode guifg=#f38ba8 gui=bold
+
+highlight StatusLine   guibg=NONE guifg=#cdd6f4
+highlight StatusLineNC guibg=NONE guifg=#6c7086
+
+" simpler bottom
+set noshowmode   " no -- INSERT -- ...
+set noruler      " no line/col in bottom-right
+set noshowcmd        " no partial commands
+set cmdheight=1
+set shortmess+=F     " no file info messages
