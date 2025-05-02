@@ -16,6 +16,7 @@ export XDG_VIDEOS_DIR="$HOME/Videos"
 
 export EDITOR="vim"
 export VISUAL="vim"
+VIMINIT="source $HOME/.config/vim/vimrc"
 
 # zsh
 export KEYTIMEOUT=1  # used in zsh vi mode
@@ -27,11 +28,6 @@ export HISTORY_IGNORE="(ls(| *)|pwd|exit|cd(| *)|bg(| *)|fg(| *)|history)"
 export HISTFILE="$XDG_CACHE_HOME/zsh/zsh_history"
 
 export LESSHISTFILE="-"  # no history for less command
-
-# linux
-# export GTK2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc-2.0"
-# export INPUTRC="$XDG_CONFIG_HOME/inputrc"
-# export XINITRC="$XDG_CONFIG_HOME/X11"
 
 # timeout
 # TMOUT=600

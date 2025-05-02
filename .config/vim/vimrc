@@ -1,6 +1,7 @@
 " vim configuration
 
 " general
+set runtimepath^=~/.config/vim
 syntax on
 set encoding=utf-8
 set ruler
@@ -65,7 +66,6 @@ set cursorline
 set scrolloff=5
 set sidescrolloff=5
 set display+=lastline
-set list listchars=tab:▸\ ,trail:·
 
 " status line
 set statusline=
@@ -86,8 +86,8 @@ highlight StatusLine   guibg=NONE guifg=#cdd6f4
 highlight StatusLineNC guibg=NONE guifg=#6c7086
 
 " simpler bottom
-set noshowmode   " no -- INSERT -- ...
-set noruler      " no line/col in bottom-right
-set noshowcmd        " no partial commands
+set noshowmode    " no -- INSERT -- ...
+set noruler       " no line/col in bottom-right
+set noshowcmd     " no partial commands
 set cmdheight=1
-set shortmess+=F     " no file info messages
+set shortmess+=F  " no file info messages
