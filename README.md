@@ -1,29 +1,37 @@
 # dotfiles
-My personal **minimalist** configuration files.  The main focus is in security and simplicity, so only known softwares are used and hacks are avoided.
+My personal **minimalist** configuration files. The main focus is on security and simplicity, so only trusted software is used, and hacks are avoided.
+
+These configurations enhance the user experience through a minimalist approach in the following aspects:
+
+1. **Layout**: Optimize space and accessibility by removing unnecessary elements.
+2. **Colors**: Apply consistent, visually appealing color schemes.
+3. **Symbols**: Use meaningful icons/glyphs for better readability.
+4. **Controls**: Streamline shortcuts and inputs for efficiency.
+5. **Relevancy**: Only include settings that align with actual usage.
 
 
 ## Requirements
-I use the following directories to better organize my work:
-
+Configurations here require the following directories:
 - `$HOME/Projects`: Ongoing project files and folders
 - `$HOME/.local/bin`: Standalone binaries, sourced by `$PATH`
 
 >[!NOTE]
 >See `.zshenv` for more information on directories.
 
-Besides the directories, I configure Zsh to source [auto-suggestions](https://github.com/zsh-users/zsh-autosuggestions) and [syntax highlighting](https://github.com/zsh-users/zsh-syntax-highlighting) for a better experience.  But if these packages are not installed, nothing should happen.
-
-Finally, I use and recommend [GNU Stow](https://www.gnu.org/software/stow/) for managing dotfiles and it can be easily installed with most package managers around there.
+Zsh plugins for a better experience--optional but recommended:
+- [auto-suggestions](https://github.com/zsh-users/zsh-autosuggestions)
+- [syntax highlighting](https://github.com/zsh-users/zsh-syntax-highlighting)
 
 
 ## Installation
-First, make sure the needed directories are in place:
+Start by creating the necessary directories:
 
 ```sh
 cd
 mkdir -p .cache/zsh .local/bin Projects
 ```
-Now, proceed with installation:
+
+Use [GNU Stow](https://www.gnu.org/software/stow/) to install--files will be kept under `~/Projects/dotfiles` and links will be created in your home directory.
 
 ```sh
 cd  Projects
@@ -33,17 +41,14 @@ stow --verbose --adopt . --target=$HOME
 ```
 
 >[!WARNING]
->The previous snippet considers a fresh install.  If you have any configurations in place, use it with caution because the `--adopt` will replace these files by your current ones.
-
->[!NOTE]
->GNU Stow allows you to simulate an installation with the `--simulate` option.
+>The previous snippet considers a fresh install.  If you have any configurations in place, use it with caution because the `--adopt` will replace these files by your current ones.  If in doubt, use `--simulate` to preview the changes.
 
 >[!IMPORTANT]
->Git ignores all files but the ones explicitly declared in `.gitignore` file.  To track new files, they must be added with: `git add -f PATH`.
+>The configuration here will make Git ignore all files but the ones explicitly declared in `.gitignore` file.  To track new files, they must be added with: `git add -f PATH`.
 
 
 ## Shortcuts
-Some shortcuts of my daily use.
+Important shortcuts defined here or highly used.  Some of them are macOS specific.
 
 ### macOS
 | Shortcut | Action |
@@ -53,8 +58,8 @@ Some shortcuts of my daily use.
 | `cmd-,` | Open settings |
 | `cmd-n` | New window/file/... |
 | `cmd-shift-3/4/5` | Screenshots |
-| `control-1..0` | Move to Desktop 1-10 |
-| `control-left/right` | Move to previous/next Desktop |
+| `ctrl-1..0` | Move to Desktop 1-10 |
+| `ctrl-left/right` | Move to previous/next Desktop |
 
 >[!NOTE]
 >A comprehensive list of macOS shortcuts can be found [here](https://support.apple.com/en-us/102650).
@@ -62,13 +67,13 @@ Some shortcuts of my daily use.
 ### Zsh
 | Shortcut | Action |
 |---|---|
-| `control-c` | Kill foreground process |
-| `control-l` | Clear the screen |
-| `control-r` | Search history |
-| `control-g` | Quits search history |
-| `control-u` | Clear the entire line |
-| `control-a`: | Beginning of line |
-| `control-e` | End of line |
+| `ctrl-c` | Kill foreground process |
+| `ctrl-l` | Clear the screen |
+| `ctrl-r` | Search history |
+| `ctrl-g` | Quits search history |
+| `ctrl-u` | Clear the entire line |
+| `ctrl-a`: | Beginning of line |
+| `ctrl-e` | End of line |
 | `alt-left` | Previous word |
 | `alt-right` | Next word |
 
@@ -81,6 +86,20 @@ Some shortcuts of my daily use.
 >[!NOTE]
 >Run `ghostty +show-config --default --docs` for a comprehensive list of default configuration.
 
+### Tmux
+| Shortcut | Action |
+|---|---|
+| `ctrl-a` | Prefix key |
+| `ctrl-a r` | Reload configuration |
+| `ctrl-a s` | Split horizontally |
+| `ctrl-a f` | Split vertically |
+| `ctrl-a 1..0` | Select window |
+| `ctrl-a n` | Next window |
+| `ctrl-a p` | Previous window |
+| `ctrl-a c` | Create window |
+| `ctrl-a x` | Kill pane |
+| `ctrl-a x` | Kill window |
+
 ### Aerospace
 See `.config/aerospace/aerospace.toml` for the full list.
 | Shortcut | Action |
@@ -88,7 +107,7 @@ See `.config/aerospace/aerospace.toml` for the full list.
 | `cmd-1..5` | Switch workspaces |
 | `cmd-alt-1..5` | Move windows to workspace |
 | `cmd-alt-[hjkl]` | Move windows to left/down/up/right |
-| `cmd-control-[hjkl]` | Change windows focus to left/down/up/right |
+| `cmd-ctrl-[hjkl]` | Change windows focus to left/down/up/right |
 | `cmd-alt-enter` | Launch terminal |
 
 ### Obsidian
@@ -107,13 +126,13 @@ See `.config/aerospace/aerospace.toml` for the full list.
 ### Micro
 | Shortcut | Action |
 |---|---|
-| `control-s` | Save |
-| `control-q` | Exit |
-| `control-k` | Cut the entire line |
-| `control-c` | Copy |
-| `control-v` | Paste |
-| `control-z` | Undo changes |
-| `control-y` | Redo changes |
+| `ctrl-s` | Save |
+| `ctrl-q` | Exit |
+| `ctrl-k` | Cut the entire line |
+| `ctrl-c` | Copy |
+| `ctrl-v` | Paste |
+| `ctrl-z` | Undo changes |
+| `ctrl-y` | Redo changes |
 
 ### Vim
 | Shortcut | Action |
@@ -125,28 +144,19 @@ See `.config/aerospace/aerospace.toml` for the full list.
 | `yw` | Copy the word under the cursor |
 | `p` | Paste copied text |
 | `u` | Undo changes |
-| `control-r` | Redo changes |
+| `ctrl-r` | Redo changes |
 | `shift-g` | End of file |
 | `gg` | Begining of file |
 | `$` | End of line |
 | `^` | Begining of line |
 | `g~w` | Toggle the case for word under cursor |
-| `control-v` | Go to visual mode - `esc` to exit |
+| `ctrl-v` | Go to visual mode - `esc` to exit |
 | `/sentence` | Search for `sentence` - works in other tools, like `less` and `man` |
 
 >[!INFO]
 > Some Vim commands can be combined to alter their behavior, for instance `d$` cut all characters from the cursor to the end of line.
 
-
-## Termux (Android)
-Install basic packages, make sure that `zsh` is the default shell, and then follow the instructions above to install dotfiles.
-
-```sh
-pkg install zsh git man
-chsh -s zsh
-```
-
-### Shortcuts
+### Termux (Android)
 | Shortcut | Action |
 |---|---|
 | `Vol.Up-k` | Shows/Hides extra keys |
