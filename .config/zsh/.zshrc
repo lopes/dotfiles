@@ -78,7 +78,3 @@ case "$OSTYPE" in
   msys  | cygwin)  source "$ZDOTDIR/../aliases.windows.sh" ;;
 esac
 
-# auto-start tmux--skips editors and GUI terminals
-if [[ -z "$TMUX" && -z "$ZED_TERM" && "$TERM_PROGRAM" != "vscode" ]]; then
-  tmux new -As "" || exit 1
-fi
