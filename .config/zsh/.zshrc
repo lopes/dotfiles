@@ -50,17 +50,11 @@ fi
 test -d $HOME/.local/bin && PATH="$HOME/.local/bin:$PATH"  # local binaries to PATH
 
 # prompt
-export PROMPT='%n%F{245}@%f%B%M%b%F{245}:%20<..<%3~%<<$(git_branch)%f%B%#%b '
+export PROMPT='%n%F{245}@%f%B%M%b%F{245}:%20<..<%3~%<<%f%B%#%b '
 if [ "$TERM_PROGRAM" != "Apple_Terminal" ]; then
   eval "$(oh-my-posh init zsh --config "$HOME/.config/oh-my-posh/chippuccin.toml")"
 fi
 
-
-# prompt
-export PROMPT='%n%F{245}@%f%B%M%b%F{245}:%20<..<%3~%<<$(git_branch)%f%B%#%b '
-if [ "$TERM_PROGRAM" != "Apple_Terminal" ]; then
-  eval "$(oh-my-posh init zsh --config "$HOME/.config/oh-my-posh/chippuccin.toml")"
-fi
 
 # extra functions for zsh
 test -f $HOME/.config/zsh/functions.sh && source $HOME/.config/zsh/functions.sh
