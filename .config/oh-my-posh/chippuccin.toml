@@ -136,6 +136,14 @@ background = 'p:cp_mocha_flamingo'
 template = '{{ .Major }}.{{ .Minor}}'
 
 [[blocks.segments]]
+type = 'rust'
+style = 'powerline'
+powerline_symbol = ''
+foreground = 'p:cp_mocha_base'
+background = 'p:cp_mocha_mauve'
+template = '{{ .Major }}.{{ .Minor}}'
+
+[[blocks.segments]]
 type = 'executiontime'
 style = 'accordion'
 powerline_symbol = ''
