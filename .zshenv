@@ -37,4 +37,6 @@ export LESSHISTFILE="-"  # no history for less command
 # rust
 export RUSTUP_HOME="$XDG_CACHE_HOME/rustup"
 export CARGO_HOME="$XDG_CACHE_HOME/cargo"
-source "$CARGO_HOME/env"
+if [ -f "$CARGO_HOME/env" ]; then
+  source "$CARGO_HOME/env"
+fi
