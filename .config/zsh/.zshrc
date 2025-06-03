@@ -39,12 +39,12 @@ if [ -d "/opt/homebrew" ]; then  # arm
   export BREW_PREFIX="/opt/homebrew"
   test -f $BREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh && source $_
   test -f $BREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh && source $_
-  PATH="$BREW_PREFIX/bin:$PATH"
+  PATH="$PATH:$BREW_PREFIX/bin"
 elif [ -d "/usr/local/Homebrew" ]; then  # intel
   export BREW_PREFIX="/usr/local/Homebrew"
   test -f $BREW_PREFIX/../share/zsh-autosuggestions/zsh-autosuggestions.zsh && source $_
   test -f $BREW_PREFIX/../share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh && source $_
-  PATH="$BREW_PREFIX/bin:$PATH"
+  PATH="$PATH:$BREW_PREFIX/bin"
 fi
 
 test -d $HOME/.local/bin && PATH="$HOME/.local/bin:$PATH"  # local binaries to PATH
