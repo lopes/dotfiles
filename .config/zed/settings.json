@@ -29,6 +29,7 @@
     "env": {},
     "font_family": "Hack Nerd Font Mono",
     "font_features": null,
-    "font_size": 12
+    "font_size": 12,
+    "line_height": "standard"
   }
 }
