@@ -1,81 +1,182 @@
 # git configuration
 
 [user]
-    name       = Joe Lopes
-    email      = 2897144+lopes@users.noreply.github.com
-    signingkey = E157B1DEAA636FF8
+	name = Joe Lopes
+	email = 2897144+lopes@users.noreply.github.com
+	signingkey = E157B1DEAA636FF8
 
 [gpg]
-    program = /usr/local/bin/gpg
+	program = /usr/local/bin/gpg
 
 [core]
-    editor   = vim
-    autocrlf = input
+	editor = vim
+	autocrlf = input
+	whitespace = fix,-indent-with-non-tab,trailing-space,cr-at-eol
+	pager = delta # enhanced diffs, falls back to default if not installed
 
 [commit]
-    gpgsign = true
-    verbose = true
+	gpgsign = true
+	verbose = true
 
 [branch]
-    sort = -committerdate
+	sort = -committerdate
 
 [push]
-    default         = simple
-    autoSetupRemote = true
-    followTags      = true
+	default = simple
+	autoSetupRemote = true
+	followTags = true
 
 [fetch]
-    prune     = true
-    pruneTags = true
-    all       = true
+	prune = true
+	pruneTags = true
+	all = true
 
 [diff]
-    algorithm      = histogram
-    colorMoved     = plain
-    mnemonicPrefix = true
-    renames        = true
+	algorithm = histogram
+	colorMoved = plain
+	mnemonicPrefix = true
+	renames = true
+	# tool = nvimdiff # external diff tool
+
+[difftool]
+	# prompt = false # use the external diff tool and skip prompt
 
 [init]
-    defaultBranch = main
+	defaultBranch = main
 
 [color]
-    branch = auto
-    diff   = auto
-    pager  = true
+	ui = auto # auto coloring for all commands
+[color "branch"]
+	current = yellow bold
+	local = green bold
+	remote = cyan bold
+[color "diff"]
+	meta = yellow bold
+	frag = magenta bold
+	old = red bold
+	new = green bold
+	whitespace = red reverse
+[color "status"]
+	added = green bold
+	changed = yellow bold
+	untracked = red bold
 
 [tag]
-    sort = version:refname
+	sort = version:refname
 
 [help]
-    autocorrect = prompt
+	autocorrect = prompt
 
 [column]
-    ui = auto
+	ui = auto
+
+[checkout]
+	defaultRemote = origin
+
+[rerere]
+	enabled = 1
+	autoupdate = 1
+
+[rebase]
+	autoSquash = true
+	updateRefs = true
 
 [alias]
-    aall       = add .    # use with caution
-    st         = status
-    df         = diff
-    ls         = ls-files
+	# general shortcuts
+	a = add --all
+	ai = add -i
+	st = status -sb # short status with branch info
+	df = diff
+	ls = ls-files
+	d = diff
+	dc = diff --cached
+	dt = difftool
+	dw = diff --word-diff
 
-    lo         = log --oneline --decorate --graph --all
-    search     = log -G
-    graph      = log --all --decorate --oneline --graph   # visual log
+	lo = log --oneline --decorate --graph --all
+	lg = log --oneline --graph --decorate # concise log graph
+	search = log -G
+	graph = log --all --decorate --oneline --graph
 
-    sw         = switch
-    main       = switch main
-    mk         = switch --create
-    del        = branch --delete
+	# branch/checkout/switch
+	sw = switch
+	main = switch main
+	mk = switch --create
+	del = branch --delete
+	b = branch
+	ba = branch -a # all branches
+	bd = branch -d # delete branch
+	bdd = branch -D # force delete branch
+	bc = rev-parse --abbrev-ref HEAD # current branch name
 
-    conf       = config --list --show-origin --show-scope
-    aka        = config --get-regexp ^alias
+	conf = config --list --show-origin --show-scope
+	aka = config --get-regexp ^alias
 
-    save       = commit --verbose -S -m     # signed commits with msg
-    undo       = reset HEAD~1 --mixed
-    cleanall   = clean --force --directory  # cleans the working dir
-    amend      = commit --amend --no-edit   # amend the last commit
-    sync       = push origin                # use: sync <branch>
+	save = commit --verbose -S -m # signed commits with msg
+	c = commit
+	ca = commit -a
+	cm = commit -m
+	cam = commit -am
+	cd = commit --amend
+	amend = commit --amend --no-edit
 
-    restore    = restore --staged --worktree  # restore files
-    unstage    = reset HEAD --                # unstage changes
+	# reset/restore/clean
+	undo = reset HEAD~1 --mixed
+	cleanall = clean --force --directory
+	restore = restore --staged --worktree
+	unstage = reset HEAD --
+	re = reset
+	rh = reset HEAD
+	reh = reset --hard
+	rem = reset --mixed
+	res = reset --soft
 
+	ps = push
+	psu = push -u # set upstream
+	pst = push --tags
+	psf = push --force-with-lease
+	sync = push origin
+
+	pl = pull
+	pb = pull --rebase # pull with rebase
+
+	rb = rebase
+	rba = rebase --abort
+	rbc = rebase --continue
+	rbi = rebase --interactive
+	rbs = rebase --skip
+
+	r = remote
+	rv = remote -v
+	ra = remote add
+	rr = remote rm
+	rpo = remote prune origin
+
+	sa = stash apply
+	sc = stash clear
+	sd = stash drop
+	sl = stash list
+	sp = stash pop
+	ss = stash save
+	sw = stash show
+
+	cp = cherry-pick
+	cpa = cherry-pick --abort
+	cpc = cherry-pick --continue
+
+	ap = apply
+	as = apply --stat
+	ac = apply --check
+
+	m = merge
+	ma = merge --abort
+	mc = merge --continue
+	ms = merge --skip
+
+	# assume/unassume
+	assume = update-index --assume-unchanged
+	unassume = update-index --no-assume-unchanged
+
+	# clone
+	cl = clone
+	cld = clone --depth 1
