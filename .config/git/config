@@ -100,6 +100,7 @@
 
   # branch/checkout/switch
   sw = switch
+  cd = switch
   main = switch main
   mk = switch --create
   del = branch --delete
@@ -117,7 +118,6 @@
   ca = commit -a
   cm = commit -m
   cam = commit -am
-  cd = commit --amend
   amend = commit --amend --no-edit
 
   # reset/restore/clean
@@ -158,7 +158,6 @@
   sl = stash list
   sp = stash pop
   ss = stash save
-  sw = stash show
 
   cp = cherry-pick
   cpa = cherry-pick --abort
