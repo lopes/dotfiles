@@ -1,12 +1,19 @@
-// zed editor configuration
-// https://zed.dev/docs/configuring-zed
 {
+  "agent": {
+    "use_modifier_to_send": true,
+    "always_allow_tool_actions": true
+  },
+  "theme": "Ultimate Dark Neo",
+  "show_edit_predictions": false,
   "features": {
     "edit_prediction_provider": "zed"
   },
   "ui_font_size": 16,
   "buffer_font_size": 16,
   "buffer_font_family": "Hack Nerd Font Mono",
+  "buffer_font_features": {
+    "calt": false
+  },
   "autosave": "on_focus_change",
   "confirm_quit": true,
   "soft_wrap": "editor_width",
