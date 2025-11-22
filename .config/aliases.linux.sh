@@ -42,4 +42,4 @@ alias pkgs="sudo pacman -Ss"
 alias pkgu="sudo pacman -Syu"
 
 alias pwgen="openssl rand -base64 256 | tr -d '\n' | head -c"
-alias pyvenv="{[ ! -d "venv" ] && python3 -m venv venv}; source venv/bin/activate"
+alias pyvenv="{[ ! -d "venv" ] && python3 -m venv .venv}; source .venv/bin/activate"
