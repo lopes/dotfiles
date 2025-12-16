@@ -1,4 +1,5 @@
 {
+  "show_completions_on_input": false,
   "agent": {
     "use_modifier_to_send": true,
     "always_allow_tool_actions": true

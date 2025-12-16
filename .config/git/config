@@ -46,6 +46,9 @@
 
 [color]
   ui = auto # auto coloring for all commands
+	diff = auto
+	status = auto
+	branch = auto
 [color "branch"]
   current = yellow bold
   local = green bold
