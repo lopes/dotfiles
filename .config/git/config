@@ -12,7 +12,6 @@
   editor = vim
   autocrlf = input
   whitespace = fix,-indent-with-non-tab,trailing-space,cr-at-eol
-  pager = delta # enhanced diffs, falls back to default if not installed
 
 [commit]
   gpgsign = true

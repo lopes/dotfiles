@@ -34,6 +34,10 @@ set shiftwidth=0
 set softtabstop=-1 " aligns with shiftwidth
 retab
 
+" new line in the end
+set eol
+set fixendofline
+
 " search
 set incsearch
 set hlsearch
@@ -91,3 +95,4 @@ set noruler       " no line/col in bottom-right
 set noshowcmd     " no partial commands
 set cmdheight=1
 set shortmess+=F  " no file info messages
+
