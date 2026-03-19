@@ -1,6 +1,6 @@
 # ghostty configuration file
 
-font-family = Hack Nerd Font Mono
+font-family = JetBrainsMono Nerd Font
 font-style = Regular
 font-size = 16
 
