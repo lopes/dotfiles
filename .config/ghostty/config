@@ -6,6 +6,9 @@ font-size = 16
 
 theme = catppuccin-mocha
 
+cursor-color = #a6e3a1
+cursor-style = bar
+cursor-style-blink = true
 # click to move: alt+click
 cursor-click-to-move = true
 
