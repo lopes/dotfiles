@@ -2,9 +2,7 @@
 
 # improved history settings
 setopt EXTENDED_HISTORY       # record timestamp and duration
-setopt SHARE_HISTORY          # share history across sessions
-setopt APPEND_HISTORY         # append to history file
-setopt INC_APPEND_HISTORY     # immediately append to history
+setopt SHARE_HISTORY          # share history across sessions (implies APPEND_HISTORY)
 setopt HIST_EXPIRE_DUPS_FIRST # expire duplicates first
 setopt HIST_IGNORE_DUPS       # ignore consecutive duplicates
 setopt HIST_FIND_NO_DUPS      # don't show duplicates in search
@@ -40,19 +38,24 @@ if [ -d "/opt/homebrew" ]; then  # arm
   test -f $BREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh && source $_
   test -f $BREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh && source $_
   PATH="$BREW_PREFIX/bin:$PATH"
-elif [ -d "/usr/local/Homebrew" ]; then  # intel
+elif [ -d "/usr/local/Homebrew" ]; then  # intel mac
   export BREW_PREFIX="/usr/local/Homebrew"
   test -f $BREW_PREFIX/../share/zsh-autosuggestions/zsh-autosuggestions.zsh && source $_
   test -f $BREW_PREFIX/../share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh && source $_
+  PATH="$BREW_PREFIX/bin:$PATH"
+elif [ -d "/home/linuxbrew/.linuxbrew" ]; then  # linux
+  export BREW_PREFIX="/home/linuxbrew/.linuxbrew"
+  test -f $BREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh && source $_
+  test -f $BREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh && source $_
   PATH="$BREW_PREFIX/bin:$PATH"
 fi
 
 test -d $HOME/.local/bin && PATH="$HOME/.local/bin:$PATH"  # local binaries to PATH
 
 # prompt
-export PROMPT='%n%F{245}@%f%B%M%b%F{245}:%20<..<%3~%<<%f%B%#%b '
+export PROMPT='%F{103}%n@%m❯%f%F{75}%3~%f%(?.%F{255}.%F{196})❯%f '
 if [ "$TERM_PROGRAM" != "Apple_Terminal" ]; then
-  eval "$(oh-my-posh init zsh --config "$HOME/.config/oh-my-posh/chippuccin.toml")"
+  eval "$(oh-my-posh init zsh --config "$HOME/.config/oh-my-posh/sable.toml")"
 fi
 
 

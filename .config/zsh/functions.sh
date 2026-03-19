@@ -1,9 +1,8 @@
-#!/usr/bin/env bash
 # shell functions
 
 function pingts() {
   # timestamped ping
-  ping "$1" | xargs -L 1 -I '{}' date '+%H:%M:%S - {}'
+  ping "$1" | xargs -I '{}' date '+%H:%M:%S - {}'
 }
 
 function cheat() {
