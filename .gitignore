@@ -10,7 +10,7 @@
 !.config/aliases.windows.sh
 !.config/bash/bashrc
 !.config/git/config
-!.config/oh-my-posh/chippuccin.toml
+!.config/oh-my-posh/sable.toml
 !.config/termux/termux.properties
 !.config/tmux/tmux.conf
 !.config/vim/vimrc
