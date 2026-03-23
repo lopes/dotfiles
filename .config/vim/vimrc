@@ -13,7 +13,7 @@ set belloff=all
 
 " colorscheme
 set termguicolors
-colorscheme catppuccin_mocha
+colorscheme github_dark_dimmed
 
 " transparent background
 highlight Normal     ctermbg=NONE guibg=NONE

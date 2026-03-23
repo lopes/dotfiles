@@ -4,7 +4,7 @@ font-family = JetBrainsMono Nerd Font
 font-style = Regular
 font-size = 16
 
-theme = catppuccin-mocha
+theme = GitHub-Dark-Dimmed
 
 cursor-color = #a6e3a1
 cursor-style = bar
