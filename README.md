@@ -1,6 +1,7 @@
 # dotfiles
 My personal, **minimalist** configuration files built on simplicity, security, and efficiency.
 
+---
 
 ## Philosophy
 1. **Layout**: Optimize screen space by removing superfluous elements.
@@ -9,6 +10,7 @@ My personal, **minimalist** configuration files built on simplicity, security, a
 4. **Controls**: Streamlined shortcuts with vi-style navigation where it fits.
 5. **Relevancy**: Only settings and tools that serve actual, practical usage.
 
+---
 
 ## Packages
 Install all dependencies before symlinking:
@@ -22,6 +24,7 @@ brew install bat eza fd fzf git-delta nano stow tmux vim zoxide \
 brew install --cask aerospace ghostty obsidian raycast
 ```
 
+---
 
 ## Quick Start
 Create the required directory structure:
@@ -39,6 +42,7 @@ cd dotfiles
 stow --verbose --adopt . --target="$HOME"
 ```
 
+---
 
 ## Important Notes
 - This process uses `stow --adopt`, which replaces existing files in your home directory with symlinks. Use `stow --simulate` first to preview changes.
@@ -56,6 +60,7 @@ These tools replace traditional Unix commands with faster, more ergonomic altern
 | [fzf](https://github.com/junegunn/fzf) | `ctrl-r` | Fuzzy finder for shell history, files, and directories. | Initialized and themed in `.config/zsh/.zshrc`. Adds `ctrl-r` (history), `ctrl-t` (files), and `alt-c` (cd). |
 | [zoxide](https://github.com/ajeetdsouza/zoxide) | `cd` | Learns your most-used directories for instant jumping with `z`. | Initialized in `.config/zsh/.zshrc`. Use `z foo` to jump to the best match. |
 
+---
 
 ## Shortcuts
 
@@ -164,3 +169,4 @@ Prefix key: `ctrl-a`
 | `^/$` | Beginning/End of line |
 | `/pattern` | Search |
 | `esc` | Clear search highlight |
+
