@@ -19,7 +19,7 @@ export VISUAL="vim"
 export VIMINIT="source $HOME/.config/vim/vimrc"
 
 # tool themes
-export BAT_THEME="GitHub-Dark-Dimmed"
+export BAT_THEME="base16-256"
 
 # zsh
 export KEYTIMEOUT=1  # used in zsh vi mode
@@ -30,6 +30,8 @@ export HISTORY_IGNORE="(ls(| *)|pwd|exit|cd(| *)|bg(| *)|fg(| *)|history)"
 export HISTFILE="$XDG_CACHE_HOME/zsh/zsh_history"
 
 export LESSHISTFILE="-"  # no history for less command
+export LESS="-RNS"       # color, line numbers, no wrap
+export PAGER="less"
 
 # timeout
 # TMOUT=600
@@ -42,3 +44,6 @@ export CARGO_HOME="$XDG_CACHE_HOME/cargo"
 if [ -f "$CARGO_HOME/env" ]; then
   source "$CARGO_HOME/env"
 fi
+
+export CLAUDE_CONFIG_DIR="$HOME/.config/claude"
+

@@ -1,0 +1,248 @@
+#!/usr/bin/env python3
+"""
+Nexus Vault Summarizer
+Generates an AI-friendly summary of an Obsidian vault's structure and metadata.
+
+Usage:
+    python vault-summary.py [VAULT_PATH] [OPTIONS]
+
+Arguments:
+    VAULT_PATH    Path to the vault root (default: current directory)
+
+Options:
+    -o, --output FILE    Write output to file instead of stdout
+    -e, --exclude DIRS   Comma-separated directories to exclude (default: .obsidian,.git,.trash)
+    --no-tree            Skip the tree structure, output flat list only
+    --tags-only          Only show notes that have tags
+    -h, --help           Show this help message
+
+Output format:
+    <path>  |  <descriptor>
+
+Descriptors:
+    Note: tag1, tag2, tag3          Tagged Obsidian note (tags from frontmatter)
+    Untagged note                   Markdown file without tags in frontmatter
+    Supporting file (<ext>)         Non-markdown file (html, py, json, etc.)
+    [DIR]                           Directory marker
+
+Examples:
+    python vault-summary.py ~/Documents/Nexus
+    python vault-summary.py ~/Documents/Nexus -o vault-summary.txt
+    python vault-summary.py ~/Documents/Nexus --tags-only
+"""
+
+import argparse
+import os
+import re
+import sys
+from pathlib import Path
+
+DEFAULT_EXCLUDE = {".obsidian", ".git", ".trash", "node_modules", ".DS_Store"}
+
+# Match YAML frontmatter between --- delimiters
+FRONTMATTER_RE = re.compile(r"^---\s*\n(.*?)\n---", re.DOTALL)
+
+# Match tags in frontmatter — handles both list and inline formats:
+#   tags: [tag1, tag2]
+#   tags: tag1, tag2
+#   tags:
+#     - tag1
+#     - tag2
+TAGS_BRACKET_RE = re.compile(r"^tags:\s*\[([^\]]*)\]", re.MULTILINE)
+TAGS_INLINE_RE = re.compile(r"^tags:\s*(.+)$", re.MULTILINE)
+TAGS_LIST_RE = re.compile(r"^tags:\s*$", re.MULTILINE)
+TAG_ITEM_RE = re.compile(r"^\s*-\s*(.+)$", re.MULTILINE)
+
+
+def parse_tags(content: str) -> list[str] | None:
+    """Extract tags from markdown frontmatter. Returns None if no frontmatter."""
+    fm_match = FRONTMATTER_RE.match(content)
+    if not fm_match:
+        return None
+
+    frontmatter = fm_match.group(1)
+
+    # Format: tags: [tag1, tag2]
+    m = TAGS_BRACKET_RE.search(frontmatter)
+    if m:
+        raw = m.group(1)
+        return [t.strip().strip("'\"") for t in raw.split(",") if t.strip()]
+
+    # Format: tags:\n  - tag1\n  - tag2
+    m = TAGS_LIST_RE.search(frontmatter)
+    if m:
+        # Find the position after "tags:" and grab subsequent indented lines
+        start = m.end()
+        rest = frontmatter[start:]
+        tags = []
+        for line in rest.split("\n"):
+            item = TAG_ITEM_RE.match(line)
+            if item:
+                tags.append(item.group(1).strip().strip("'\""))
+            elif line.strip() and not line.startswith(" ") and not line.startswith("\t"):
+                break  # Next YAML key
+        if tags:
+            return tags
+
+    # Format: tags: tag1, tag2 (inline, no brackets)
+    m = TAGS_INLINE_RE.search(frontmatter)
+    if m:
+        raw = m.group(1).strip()
+        if raw and not raw.startswith("-"):
+            return [t.strip().strip("'\"") for t in raw.split(",") if t.strip()]
+
+    return []
+
+
+def describe_file(filepath: Path) -> str:
+    """Generate a descriptor for a single file."""
+    if filepath.suffix.lower() != ".md":
+        ext = filepath.suffix.lstrip(".") or "unknown"
+        return f"Supporting file ({ext})"
+
+    try:
+        content = filepath.read_text(encoding="utf-8", errors="replace")
+    except (OSError, PermissionError):
+        return "Unreadable file"
+
+    tags = parse_tags(content)
+
+    if tags is None:
+        return "Untagged note (no frontmatter)"
+    elif tags:
+        return "Note: " + ", ".join(tags)
+    else:
+        return "Untagged note"
+
+
+def walk_vault(vault_path: Path, exclude: set[str]) -> list[tuple[Path, str]]:
+    """Walk the vault and collect (relative_path, descriptor) pairs."""
+    entries = []
+
+    for root, dirs, files in os.walk(vault_path):
+        # Filter excluded directories in-place to prevent os.walk from descending
+        dirs[:] = sorted([d for d in dirs if d not in exclude])
+        files = sorted([f for f in files if f not in exclude])
+
+        rel_root = Path(root).relative_to(vault_path)
+
+        # Add directory marker (skip vault root)
+        if rel_root != Path("."):
+            entries.append((rel_root, "[DIR]"))
+
+        for fname in files:
+            fpath = Path(root) / fname
+            rel = fpath.relative_to(vault_path)
+            desc = describe_file(fpath)
+            entries.append((rel, desc))
+
+    return entries
+
+
+def format_output(entries: list[tuple[Path, str]], vault_path: Path) -> str:
+    """Format entries into AI-friendly output."""
+    lines = []
+    lines.append(f"# Vault Summary: {vault_path.name}")
+    lines.append(f"# Root: {vault_path}")
+    lines.append(f"# Total entries: {len([e for e in entries if e[1] != '[DIR]'])}")
+    lines.append(f"# Generated by vault-summary.py")
+    lines.append("")
+    lines.append("# Format: <relative_path>  |  <descriptor>")
+    lines.append("# Descriptors:")
+    lines.append("#   Note: tag1, tag2       — Tagged note (tags from YAML frontmatter)")
+    lines.append("#   Untagged note          — Markdown file, no tags in frontmatter")
+    lines.append("#   Untagged note (no frontmatter) — Markdown file, no YAML frontmatter at all")
+    lines.append("#   Supporting file (ext)  — Non-markdown file")
+    lines.append("#   [DIR]                  — Directory")
+    lines.append("")
+
+    for rel_path, desc in entries:
+        if desc == "[DIR]":
+            lines.append(f"{rel_path}/  |  {desc}")
+        else:
+            lines.append(f"{rel_path}  |  {desc}")
+
+    # Tag frequency summary
+    tag_counts: dict[str, int] = {}
+    for _, desc in entries:
+        if desc.startswith("Note: "):
+            tags = desc[6:].split(", ")
+            for t in tags:
+                tag_counts[t] = tag_counts.get(t, 0) + 1
+
+    if tag_counts:
+        lines.append("")
+        lines.append("# --- Tag Frequency ---")
+        for tag, count in sorted(tag_counts.items(), key=lambda x: (-x[1], x[0])):
+            lines.append(f"# {tag}: {count}")
+
+    # Untagged summary
+    untagged = [str(p) for p, d in entries if d.startswith("Untagged")]
+    if untagged:
+        lines.append("")
+        lines.append(f"# --- Untagged Notes ({len(untagged)}) ---")
+        for u in untagged:
+            lines.append(f"# {u}")
+
+    return "\n".join(lines)
+
+
+def main():
+    parser = argparse.ArgumentParser(
+        description="Generate an AI-friendly summary of an Obsidian vault."
+    )
+    parser.add_argument(
+        "vault_path",
+        nargs="?",
+        default=".",
+        help="Path to the vault root (default: current directory)",
+    )
+    parser.add_argument(
+        "-o", "--output",
+        help="Write output to file instead of stdout",
+    )
+    parser.add_argument(
+        "-e", "--exclude",
+        default=None,
+        help="Comma-separated directories to exclude (added to defaults: .obsidian,.git,.trash)",
+    )
+    parser.add_argument(
+        "--tags-only",
+        action="store_true",
+        help="Only show notes that have tags",
+    )
+
+    args = parser.parse_args()
+
+    vault_path = Path(args.vault_path).resolve()
+    if not vault_path.is_dir():
+        print(f"Error: {vault_path} is not a directory", file=sys.stderr)
+        sys.exit(1)
+
+    exclude = set(DEFAULT_EXCLUDE)
+    if args.exclude:
+        exclude.update(d.strip() for d in args.exclude.split(","))
+
+    entries = walk_vault(vault_path, exclude)
+
+    if args.tags_only:
+        entries = [(p, d) for p, d in entries if d.startswith("Note: ") or d == "[DIR]"]
+        # Remove empty dirs (dirs with no tagged children after filtering)
+        tagged_paths = {str(p.parent) for p, d in entries if d.startswith("Note: ")}
+        entries = [
+            (p, d) for p, d in entries
+            if d != "[DIR]" or any(str(p) in tp for tp in tagged_paths)
+        ]
+
+    output = format_output(entries, vault_path)
+
+    if args.output:
+        out_path = Path(args.output)
+        out_path.write_text(output, encoding="utf-8")
+        print(f"Summary written to {out_path}", file=sys.stderr)
+    else:
+        print(output)
+
+
+if __name__ == "__main__":
+    main()

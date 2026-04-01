@@ -18,10 +18,12 @@
 !.config/ghostty/config
 !.config/inputrc
 !.config/nano/nanorc
+!.config/claude/skills/**
 !.config/zsh/.zshrc
 !.config/zsh/functions.sh
 !.gnupg/gpg-agent.conf
 !.gitignore
 !.zshenv
 !LICENSE
+!Makefile
 !README.md

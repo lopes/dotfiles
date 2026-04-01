@@ -7,8 +7,6 @@ alias ll="ls -alF"
 alias la="ls -A"
 
 alias grep="grep --color=auto"
-alias egrep="egrep --color=auto"
-alias fgrep="fgrep --color=auto"
 
 alias ifconfig="ip address"
 alias route="ip route"
@@ -26,8 +24,9 @@ alias ps="ps auxf"
 alias free="free -mlt"
 alias df="df -Tah --total"
 alias mount="mount | column -t"
-alias du="du -ach | sort -h"
-alias hexdump="hexdump -C"
+alias du="du -ah"
+alias sha="sha256sum"
+alias sniff="sudo tcpdump -nn -i eth0"
 alias od="od -A x -t x1z -v"
 alias vi="vim"
 
@@ -35,11 +34,6 @@ alias sudo="nocorrect sudo"
 alias shutdown="sudo shutdown"
 alias reboot="sudo reboot"
 
-alias pkg="sudo pacman"
-alias pkgi="sudo pacman -S"
-alias pkgr="sudo pacman -Rs"
-alias pkgs="sudo pacman -Ss"
-alias pkgu="sudo pacman -Syu"
+alias update-system="sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y"
 
-alias pwgen="openssl rand -base64 256 | tr -d '\n' | head -c"
 
