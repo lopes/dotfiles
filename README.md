@@ -1,35 +1,36 @@
 # dotfiles
-My personal, **minimalist** configuration files. These dotfiles are built on a core philosophy of simplicity, security, and efficiency to enhance the user experience without unnecessary bloat.
+My personal, **minimalist** configuration files built on simplicity, security, and efficiency.
 
 
 ## Philosophy
-This project is guided by the following principles:
+1. **Layout**: Optimize screen space by removing superfluous elements.
+2. **Colors**: Consistent GitHub Dark Dimmed colorscheme across all tools.
+3. **Symbols**: Meaningful icons and glyphs via Nerd Fonts.
+4. **Controls**: Streamlined shortcuts with vi-style navigation where it fits.
+5. **Relevancy**: Only settings and tools that serve actual, practical usage.
 
-1. **Layout**: Optimize screen space and accessibility by removing superfluous elements.
-2. **Colors**: Apply consistent, visually appealing color schemes for clarity.
-3. **Symbols**: Use meaningful icons and glyphs for better readability and quick recognition.
-4. **Controls**: Streamline shortcuts and inputs to maximize efficiency.
-5. **Relevancy**: Only include settings and tools that align with actual, practical usage.
+
+## Packages
+Install all dependencies before symlinking:
+
+```sh
+# cli tools
+brew install bat eza fd fzf git-delta nano stow tmux vim zoxide \
+  zsh-autosuggestions zsh-syntax-highlighting
+
+# gui apps
+brew install --cask aerospace ghostty obsidian raycast
+```
 
 
 ## Quick Start
-Before installing, ensure the following directory structure exists. This is crucial for the configurations to function correctly.
+Create the required directory structure:
 
 ```sh
 mkdir -p "$HOME/.cache/zsh" "$HOME/.local/bin" "$HOME/Projects"
 ```
 
-The configurations here require [GNU Stow](https://www.gnu.org/software/stow/) to manage symlinks. If you don't have it, you can install it via your system's package manager.
-
-```sh
-# macOS
-brew install stow
-
-# Linux (Arch)
-sudo pacman -S stow
-```
-
-With Stow installed, clone the repository into your `$HOME/Projects` directory and run the install command.
+Clone and symlink with [GNU Stow](https://www.gnu.org/software/stow/):
 
 ```sh
 cd "$HOME/Projects"
@@ -40,18 +41,27 @@ stow --verbose --adopt . --target="$HOME"
 
 
 ## Important Notes
-- This process uses `stow --adopt`, which will replace existing configuration files in your home directory with symlinks to the files in this repository. Use `stow --simulate` first to preview the changes and avoid data loss.
-- The `.gitignore` file is configured to ignore all files unless they are explicitly added with git add `-f`. This ensures you only track the exact files you want to manage.
+- This process uses `stow --adopt`, which replaces existing files in your home directory with symlinks. Use `stow --simulate` first to preview changes.
+- The `.gitignore` uses an allowlist: everything is ignored unless explicitly tracked with `git add -f`.
+
+### Modern CLI Tools
+These tools replace traditional Unix commands with faster, more ergonomic alternatives. All are themed with GitHub Dark Dimmed where applicable.
+
+| Tool | Replaces | What it does | Configuration |
+| :--- | :--- | :--- | :--- |
+| [bat](https://github.com/sharkdp/bat) | `cat` | Syntax-highlighted file viewer with line numbers and git integration. | Theme set via `BAT_THEME` in `.zshenv`. Aliased as `cat` in `aliases.bsd.sh`. |
+| [delta](https://github.com/dandavber/delta) | `git diff` | Syntax-highlighted diffs with line numbers. Automatically used by git as a pager. | Configured in `.config/git/config` under `[delta]`. |
+| [eza](https://github.com/eza-community/eza) | `ls` | Modern file listing with icons, git status, and tree view. | Aliased as `ls`, `ll`, `la`, and `tree` in `aliases.bsd.sh`. |
+| [fd](https://github.com/sharkdp/fd) | `find` | Faster file search with intuitive syntax. Respects `.gitignore` by default. | Aliased as `find` in `aliases.unix.sh`. |
+| [fzf](https://github.com/junegunn/fzf) | `ctrl-r` | Fuzzy finder for shell history, files, and directories. | Initialized and themed in `.config/zsh/.zshrc`. Adds `ctrl-r` (history), `ctrl-t` (files), and `alt-c` (cd). |
+| [zoxide](https://github.com/ajeetdsouza/zoxide) | `cd` | Learns your most-used directories for instant jumping with `z`. | Initialized in `.config/zsh/.zshrc`. Use `z foo` to jump to the best match. |
 
 
 ## Shortcuts
-This is a quick reference for the most important shortcuts and keybindings. Tables are organized by application or environment for quick lookups.
 
 ### macOS
-A list of essential macOS shortcuts that are either defined here or are highly used.
-
 | Shortcut | Action |
-| :---- | :---- |
+| :--- | :--- |
 | `cmd-space` | App launcher (Spotlight/Raycast) |
 | `cmd-w/q` | Close/Quit application |
 | `cmd-,` | Open application settings |
@@ -61,60 +71,62 @@ A list of essential macOS shortcuts that are either defined here or are highly u
 | `ctrl-left/right` | Move to previous/next Desktop |
 
 ### Zsh
-Shortcuts for the Zsh shell to improve command-line efficiency.
-
 | Shortcut | Action |
-| :---- | :---- |
+| :--- | :--- |
 | `ctrl-c` | Kill foreground process |
 | `ctrl-l` | Clear the screen |
-| `ctrl-r` | Search history |
+| `ctrl-r` | Fuzzy search history (fzf) |
+| `ctrl-t` | Fuzzy file finder (fzf) |
+| `alt-c` | Fuzzy cd into subdirectory (fzf) |
 | `ctrl-g` | Quits search history |
 | `ctrl-u` | Clear the entire line |
 | `ctrl-a` | Move to beginning of line |
 | `ctrl-e` | Move to end of line |
 | `alt-left` | Move to previous word |
 | `alt-right` | Move to next word |
+| `z <dir>` | Smart jump to directory (zoxide) |
 
 ### Ghostty
-A modern, fast, and minimalist terminal emulator.
-
 | Shortcut | Action |
-| :---- | :---- |
+| :--- | :--- |
+| `cmd-alt-=` | Toggle quick terminal |
 | `cmd-d` | Split horizontally |
 | `cmd-shift-d` | Split vertically |
 
 ### Tmux
-A terminal multiplexer that allows for multiple sessions, windows, and panes within a single terminal window.
+Prefix key: `ctrl-a`
 
 | Shortcut | Action |
-| :---- | :---- |
-| `ctrl-a` | Prefix key |
-| `ctrl-a r` | Reload configuration |
-| `ctrl-a s` | Split horizontally |
-| `ctrl-a f` | Split vertically |
-| `ctrl-a 1..0` | Select window |
-| `ctrl-a n` | Next window |
-| `ctrl-a p` | Previous window |
-| `ctrl-a c` | Create window |
-| `ctrl-a x` | Kill pane |
-| `ctrl-a k` | Kill window |
+| :--- | :--- |
+| `prefix r` | Reload configuration |
+| `prefix c` | Create window |
+| `prefix -` | Split pane vertically |
+| `prefix \` | Split pane horizontally |
+| `prefix tab` | Toggle last window |
+| `prefix 1..9` | Select window |
+| `prefix [hjkl]` | Navigate panes (vi-style) |
+| `prefix [HJKL]` | Resize panes |
+| `prefix x` | Kill pane |
+| `prefix q` | Kill window |
+| `prefix [` | Enter copy mode |
+| `v` | Begin selection (copy mode) |
+| `y` | Copy selection (copy mode) |
+| `prefix ]` | Paste clipboard |
 
 ### Aerospace
-A powerful and user-friendly macOS window manager.
-
 | Shortcut | Action |
-| :---- | :---- |
+| :--- | :--- |
 | `cmd-1..5` | Switch workspaces |
-| `cmd-alt-1..5` | Move windows to workspace |
-| `cmd-alt-[hjkl]` | Move windows to left/down/up/right |
-| `cmd-ctrl-[hjkl]` | Change windows focus to left/down/up/right |
+| `cmd-alt-1..5` | Move window to workspace |
+| `cmd-alt-[hjkl]` | Move window left/down/up/right |
+| `cmd-ctrl-[hjkl]` | Focus window left/down/up/right |
 | `cmd-alt-enter` | Launch terminal |
+| `cmd-alt-[-/=]` | Resize window |
+| `cmd-ctrl-;` | Enter service mode |
 
 ### Obsidian
-A powerful and flexible knowledge base for notes.
-
 | Shortcut | Action |
-| :---- | :---- |
+| :--- | :--- |
 | `cmd-p` | Open command palette |
 | `cmd-e` | Toggle edit/reading view |
 | `cmd-option-i` | Show console |
@@ -125,36 +137,30 @@ A powerful and flexible knowledge base for notes.
 | `cmd-[` | Toggle left sidebar |
 | `cmd-]` | Toggle right sidebar |
 
-### Micro
-A terminal-based text editor with intuitive keybindings and mouse support.
-
+### Nano
 | Shortcut | Action |
-| :---- | :---- |
+| :--- | :--- |
 | `ctrl-s` | Save |
-| `ctrl-q` | Exit |
+| `ctrl-x` | Exit |
 | `ctrl-k` | Cut the entire line |
-| `ctrl-c` | Copy |
-| `ctrl-v` | Paste |
-| `ctrl-z` | Undo changes |
-| `ctrl-y` | Redo changes |
+| `ctrl-u` | Paste (uncut) |
+| `alt-u` | Undo |
+| `alt-e` | Redo |
+| `ctrl-w` | Search |
+| `ctrl-\` | Search and replace |
 
 ### Vim
-A highly configurable text editor for efficient text editing.
-
 | Shortcut | Action |
-| :---- | :---- |
-| `:wq` | Save and exit |
-| `:q!` | Exit without saving |
+| :--- | :--- |
+| `ctrl-s` | Save (normal/insert mode) |
+| `leader-w` | Save |
+| `leader-q` | Quit |
 | `dd` | Cut the entire line |
 | `yy` | Copy the entire line |
-| `yw` | Copy the word under the cursor |
 | `p` | Paste copied text |
-| `u` | Undo changes |
-| `ctrl-r` | Redo changes |
-| `shift-g` | End of file |
-| `gg` | Beginning of file |
-| `$` | End of line |
-| `^` | Beginning of line |
-| `g~w` | Toggle case of the word under the cursor |
-| `ctrl-v` | Enter visual mode |
-| `/sentence` | Search for sentence |
+| `u` | Undo |
+| `ctrl-r` | Redo |
+| `gg/G` | Beginning/End of file |
+| `^/$` | Beginning/End of line |
+| `/pattern` | Search |
+| `esc` | Clear search highlight |

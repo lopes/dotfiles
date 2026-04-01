@@ -10,8 +10,18 @@
 
 [core]
   editor = vim
+  pager = delta
   autocrlf = input
   whitespace = fix,-indent-with-non-tab,trailing-space,cr-at-eol
+
+[interactive]
+  diffFilter = delta --color-only
+
+[delta]
+  syntax-theme = GitHub-Dark-Dimmed
+  navigate = true
+  line-numbers = true
+  side-by-side = false
 
 [commit]
   gpgsign = true

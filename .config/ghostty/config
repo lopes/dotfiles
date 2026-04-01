@@ -6,7 +6,7 @@ font-size = 16
 
 theme = GitHub-Dark-Dimmed
 
-cursor-color = #a6e3a1
+cursor-color = #57ab5a
 cursor-style = bar
 cursor-style-blink = true
 # click to move: alt+click

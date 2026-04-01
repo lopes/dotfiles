@@ -61,6 +61,7 @@ set undoreload=10000
 " file handling
 set viminfo='10,\"30,:40,%,n~/.viminfo
 au BufReadPost * if line("'\"")|execute("normal `\"")|endif
+let g:netrw_dirhistmax = 0
 set nobackup
 set noswapfile
 set nowritebackup
@@ -81,13 +82,13 @@ set statusline+=%y\ %{&fenc}
 set statusline+=\ %l:%c
 set statusline+=\ %P
 
-highlight NormalMode  guifg=#a6e3a1 gui=bold
-highlight InsertMode  guifg=#cba6f7 gui=bold
-highlight VisualMode  guifg=#f9e2af gui=bold
-highlight ReplaceMode guifg=#f38ba8 gui=bold
+highlight NormalMode  guifg=#57ab5a gui=bold
+highlight InsertMode  guifg=#b083f0 gui=bold
+highlight VisualMode  guifg=#daaa3f gui=bold
+highlight ReplaceMode guifg=#f47067 gui=bold
 
-highlight StatusLine   guibg=NONE guifg=#cdd6f4
-highlight StatusLineNC guibg=NONE guifg=#6c7086
+highlight StatusLine   guibg=NONE guifg=#adbac7
+highlight StatusLineNC guibg=NONE guifg=#444c56
 
 " simpler bottom
 set noshowmode    " no -- INSERT -- ...

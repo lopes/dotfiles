@@ -18,10 +18,12 @@ export EDITOR="vim"
 export VISUAL="vim"
 export VIMINIT="source $HOME/.config/vim/vimrc"
 
+# tool themes
+export BAT_THEME="GitHub-Dark-Dimmed"
+
 # zsh
 export KEYTIMEOUT=1  # used in zsh vi mode
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
-export HISTFILE="$XDG_CACHE_HOME/zsh"
 export SAVEHIST=15000
 export HISTSIZE=2000
 export HISTORY_IGNORE="(ls(| *)|pwd|exit|cd(| *)|bg(| *)|fg(| *)|history)"

@@ -2,14 +2,16 @@
 
 source ${HOME}/.config/aliases.unix.sh
 
-alias ls="ls --color=auto -lhF"
-alias ll="ls -alF"
-alias la="ls -A"
+alias ls="eza -lh --group-directories-first --icons=auto --git"
+alias ll="eza -lah --group-directories-first --icons=auto --git"
+alias la="eza -a --group-directories-first --icons=auto"
+alias tree="eza --tree --level=3 --icons=auto"
 
 alias grep="grep --color=auto"
 alias egrep="egrep --color=auto"
 alias fgrep="fgrep --color=auto"
 
+alias cat="bat --paging=never"
 alias diff="diff --color"
 alias gdiff="git diff"
 alias wget="wget -c"

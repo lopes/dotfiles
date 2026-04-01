@@ -14,9 +14,10 @@
 !.config/termux/termux.properties
 !.config/tmux/tmux.conf
 !.config/vim/vimrc
-!.config/vim/colors/catppuccin_mocha.vim
-!.config/zed/keymap.json
-!.config/zed/settings.json
+!.config/vim/colors/github_dark_dimmed.vim
+!.config/ghostty/config
+!.config/inputrc
+!.config/nano/nanorc
 !.config/zsh/.zshrc
 !.config/zsh/functions.sh
 !.gnupg/gpg-agent.conf

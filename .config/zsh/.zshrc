@@ -53,17 +53,31 @@ fi
 test -d $HOME/.local/bin && PATH="$HOME/.local/bin:$PATH"  # local binaries to PATH
 
 # prompt
-export PROMPT='%F{103}%n@%m❯%f%F{75}%3~%f%(?.%F{255}.%F{196})❯%f '
+export PROMPT='%F{#768390}%n@%m❯%f%F{#539bf5}%3~%f%(?.%F{#adbac7}.%F{#f47067})❯%f '
 if [ "$TERM_PROGRAM" != "Apple_Terminal" ]; then
   eval "$(oh-my-posh init zsh --config "$HOME/.config/oh-my-posh/sable.toml")"
 fi
 
 
+# modern tools
+eval "$(zoxide init zsh)"
+source <(fzf --zsh)
+export FZF_DEFAULT_OPTS="
+  --color=fg:#adbac7,bg:#22272e,hl:#539bf5
+  --color=fg+:#adbac7,bg+:#2d333b,hl+:#539bf5
+  --color=info:#daaa3f,prompt:#57ab5a,pointer:#b083f0
+  --color=marker:#57ab5a,spinner:#b083f0,header:#539bf5
+  --color=border:#444c56,gutter:#22272e
+  --border=rounded --height=40% --layout=reverse"
+
 # extra functions for zsh
 test -f $HOME/.config/zsh/functions.sh && source $HOME/.config/zsh/functions.sh
 
 # private settings, like API keys and sensitive functions
-test -f $HOME/.config/zsh/private.sh && source $HOME/.config/zsh/private.sh
+if [ -f "$HOME/.config/zsh/private.sh" ]; then
+  [ "$(stat -f %Lp "$HOME/.config/zsh/private.sh")" != "600" ] && chmod 600 "$HOME/.config/zsh/private.sh"
+  source "$HOME/.config/zsh/private.sh"
+fi
 
 # key bindings
 # run `cat` and type your keys to get the sequences

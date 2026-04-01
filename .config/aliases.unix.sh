@@ -15,5 +15,6 @@ alias mkdir="mkdir -pv"
 alias cd..="\cd .."
 alias sl="\ls"
 alias l="\ls"
+alias find="fd"
 
 alias tx="tmux new -As "󰁞""
