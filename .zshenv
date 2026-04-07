@@ -47,3 +47,5 @@ fi
 
 export CLAUDE_CONFIG_DIR="$HOME/.config/claude"
 
+export LEDGER_FILE="$HOME/Documents/Nexus/1 Efforts/hledger/main.journal"
+
