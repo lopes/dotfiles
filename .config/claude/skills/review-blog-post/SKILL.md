@@ -49,6 +49,8 @@ When the user provides a blog post draft, perform these three passes:
 
 The blog uses Quarto. Apply these formatting rules:
 
+**Paragraphs are single-lined.** Never hard-wrap prose at 80 (or any) characters. Each paragraph must be one unbroken line. Only insert line breaks at intentional block boundaries: headings, list items, code blocks, callouts, and blockquotes.
+
 **Callout blocks.** If you encounter lines starting with "NOTE:", "WARNING:", "TIP:", or "IMPORTANT:", convert them to Quarto callout syntax:
 
 ```
@@ -73,19 +75,61 @@ Your tip text here.
 
 ## Output Format
 
-Deliver your review in two parts:
+Deliver your review in two parts.
 
 ### Part 1: The Revised Article
-Output the full revised article as a Markdown code block. If the user provided a filename, mention it at the top so they know what to save it as.
+Write the revised article directly to the source file using the Write tool. Do not output the article to the screen. Confirm the file was updated with a single short line.
 
-### Part 2: Suggestions Footer
-After the revised article, provide a separate "Editorial Notes" section containing:
+### Part 2: Editorial Notes
+After saving the file, update the `editorial-lines.md` file at the root of the repository:
+
+- If the file exists, add new rows to the appropriate category tables.
+- If the file does not exist, create it using this schema:
+
+```markdown
+# Editorial Lines
+
+Personal error log for English writing. Each entry records a recurring mistake, its cause, and the fix. Grouped by category — not by post — so patterns accumulate over time.
+
+---
+
+## False Cognates (PT → EN)
+
+Mistakes caused by direct translation from Portuguese that produce a different meaning in English.
+
+| Wrong | Right | Why | Source |
+| ----- | ----- | --- | ------ |
+
+---
+
+## Articles & Prepositions
+
+Small but frequent errors around articles (a/an/the) and prepositions (of/on/to/in).
+
+| Wrong | Right | Rule | Source |
+| ----- | ----- | ---- | ------ |
+
+---
+
+## Draft Hygiene
+
+Notes left in the file that would have published as-is.
+
+| Issue | Fix | Source |
+| ----- | --- | ------ |
+```
+
+The **Source** column format is: `Post Title (YYYY-MM-DD)`.
+
+Only add entries for mistakes that fit an existing category. If a new pattern emerges that doesn't fit any category, add a new `##` section following the same table schema.
+
+After updating `editorial-lines.md`, output a brief **Editorial Notes** section to the screen containing:
 
 1. **Draft Assessment** — A 2–3 sentence honest take on the original draft's quality: what was strong, what was the main issue.
 2. **Recurring Patterns** — The top 3 English or structural mistakes found. Be specific (e.g., "Consistent misuse of 'which' vs. 'that' in restrictive clauses" rather than "grammar issues").
 3. **Improvement Tips** — Actionable advice to avoid these patterns in future drafts. Frame these as quick rules the author can internalize.
 
-The purpose of this footer is to help the author improve over time, not just fix this one post. Be direct — the author prefers blunt, actionable feedback over diplomatic hedging.
+The purpose of this section is to help the author improve over time, not just fix this one post. Be direct — the author prefers blunt, actionable feedback over diplomatic hedging.
 
 ## Boundaries
 
