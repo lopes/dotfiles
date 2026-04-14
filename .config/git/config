@@ -18,7 +18,7 @@
   diffFilter = delta --color-only
 
 [delta]
-  syntax-theme = GitHub-Dark-Dimmed
+  syntax-theme = Visual Studio Dark+
   navigate = true
   line-numbers = true
   side-by-side = false

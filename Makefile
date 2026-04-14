@@ -2,7 +2,7 @@ DOTFILES := $(HOME)/Projects/dotfiles
 CONFIG   := $(HOME)/.config
 
 # directories symlinked entirely into ~/.config/
-DIRS := aerospace bash claude ghostty git nano oh-my-posh termux tmux vim zsh
+DIRS := aerospace bash claude ghostty git htop nano oh-my-posh termux tmux vim zsh
 
 # loose files symlinked into ~/.config/
 FILES := aliases.bsd.sh aliases.linux.sh aliases.unix.sh aliases.windows.sh inputrc

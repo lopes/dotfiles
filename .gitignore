@@ -10,6 +10,7 @@
 !.config/aliases.windows.sh
 !.config/bash/bashrc
 !.config/git/config
+!.config/htop/htoprc
 !.config/oh-my-posh/sable.toml
 !.config/termux/termux.properties
 !.config/tmux/tmux.conf
