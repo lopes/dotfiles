@@ -25,7 +25,7 @@ brew install binwalk exiftool gron lnav miller mitmproxy nmap p7zip \
   pv socat ssdeep yara
 
 # gui apps
-brew install --cask aerospace ghostty obsidian raycast wireshark
+brew install --cask ghostty obsidian raycast rectangle wireshark
 ```
 
 ---
@@ -84,7 +84,7 @@ mkdir -p ~/Projects/dotfiles/.config/wezterm
 vim ~/Projects/dotfiles/.config/wezterm/wezterm.lua
 
 # 2. register it in the Makefile (add to the DIRS list)
-DIRS := aerospace bash claude ghostty git nano oh-my-posh termux tmux vim wezterm zsh
+DIRS := bash claude ghostty git nano oh-my-posh termux tmux vim wezterm zsh
 
 # 3. track it in git (allowlist gitignore requires -f)
 echo '!.config/wezterm/**' >> ~/Projects/dotfiles/.gitignore
@@ -175,9 +175,9 @@ Common aliases for built-in tools:
 | `cmd-w/q` | Close/Quit application |
 | `cmd-,` | Open application settings |
 | `cmd-n` | New window, file, or tab |
-| `cmd-shift-3/4/5` | Screenshots |
-| `ctrl-1..0` | Move to Desktop 1-10 |
+| `ctrl-1..5` | Move to Desktop 1-5 |
 | `ctrl-left/right` | Move to previous/next Desktop |
+| `ctrl-up` | Mission Control |
 
 ### Zsh
 | Shortcut | Action |
@@ -203,7 +203,7 @@ Common aliases for built-in tools:
 | `cmd-shift-d` | Split vertically |
 
 ### Tmux
-Prefix key: `ctrl-a`
+Prefix key: `ctrl-a` (secondary: `ctrl-b`)
 
 | Shortcut | Action |
 | :--- | :--- |
@@ -219,19 +219,10 @@ Prefix key: `ctrl-a`
 | `prefix q` | Kill window |
 | `prefix [` | Enter copy mode |
 | `v` | Begin selection (copy mode) |
+| `ctrl-v` | Toggle rectangle selection (copy mode) |
 | `y` | Copy selection (copy mode) |
+| `q` / `esc` | Exit copy mode |
 | `prefix ]` | Paste clipboard |
-
-### Aerospace
-| Shortcut | Action |
-| :--- | :--- |
-| `cmd-1..5` | Switch workspaces |
-| `cmd-alt-1..5` | Move window to workspace |
-| `cmd-alt-[hjkl]` | Move window left/down/up/right |
-| `cmd-ctrl-[hjkl]` | Focus window left/down/up/right |
-| `cmd-alt-enter` | Launch terminal |
-| `cmd-alt-[-/=]` | Resize window |
-| `cmd-ctrl-;` | Enter service mode |
 
 ### Obsidian
 | Shortcut | Action |

@@ -3,7 +3,7 @@
 # allowlist: everything is ignored except the files listed below
 *
 
-!.config/aerospace/aerospace.toml
+!.config/macos/macos-defaults.sh
 !.config/aliases.bsd.sh
 !.config/aliases.linux.sh
 !.config/aliases.unix.sh
