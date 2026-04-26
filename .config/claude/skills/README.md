@@ -4,6 +4,34 @@ Custom Claude Code skills for personal workflows. Invoke with `/skill-name`.
 
 ---
 
+## ai-tells-cleaner
+
+Review text and remove AI-generated patterns — overused vocabulary, formulaic structures, em-dash drench, sycophantic openers, hedging filler, and closing offers — while preserving the original meaning, opinions, structure, and voice.
+
+**Passes:**
+1. Lexical Sweep — Tier-1/Tier-2 vocabulary substitution
+2. Phrase Sweep — filler phrases deleted or flattened
+3. Structural Sweep — "It's not X, it's Y" reframes, rule-of-three, anaphora abuse
+4. Tonal Sweep — hedging frames, sycophancy, closing offers
+5. Punctuation Sweep — em-dash density, decorative emoji, semicolons
+6. Specificity Flag — unsourced claims flagged for author (not auto-fixed)
+
+**Output:** cleaned text + change log + manual review items.
+
+**Examples:**
+```
+/ai-tells-cleaner
+[paste text from ChatGPT/Claude/Gemini]
+
+/ai-tells-cleaner
+Humanize this: [paste draft]
+
+/ai-tells-cleaner
+De-slop this LinkedIn post: [paste post]
+```
+
+---
+
 ## audit-obsidian-vault
 
 Audit an Obsidian vault's organizational health: tags, folder placement, naming conventions, and structural integrity.
