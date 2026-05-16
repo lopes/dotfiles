@@ -14,6 +14,9 @@ export XDG_MUSIC_DIR="$HOME/Music"
 export XDG_PICTURES_DIR="$HOME/Pictures"
 export XDG_VIDEOS_DIR="$HOME/Videos"
 
+# default file mode: owner rwx, group rx, others nothing
+umask 027
+
 export EDITOR="vim"
 export VISUAL="vim"
 export VIMINIT="source $HOME/.config/vim/vimrc"
@@ -33,10 +36,10 @@ export LESSHISTFILE="-"  # no history for less command
 export LESS="-RNS"       # color, line numbers, no wrap
 export PAGER="less"
 
-# timeout
-# TMOUT=600
-# readonly TMOUT
-# export TMOUT
+# idle-shell timeout (10 min) — auto-logs out abandoned sessions
+TMOUT=600
+readonly TMOUT
+export TMOUT
 
 # rust
 export RUSTUP_HOME="$XDG_CACHE_HOME/rustup"
@@ -47,5 +50,5 @@ fi
 
 export CLAUDE_CONFIG_DIR="$HOME/.config/claude"
 
-export LEDGER_FILE="$HOME/Documents/Nexus/1 Efforts/hledger/main.journal"
+export LEDGER_FILE="$HOME/Documents/hledger/journal/main.journal"
 
