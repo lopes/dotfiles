@@ -36,6 +36,13 @@ install:
 	else \
 		ln -sv "$(DOTFILES)/.zshenv" "$(HOME)/.zshenv"; \
 	fi
+	@if [ -L "$(HOME)/.bashrc" ]; then \
+		echo "skip  $(HOME)/.bashrc (already linked)"; \
+	elif [ -e "$(HOME)/.bashrc" ]; then \
+		echo "WARN  $(HOME)/.bashrc exists and is not a symlink — skipping"; \
+	else \
+		ln -sv "$(DOTFILES)/.config/bash/bashrc" "$(HOME)/.bashrc"; \
+	fi
 	@echo "\ndone. restart your shell to apply changes."
 
 uninstall:
@@ -46,6 +53,7 @@ uninstall:
 		[ -L "$(CONFIG)/$$f" ] && rm -v "$(CONFIG)/$$f" || true; \
 	done
 	@[ -L "$(HOME)/.zshenv" ] && rm -v "$(HOME)/.zshenv" || true
+	@[ -L "$(HOME)/.bashrc" ] && rm -v "$(HOME)/.bashrc" || true
 	@echo "\ndone. all symlinks removed."
 
 list:
@@ -57,3 +65,4 @@ list:
 		printf "  %-20s -> %s\n" "$(CONFIG)/$$f" "$$(readlink "$(CONFIG)/$$f" 2>/dev/null || echo 'NOT LINKED')"; \
 	done
 	@printf "  %-20s -> %s\n" "$(HOME)/.zshenv" "$$(readlink "$(HOME)/.zshenv" 2>/dev/null || echo 'NOT LINKED')"
+	@printf "  %-20s -> %s\n" "$(HOME)/.bashrc" "$$(readlink "$(HOME)/.bashrc" 2>/dev/null || echo 'NOT LINKED')"
