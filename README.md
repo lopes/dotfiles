@@ -13,34 +13,30 @@ My personal, **minimalist** configuration files built on simplicity, security, a
 ---
 
 ## Packages
-Install all dependencies before symlinking:
 
-```sh
-# core
-brew install bat eza fzf git-delta htop jq nano ripgrep shellcheck \
-  tmux vim yq zoxide zsh-autosuggestions zsh-syntax-highlighting
-
-# security & incident response
-brew install binwalk exiftool gron lnav miller mitmproxy nmap p7zip \
-  pv socat ssdeep yara
-
-# gui apps
-brew install --cask ghostty obsidian raycast rectangle wireshark
-```
+All packages are declared in [`Brewfile`](Brewfile): formulae, casks, taps, and VSCode extensions. `brew bundle install` reads it and installs everything in one pass. Update it with `make brew-dump` after installing or removing tools.
 
 ---
 
 ## Quick Start
 
-### Clean install
+### New machine (macOS)
 ```sh
-# 1. install packages (see Packages above)
-# 2. clone and link
+# 1. install Homebrew (https://brew.sh)
+# 2. clone and bootstrap
 cd "$HOME/Projects"
 git clone https://github.com/lopes/dotfiles
 cd dotfiles
-make install
+make bootstrap   # brew bundle + make install + macos-defaults.sh
 # 3. restart your shell
+```
+
+### Existing machine
+```sh
+make install       # symlinks only
+make brew          # apt-style: install anything in Brewfile that's missing
+make brew-check    # show drift (what's in Brewfile but not installed)
+make brew-dump     # regenerate Brewfile from current state (review diff before committing)
 ```
 
 ### How it works
@@ -57,9 +53,13 @@ Because these are symlinks, **editing a file in either location is the same thin
 ### Makefile targets
 | Target | What it does |
 | :--- | :--- |
+| `make bootstrap` | Full new-machine setup: `brew` + `install` + `macos-defaults.sh`. |
 | `make install` | Creates all symlinks. Safe to run repeatedly — skips existing links, warns on conflicts. |
-| `make list` | Shows all managed symlinks and whether they're connected. |
 | `make uninstall` | Removes all managed symlinks. Does not delete any config files. |
+| `make list` | Shows all managed symlinks and whether they're connected. |
+| `make brew` | `brew bundle install` — installs anything in `Brewfile` that's missing. |
+| `make brew-check` | `brew bundle check` — reports drift between Brewfile and what's installed. |
+| `make brew-dump` | Regenerate `Brewfile` from current state. Review the diff before committing. |
 
 ---
 

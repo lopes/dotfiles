@@ -18,12 +18,20 @@ Configs live under `.config/` in the repo and are exposed to the system via **sy
 ## Common commands
 
 ```sh
-make install     # create all symlinks (idempotent; skips existing, warns on conflicts)
-make list        # show every managed symlink and whether it resolves
+make bootstrap   # new-machine setup: brew bundle + symlinks + macos-defaults.sh
+make install     # create symlinks only (idempotent; skips existing, warns on conflicts)
 make uninstall   # remove the symlinks only (config files in the repo are untouched)
+make list        # show every managed symlink and whether it resolves
+make brew        # brew bundle install (apply Brewfile)
+make brew-check  # report drift between Brewfile and installed packages
+make brew-dump   # regenerate Brewfile from current state (review diff before committing)
 ```
 
 Restart the shell after `make install` to pick up `.zshenv` / `.zshrc` changes.
+
+## Packages: Brewfile, not README
+
+Brew packages (formulae, casks, taps, VSCode extensions) are declared in `Brewfile` at the repo root and applied via `brew bundle install`. The Brewfile is the source of truth — don't add packages by hand-editing the README. When the user installs or removes a brew package they actually want to keep, run `make brew-dump` and commit the resulting diff.
 
 ## Three coordinated places when adding a new config
 

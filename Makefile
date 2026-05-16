@@ -7,7 +7,7 @@ DIRS := bash claude ghostty git htop nano oh-my-posh termux tmux vim zsh
 # loose files symlinked into ~/.config/
 FILES := aliases.bsd.sh aliases.linux.sh aliases.unix.sh aliases.windows.sh inputrc
 
-.PHONY: install uninstall list
+.PHONY: install uninstall list brew brew-check brew-dump bootstrap
 
 install:
 	@mkdir -p "$(HOME)/.cache/zsh" "$(HOME)/.local/bin"
@@ -65,6 +65,21 @@ uninstall:
 	@[ -L "$(HOME)/.bashrc" ] && rm -v "$(HOME)/.bashrc" || true
 	@[ -L "$(HOME)/.ssh/config" ] && rm -v "$(HOME)/.ssh/config" || true
 	@echo "\ndone. all symlinks removed."
+
+brew:
+	@brew bundle install --file="$(DOTFILES)/Brewfile"
+
+brew-check:
+	@brew bundle check --file="$(DOTFILES)/Brewfile" --verbose
+
+brew-dump:
+	@brew bundle dump --file="$(DOTFILES)/Brewfile" --force
+	@echo "Brewfile regenerated. review the diff before committing."
+
+bootstrap:
+	@$(MAKE) brew
+	@$(MAKE) install
+	@bash "$(DOTFILES)/.config/macos/macos-defaults.sh"
 
 list:
 	@echo "managed symlinks:"

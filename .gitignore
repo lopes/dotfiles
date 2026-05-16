@@ -27,6 +27,7 @@
 !.config/zsh/functions.sh
 !.gitignore
 !.zshenv
+!Brewfile
 !CLAUDE.md
 !LICENSE
 !Makefile
