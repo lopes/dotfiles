@@ -21,13 +21,12 @@
 !.config/nano/nanorc
 !.config/
 !.config/claude/
-!.config/claude/skills/
 !.config/claude/skills/**
 !.config/zsh/.zshrc
 !.config/zsh/functions.sh
-!.gnupg/gpg-agent.conf
 !.gitignore
 !.zshenv
+!CLAUDE.md
 !LICENSE
 !Makefile
 !README.md

@@ -1,0 +1,33 @@
+# nano configuration
+
+# display
+set linenumbers
+set numbercolor bold,white
+set titlecolor bold,white
+set promptcolor bold,white
+set statuscolor bold,white
+set keycolor bold,white
+set functioncolor white
+set errorcolor bold,red
+set selectedcolor bold,white
+set stripecolor ,black
+
+# editor behavior
+set tabsize 2
+set tabstospaces
+set autoindent
+set trimblanks
+set softwrap
+set atblanks
+set mouse
+set nohelp
+set stateflags
+set indicator
+set minibar
+
+# search
+set casesensitive
+set regexp
+
+# syntax highlighting
+include "/opt/homebrew/share/nano/*.nanorc"

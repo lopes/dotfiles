@@ -3,10 +3,10 @@
 [user]
   name = Joe Lopes
   email = 2897144+lopes@users.noreply.github.com
-  signingkey = E157B1DEAA636FF8
+  signingkey = /Users/jose.lopes/.ssh/id_ed25519.pub
 
 [gpg]
-  program = /usr/local/bin/gpg
+  format = ssh
 
 [core]
   editor = vim
@@ -55,9 +55,9 @@
 
 [color]
   ui = auto # auto coloring for all commands
-	diff = auto
-	status = auto
-	branch = auto
+  diff = auto
+  status = auto
+  branch = auto
 [color "branch"]
   current = yellow bold
   local = green bold
