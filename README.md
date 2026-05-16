@@ -129,25 +129,6 @@ These tools replace traditional Unix commands with faster, more ergonomic altern
 | [ripgrep](https://github.com/BurntSushi/ripgrep) | `grep` | Faster recursive search, respects `.gitignore`, regex by default. | No config needed. Use as `rg pattern`. | `rg "error" /var/log`, `rg -i "password" -t py` |
 | [zoxide](https://github.com/ajeetdsouza/zoxide) | `cd` | Learns your most-used directories for instant jumping with `z`. | Initialized in `.config/zsh/.zshrc`. Use `z foo` to jump to the best match. | `z dotfiles`, `z proj` |
 
-### Security & IR Tools
-Tools for file analysis, log investigation, and incident response. Aliased in `aliases.unix.sh`.
-
-| Tool | What it does | Alias | Examples |
-| :--- | :--- | :--- | :--- |
-| [ssdeep](https://ssdeep-project.github.io/ssdeep/) | Fuzzy hashing — compare file similarity. | `fhash` | `fhash malware.bin`, `fhash -bcr ./samples/` |
-| [yara](https://virustotal.github.io/yara/) | Pattern matching for malware classification. | — | `yara rules.yar suspect.exe`, `yara -r rules/ ./disk_image/` |
-| [binwalk](https://github.com/ReFirmLabs/binwalk) | Scan and extract embedded files from binaries/firmware. | `extract` | `binwalk firmware.bin`, `extract firmware.bin` |
-| [exiftool](https://exiftool.org/) | Read/write metadata from files (images, PDFs, docs). | `metadata` | `metadata photo.jpg`, `metadata -All= leaked.pdf` |
-| [tshark](https://www.wireshark.org/) | CLI packet capture and analysis (Wireshark engine). | — | `tshark -r capture.pcap`, `tshark -i en0 -f "port 443"` |
-| [mitmproxy](https://mitmproxy.org/) | Interactive HTTP/S proxy for inspecting web traffic. | — | `mitmproxy -p 8080`, `mitmdump -w traffic.flow` |
-| [socat](http://www.dest-unreach.org/socat/) | Multipurpose network relay (netcat on steroids). | — | `socat TCP-LISTEN:4444 STDOUT`, `socat - TCP:host:port` |
-| [nmap](https://nmap.org/) | Port scanning and service detection. | — | `nmap -sV host`, `nmap -sn 192.168.1.0/24` |
-| [lnav](https://lnav.org/) | Log file navigator with syntax highlighting and SQL queries. | — | `lnav /var/log/system.log`, `lnav access.log error.log` |
-| [gron](https://github.com/tomnomnom/gron) | Make JSON greppable — flatten then grep then unflatten. | `gj` | `gj api.json \| grep name`, `curl -s url \| gj` |
-| [miller](https://github.com/johnkerl/miller) | Like awk/sed for structured data (CSV, JSON, tabular). | `csv`, `tsv` | `csv filter '$status != 200' access.csv`, `tsv head -n 5 data.tsv` |
-| [pv](https://www.ivarch.com/programs/pv.shtml) | Pipe viewer — monitor data flow with progress bars. | — | `pv bigfile.img > /dev/disk2`, `cat dump.sql \| pv \| mysql` |
-| [p7zip](https://github.com/p7zip-project/p7zip) | Handle every archive format (7z, zip, rar, tar, gz...). | `7z` | `7z x archive.7z`, `7z l suspect.zip` |
-
 Common aliases for built-in tools:
 
 | Alias | Expands to | Use case | Examples |

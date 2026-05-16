@@ -36,13 +36,7 @@ alias b64e="base64"
 alias b64d="base64 -d"
 alias urldecode='python3 -c "import sys,urllib.parse;print(urllib.parse.unquote(sys.argv[1]))"'
 alias tcpdump="sudo tcpdump -nn"
-alias fhash="ssdeep"
-alias metadata="exiftool"
-alias extract="binwalk -e"
 
 # log & data analysis
 alias less="less -RNS"
 alias jl="jq -C . | less -R"
-alias gj="gron"
-alias csv="mlr --csv"
-alias tsv="mlr --tsv"
