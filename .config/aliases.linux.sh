@@ -6,8 +6,6 @@ alias ls="ls --color=auto -lhF"
 alias ll="ls -alF"
 alias la="ls -A"
 
-alias grep="grep --color=auto"
-
 alias ifconfig="ip address"
 alias route="ip route"
 alias arp="ip neighbor"
@@ -30,7 +28,6 @@ alias sniff="sudo tcpdump -nn -i eth0"
 alias od="od -A x -t x1z -v"
 alias vi="vim"
 
-alias sudo="nocorrect sudo"
 alias shutdown="sudo shutdown"
 alias reboot="sudo reboot"
 
