@@ -78,6 +78,7 @@ fi
 
 # modern tools
 eval "$(zoxide init zsh)"
+eval "$(direnv hook zsh)"
 source <(fzf --zsh)
 export FZF_DEFAULT_OPTS="
   --color=fg:#adbac7,bg:#22272e,hl:#539bf5
