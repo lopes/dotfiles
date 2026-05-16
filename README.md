@@ -176,8 +176,9 @@ Common aliases for built-in tools:
 | `cmd-,` | Open application settings |
 | `cmd-n` | New window, file, or tab |
 | `ctrl-1..5` | Move to Desktop 1-5 |
-| `ctrl-left/right` | Move to previous/next Desktop |
-| `ctrl-up` | Mission Control |
+| `fn-ctrl-up` | Mission Control |
+| `fn-ctrl-shift-left/right` | Move active window to previous/next Desktop |
+| `option-ctrl-left/right` | Tile active window left/right |
 
 ### Zsh
 | Shortcut | Action |

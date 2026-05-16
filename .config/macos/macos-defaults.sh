@@ -53,21 +53,22 @@ set_hotkey 122 65535 23 262144 true    # ctrl+5 -> desktop 5
 echo "  desktop switching: ctrl+[1-5]"
 
 # ---------------------------------------------------------------------------
-# mission control -- ctrl+up
+# mission control -- fn+ctrl+up
 # ---------------------------------------------------------------------------
-# 32 = mission control (keycode 126=up, ctrl=262144)
+# 32 = mission control (keycode 126=up, fn+ctrl=8650752)
 # 33 = application windows -- kept disabled
-set_hotkey 32  65535 126 262144 true
+set_hotkey 32  65535 126 8650752 true
 disable_hotkey 33
-echo "  mission control: ctrl+up"
+echo "  mission control: fn+ctrl+up"
 
 # ---------------------------------------------------------------------------
-# move between spaces -- ctrl+left/right
+# move between spaces -- disabled
 # ---------------------------------------------------------------------------
-# 79 = move left a space, 81 = move right a space
-set_hotkey 79  65535 123 262144 true   # ctrl+left  -> move left a space
-set_hotkey 81  65535 124 262144 true   # ctrl+right -> move right a space
-echo "  move between spaces: ctrl+left/right"
+# 79/81 = move left/right a space (would be ctrl+left/right). Disabled
+# because desktop switching via ctrl+[1-5] (hotkeys 118-122) covers it.
+disable_hotkey 79
+disable_hotkey 81
+echo "  move-between-spaces: disabled (use ctrl+[1-5] instead)"
 
 # ---------------------------------------------------------------------------
 # disable spotlight (both ctrl+space and cmd+space)
@@ -78,15 +79,18 @@ disable_hotkey 65
 echo "  spotlight shortcuts: disabled"
 
 # ---------------------------------------------------------------------------
-# disable screenshots, input sources, and other unused shortcuts
+# disable keyboard-nav / accessibility shortcuts we don't use
 # ---------------------------------------------------------------------------
+# IDs 15-26 cover macOS's "Move focus to ..." family (status menus, dock,
+# floating windows, toolbars, drawers, etc.) plus a couple of misc ones.
+# We don't use any of them; disabling cuts down on accidental triggers.
 for id in 15 16 17 18 19 20 21 22 23 24 25 26; do
   disable_hotkey "$id"
 done
 # 36 = show desktop, 52 = turn dock hiding on/off
 disable_hotkey 36
 disable_hotkey 52
-echo "  screenshots, input sources, misc: disabled"
+echo "  keyboard-nav + misc shortcuts: disabled"
 
 # ---------------------------------------------------------------------------
 # keep enabled: help menu (cmd+shift+/)
@@ -96,27 +100,23 @@ set_hotkey 98  47 44 1179648 true
 echo "  help menu: cmd+shift+/ (kept)"
 
 # ---------------------------------------------------------------------------
-# disable fn-dependent move-space shortcuts
+# move active window to next/prev space -- fn+ctrl+shift+left/right
 # ---------------------------------------------------------------------------
-# 80/82 = move window to left/right space (fn+ctrl+shift+left/right)
-# disabled -- fn/globe key not sent by external keyboards (logitech)
-disable_hotkey 80
-disable_hotkey 82
-echo "  fn-based space shortcuts: disabled (broken on external keyboards)"
+# 80 = move window to left space, 82 = move window to right space
+# (keycodes: 123=left, 124=right; fn+ctrl+shift=8781824)
+# Only works on keyboards that send the globe/fn key (built-in Mac kb).
+set_hotkey 80  65535 123 8781824 true
+set_hotkey 82  65535 124 8781824 true
+echo "  move window to next/prev space: fn+ctrl+shift+left/right"
 
 # ---------------------------------------------------------------------------
-# window tiling (sequoia+ -- hardcoded, no config possible)
+# window tiling (sequoia+) -- option+ctrl+left/right
 # ---------------------------------------------------------------------------
-# sequoia built-in shortcuts (not overridable via defaults or plist):
-#   ctrl+fn+f       -> fill (maximize)
-#   ctrl+fn+arrows  -> tile left/right/top/bottom
-#   ctrl+fn+c       -> center
-# these only work with the mac globe/fn key. external keyboards (logitech)
-# don't send globe, so use rectangle for tiling instead.
-
-# clean up any stale NSUserKeyEquivalents from previous attempts
-defaults delete NSGlobalDomain NSUserKeyEquivalents 2>/dev/null || true
-echo "  window tiling: sequoia defaults (external kb: use rectangle)"
+# macOS's built-in Tiling menu items, bound via NSUserKeyEquivalents so
+# they work without the globe/fn key (unlike ctrl+fn+arrows).
+defaults write NSGlobalDomain NSUserKeyEquivalents -dict-add "Tiling Left"  '~^\U2192'
+defaults write NSGlobalDomain NSUserKeyEquivalents -dict-add "Tiling Right" '~^\U2190'
+echo "  window tiling: option+ctrl+left/right"
 
 # ---------------------------------------------------------------------------
 # dock
