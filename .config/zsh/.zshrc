@@ -1,5 +1,11 @@
 # zsh configuration
 
+# macos /etc/zshrc resets HISTFILE/HISTSIZE/SAVEHIST after .zshenv runs,
+# so we re-assert them here (this file runs after /etc/zshrc).
+HISTFILE="$XDG_CACHE_HOME/zsh/zsh_history"
+HISTSIZE=2000
+SAVEHIST=15000
+
 # improved history settings
 setopt EXTENDED_HISTORY       # record timestamp and duration
 setopt SHARE_HISTORY          # share history across sessions (implies APPEND_HISTORY)
