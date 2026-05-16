@@ -50,11 +50,13 @@ Mirror this in reverse when removing a config: drop the Makefile entry, drop the
 ## Architecture notes that aren't obvious from the tree
 
 - **OS-specific aliases dispatch.** `.config/zsh/.zshrc` sources one of `aliases.{bsd,linux,windows}.sh` based on `$OSTYPE`. `aliases.unix.sh` is the shared baseline and is sourced *from within* `aliases.bsd.sh` (and the others where applicable) — don't assume it loads automatically; check the OS-specific file when adding a cross-platform alias.
-- **`.zshenv` is the env layer, `.zshrc` is the interactive layer.** XDG vars, `EDITOR`, `BAT_THEME`, `CLAUDE_CONFIG_DIR`, history file location all live in `.zshenv` so they apply to non-interactive shells too. Don't move them into `.zshrc`.
+- **`.zshenv` vs `.zshrc` boundary.** `.zshenv` holds env vars that child processes and non-interactive zsh need (XDG paths, `EDITOR`, `PAGER`, `BAT_THEME`, `ZDOTDIR`, `umask`, rust env, `CLAUDE_CONFIG_DIR`, `LEDGER_FILE`). Everything interactive-only (HISTFILE, HISTSIZE, SAVEHIST, HISTORY_IGNORE, KEYTIMEOUT, TMOUT) lives in `.zshrc`. Don't mix the two.
+- **macOS `/etc/zshrc` trap.** On macOS, Apple's `/etc/zshrc` runs after `.zshenv` and before `.zshrc`, and silently clobbers `HISTFILE`, `HISTSIZE`, `SAVEHIST`. The repo's `.zshrc` re-asserts them; never move those three back to `.zshenv` "for tidiness" — they'll be overwritten and the user loses history.
 - **`CLAUDE_CONFIG_DIR` is redirected** to `~/.config/claude` in `.zshenv`. That directory exists under `.config/claude/` in this repo but only `claude/skills/**` and `claude/settings.json`-adjacent files are tracked (see `.gitignore`). Runtime state (`sessions/`, `history.jsonl`, `projects/`, `tasks/`, etc.) is intentionally untracked.
-- **`.config/macos/macos-defaults.sh` is NOT symlinked.** It is a one-shot `defaults write` script run manually on a new machine. It lives in the repo for tracking only.
+- **`.config/macos/macos-defaults.sh` is NOT symlinked.** It is a one-shot `defaults write` script run manually on a new machine (or via `make bootstrap`). It lives in the repo for tracking only.
+- **SSH client config is mode-sensitive.** `~/.ssh/config` is a symlink, but ssh checks the resolved target file's mode. The Makefile `install` target chmods the repo file to 600 before symlinking, and ensures `~/.ssh` is 700. Don't relax those.
 - **Private secrets** are sourced from `~/.config/zsh/private.sh` (untracked, chmod 600 enforced by `.zshrc`). Never commit anything to that path.
-- **Git signing uses SSH keys**, not GPG, despite the `[gpg] program = ...` line — `[gpg] format = ssh` is the active setting. Commits are signed by `~/.ssh/id_ed25519.pub`.
+- **Git signing uses SSH keys**, not GPG. `[gpg] format = ssh` plus a `signingkey` pointing at `~/.ssh/id_ed25519.pub`. There is no GPG installation expected.
 
 ## Claude skills live in this repo
 

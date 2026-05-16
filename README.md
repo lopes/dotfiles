@@ -129,6 +129,30 @@ These tools replace traditional Unix commands with faster, more ergonomic altern
 | [ripgrep](https://github.com/BurntSushi/ripgrep) | `grep` | Faster recursive search, respects `.gitignore`, regex by default. | No config needed. Use as `rg pattern`. | `rg "error" /var/log`, `rg -i "password" -t py` |
 | [zoxide](https://github.com/ajeetdsouza/zoxide) | `cd` | Learns your most-used directories for instant jumping with `z`. | Initialized in `.config/zsh/.zshrc`. Use `z foo` to jump to the best match. | `z dotfiles`, `z proj` |
 
+### Daily-Driver Tools
+Tools that don't replace anything traditional — they're new daily-utility additions.
+
+| Tool | What it does | Configuration | Examples |
+| :--- | :--- | :--- | :--- |
+| [gh](https://cli.github.com/) | GitHub CLI for PRs, issues, runs, releases, raw API. | Auth via `gh auth login` (writes `~/.config/gh/hosts.yml`, untracked — contains tokens). | `gh pr create`, `gh pr view --web`, `gh run watch`, `gh api repos/owner/repo` |
+| [age](https://age-encryption.org/) | Modern file encryption. Replaces GPG for at-rest secrets. Can use SSH keys directly. | None. Generate identity with `age-keygen -o ~/.age/key.txt`, or use existing SSH key. | `age -R ~/.ssh/id_ed25519.pub -o secret.age secret.txt`, `age -d -i ~/.age/key.txt secret.age` |
+| [direnv](https://direnv.net/) | Per-directory env vars via `.envrc`. Auto-loads on `cd` in, unloads on `cd` out. | Hook in `.config/zsh/.zshrc`. Each new `.envrc` requires `direnv allow` once. | `echo 'export AWS_PROFILE=foo' > .envrc && direnv allow` |
+| [glow](https://github.com/charmbracelet/glow) | Render Markdown in the terminal with pagination and styling. | None. Auto-detects light/dark terminal. | `glow README.md`, `glow -p file.md` |
+| [bandwhich](https://github.com/imsnif/bandwhich) | Live network usage by process and remote host. | None. Needs `sudo` to read socket info. | `sudo bandwhich`, `sudo bandwhich -i en0` |
+| [tldr](https://tldr.sh/) | Community-curated quick examples for commands. Different from `man` — recipes, not reference. | None. First run auto-fetches cache; refresh with `tldr --update`. | `tldr ssh-keygen`, `tldr ffmpeg` |
+
+### Security & IR Tools
+File analysis, log investigation, packet/protocol work.
+
+| Tool | What it does | Alias | Examples |
+| :--- | :--- | :--- | :--- |
+| [yara](https://virustotal.github.io/yara/) | Pattern matching for malware classification and detection rules. | — | `yara rules.yar suspect.exe`, `yara -r rules/ ./disk_image/` |
+| [exiftool](https://exiftool.org/) | Read/write metadata across images, PDFs, docs, media. | `metadata` | `metadata photo.jpg`, `metadata -All= leaked.pdf` |
+| [nmap](https://nmap.org/) | Port scanning and service detection. | — | `nmap -sV host`, `nmap -sn 192.168.1.0/24` |
+| [lnav](https://lnav.org/) | Log file navigator with SQL queries on log content and timestamp navigation. | — | `lnav /var/log/system.log`, `lnav access.log error.log` |
+| [miller](https://github.com/johnkerl/miller) | `awk` for CSV/TSV/JSON with header + type awareness. | `csv`, `tsv` | `csv filter '$status != 200' access.csv`, `tsv head -n 5 data.tsv` |
+| [pv](https://www.ivarch.com/programs/pv.shtml) | Pipe progress monitor. | — | `pv bigfile.img > /dev/disk2`, `cat dump.sql \| pv \| mysql` |
+
 Common aliases for built-in tools:
 
 | Alias | Expands to | Use case | Examples |
