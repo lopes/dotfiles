@@ -61,7 +61,7 @@ newline = true
 [[blocks.segments]]
 type = 'session'
 style = 'plain'
-foreground = 'p:gh_dimmed_overlay1'
+foreground = 'p:gh_dimmed_subtext0'
 background = 'transparent'
 template = ' {{ (.UserName | splitList ".") | first | trunc 8 }} 󰒋 {{ (.HostName | splitList ".") | first | trunc 8 }}'
 
@@ -70,7 +70,7 @@ type = 'path'
 style = 'plain'
 foreground = 'p:gh_dimmed_blue'
 background = 'transparent'
-template = ' <p:gh_dimmed_overlay1></> {{ .Path }}'
+template = ' <p:gh_dimmed_subtext0></> {{ .Path }}'
 
 [blocks.segments.properties]
 style = 'agnoster_short'
@@ -93,7 +93,7 @@ foreground_templates = [
 ]
 
 [blocks.segments.properties]
-branch_icon = ' <p:gh_dimmed_overlay1></> '
+branch_icon = ' <p:gh_dimmed_subtext0></> '
 commit_icon = '@'
 fetch_status = true
 branch_template = '{{ trunc 20 .Branch }}'
@@ -103,7 +103,7 @@ type = 'python'
 style = 'plain'
 foreground = 'p:gh_dimmed_purple'
 background = 'transparent'
-template = ' <p:gh_dimmed_overlay1>󰌠</> {{ .Major }}.{{ .Minor }}'
+template = ' <p:gh_dimmed_subtext0>󰌠</> {{ .Major }}.{{ .Minor }}'
 
 [blocks.segments.properties]
 display_mode = 'context'
@@ -114,7 +114,7 @@ type = 'rust'
 style = 'plain'
 foreground = 'p:gh_dimmed_purple'
 background = 'transparent'
-template = ' <p:gh_dimmed_overlay1>󱘗</> {{ .Major }}.{{ .Minor }}'
+template = ' <p:gh_dimmed_subtext0>󱘗</> {{ .Major }}.{{ .Minor }}'
 
 [blocks.segments.properties]
 display_mode = 'context'
@@ -139,7 +139,7 @@ overflow = 'hidden'
 [[blocks.segments]]
 type = 'executiontime'
 style = 'plain'
-foreground = 'p:gh_dimmed_surface2'
+foreground = 'p:gh_dimmed_overlay1'
 background = 'transparent'
 template = '{{ div .Ms 1000 }}s'
 
