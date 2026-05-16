@@ -75,13 +75,13 @@ Your tip text here.
 
 ## Output Format
 
-Deliver your review in two parts.
+Deliver your review in three file outputs. Do not print the revised article, editorial-lines updates, or editorial notes to the screen. After all three files are written, confirm with a single short message listing the three paths touched.
 
-### Part 1: The Revised Article
-Write the revised article directly to the source file using the Write tool. Do not output the article to the screen. Confirm the file was updated with a single short line.
+### Output 1: The Revised Article
+Write the revised article directly to the source file (`.qmd` / `.md`) using the Write tool.
 
-### Part 2: Editorial Notes
-After saving the file, update the `editorial-lines.md` file at the root of the repository:
+### Output 2: Editorial Lines (recurring patterns log)
+Update `editorial-lines.md` at the root of the repository:
 
 - If the file exists, add new rows to the appropriate category tables.
 - If the file does not exist, create it using this schema:
@@ -123,13 +123,43 @@ The **Source** column format is: `Post Title (YYYY-MM-DD)`.
 
 Only add entries for mistakes that fit an existing category. If a new pattern emerges that doesn't fit any category, add a new `##` section following the same table schema.
 
-After updating `editorial-lines.md`, output a brief **Editorial Notes** section to the screen containing:
+### Output 3: Editorial Notes (per-post review)
+Write a `review-notes.md` file in the same directory as the post being reviewed (sibling of `index.qmd`). This file is plain Markdown without YAML frontmatter so Quarto will not render it; the author reads it during revision and deletes it before publishing.
 
-1. **Draft Assessment** — A 2–3 sentence honest take on the original draft's quality: what was strong, what was the main issue.
-2. **Recurring Patterns** — The top 3 English or structural mistakes found. Be specific (e.g., "Consistent misuse of 'which' vs. 'that' in restrictive clauses" rather than "grammar issues").
-3. **Improvement Tips** — Actionable advice to avoid these patterns in future drafts. Frame these as quick rules the author can internalize.
+If `review-notes.md` already exists in that directory, overwrite it — the latest review supersedes prior ones.
 
-The purpose of this section is to help the author improve over time, not just fix this one post. Be direct — the author prefers blunt, actionable feedback over diplomatic hedging.
+Use this structure:
+
+```markdown
+# Editorial Notes — <Post Title>
+
+## Draft Assessment
+
+<2–3 sentences: honest take on the original draft's quality — what was strong, what was the main issue.>
+
+## Recurring Patterns
+
+<Top 3 English or structural mistakes found. Be specific (e.g., "Consistent misuse of 'which' vs. 'that' in restrictive clauses" rather than "grammar issues").>
+
+## Improvement Tips
+
+<Actionable advice to avoid these patterns in future drafts. Frame as quick rules the author can internalize.>
+```
+
+The purpose of this file is to help the author improve over time, not just fix this one post. Be direct — the author prefers blunt, actionable feedback over diplomatic hedging.
+
+### Confirmation Message
+
+After all three files are written, output a single short message listing the paths touched. Example:
+
+```
+Updated:
+- log/<slug>/index.qmd (revised draft)
+- editorial-lines.md (recurring patterns)
+- log/<slug>/review-notes.md (per-post notes)
+```
+
+Do not summarize the changes, repeat the assessment, or restate the editorial notes in the message — they live in the files now.
 
 ## Boundaries
 

@@ -112,23 +112,21 @@ Focus on impact language and professional positioning.
 
 ## Output Format
 
-Structure your review as:
+**Apply changes directly to the file.** Do not output a revised version for the author to copy-paste. Instead:
+
+1. Edit the checkpoint file in place, incorporating all improvements (reframing, impact specificity, structure fixes).
+2. Mark any sections where you added content the author should verify with `[VERIFY: ...]`.
+3. After editing, output a concise review summary:
 
 ### Overall Assessment
-2-3 sentences on the checkpoint's quality: what's strong, what needs work, and the single most important improvement.
-
-### Detailed Feedback
-Walk through your findings organized by the review criteria above. For each issue:
-- Quote or reference the specific section
-- Explain what's wrong or could be better
-- Suggest a concrete fix or rewrite (when applicable)
+2-3 sentences on the checkpoint's quality: what's strong, what was improved, and any open `[VERIFY]` items the author needs to fill in.
 
 ### Spotlight & Cuts
-- **Amplify these** — items the author undersold that deserve more attention, with a brief explanation of why they matter more than written
+- **Amplified** — items you expanded because they were undersold
 - **Consider cutting** — items that don't earn their place at this checkpoint level
 
-### Revised Version
-Provide the full revised note incorporating your suggestions. Preserve the template structure exactly. Mark any sections where you added content the author should verify with `[VERIFY: ...]`.
+### Open Questions
+List any `[VERIFY: ...]` markers you left in the file, so the author knows exactly what to address.
 
 ## Principles
 
