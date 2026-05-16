@@ -43,6 +43,15 @@ install:
 	else \
 		ln -sv "$(DOTFILES)/.config/bash/bashrc" "$(HOME)/.bashrc"; \
 	fi
+	@mkdir -p "$(HOME)/.ssh" && chmod 700 "$(HOME)/.ssh"
+	@chmod 600 "$(DOTFILES)/.config/ssh/config"
+	@if [ -L "$(HOME)/.ssh/config" ]; then \
+		echo "skip  $(HOME)/.ssh/config (already linked)"; \
+	elif [ -e "$(HOME)/.ssh/config" ]; then \
+		echo "WARN  $(HOME)/.ssh/config exists and is not a symlink — skipping"; \
+	else \
+		ln -sv "$(DOTFILES)/.config/ssh/config" "$(HOME)/.ssh/config"; \
+	fi
 	@echo "\ndone. restart your shell to apply changes."
 
 uninstall:
@@ -54,6 +63,7 @@ uninstall:
 	done
 	@[ -L "$(HOME)/.zshenv" ] && rm -v "$(HOME)/.zshenv" || true
 	@[ -L "$(HOME)/.bashrc" ] && rm -v "$(HOME)/.bashrc" || true
+	@[ -L "$(HOME)/.ssh/config" ] && rm -v "$(HOME)/.ssh/config" || true
 	@echo "\ndone. all symlinks removed."
 
 list:
@@ -66,3 +76,4 @@ list:
 	done
 	@printf "  %-20s -> %s\n" "$(HOME)/.zshenv" "$$(readlink "$(HOME)/.zshenv" 2>/dev/null || echo 'NOT LINKED')"
 	@printf "  %-20s -> %s\n" "$(HOME)/.bashrc" "$$(readlink "$(HOME)/.bashrc" 2>/dev/null || echo 'NOT LINKED')"
+	@printf "  %-20s -> %s\n" "$(HOME)/.ssh/config" "$$(readlink "$(HOME)/.ssh/config" 2>/dev/null || echo 'NOT LINKED')"

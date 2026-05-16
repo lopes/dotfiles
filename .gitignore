@@ -19,6 +19,7 @@
 !.config/ghostty/config
 !.config/inputrc
 !.config/nano/nanorc
+!.config/ssh/config
 !.config/
 !.config/claude/
 !.config/claude/skills/**
