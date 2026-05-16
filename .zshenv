@@ -24,22 +24,12 @@ export VIMINIT="source $HOME/.config/vim/vimrc"
 # tool themes
 export BAT_THEME="base16-256"
 
-# zsh
-export KEYTIMEOUT=1  # used in zsh vi mode
+# tells zsh where to look for .zshrc; must be set before zsh searches for it
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
-export SAVEHIST=15000
-export HISTSIZE=2000
-export HISTORY_IGNORE="(ls(| *)|pwd|exit|cd(| *)|bg(| *)|fg(| *)|history)"
-export HISTFILE="$XDG_CACHE_HOME/zsh/zsh_history"
 
 export LESSHISTFILE="-"  # no history for less command
 export LESS="-RNS"       # color, line numbers, no wrap
 export PAGER="less"
-
-# idle-shell timeout (10 min) — auto-logs out abandoned sessions
-TMOUT=600
-readonly TMOUT
-export TMOUT
 
 # rust
 export RUSTUP_HOME="$XDG_CACHE_HOME/rustup"

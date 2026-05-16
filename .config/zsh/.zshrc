@@ -1,10 +1,21 @@
 # zsh configuration
+#
+# everything below is interactive-only. on macos, /etc/zshrc runs after
+# .zshenv and before this file and clobbers HISTFILE/HISTSIZE/SAVEHIST,
+# so anything history-related has to live here (not .zshenv) to stick.
 
-# macos /etc/zshrc resets HISTFILE/HISTSIZE/SAVEHIST after .zshenv runs,
-# so we re-assert them here (this file runs after /etc/zshrc).
+# history
 HISTFILE="$XDG_CACHE_HOME/zsh/zsh_history"
 HISTSIZE=2000
 SAVEHIST=15000
+HISTORY_IGNORE="(ls(| *)|pwd|exit|cd(| *)|bg(| *)|fg(| *)|history)"
+
+# zsh line editor
+KEYTIMEOUT=1
+
+# idle-shell timeout (10 min) — auto-logs out abandoned ssh sessions etc.
+TMOUT=600
+readonly TMOUT
 
 # improved history settings
 setopt EXTENDED_HISTORY       # record timestamp and duration
