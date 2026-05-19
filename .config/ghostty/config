@@ -8,6 +8,8 @@ font-size = 16
 
 theme = GitHub Dark Dimmed
 
+bell-features = none
+
 cursor-color = #57ab5a
 cursor-style = bar
 cursor-style-blink = true

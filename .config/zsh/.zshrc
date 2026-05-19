@@ -14,8 +14,8 @@ HISTORY_IGNORE="(ls(| *)|pwd|exit|cd(| *)|bg(| *)|fg(| *)|history)"
 KEYTIMEOUT=1
 
 # idle-shell timeout (10 min) — auto-logs out abandoned ssh sessions etc.
-TMOUT=600
-readonly TMOUT
+# TMOUT=600
+# readonly TMOUT
 
 # improved history settings
 setopt EXTENDED_HISTORY       # record timestamp and duration
