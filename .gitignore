@@ -22,6 +22,7 @@
 !.config/ssh/config
 !.config/
 !.config/claude/
+!.config/claude/CLAUDE.md
 !.config/claude/skills/**
 !.config/zsh/.zshrc
 !.config/zsh/functions.sh
