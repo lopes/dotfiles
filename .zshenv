@@ -28,7 +28,7 @@ export BAT_THEME="base16-256"
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 
 export LESSHISTFILE="-"  # no history for less command
-export LESS="-RNS"       # color, line numbers, no wrap
+export LESS="-RN"        # color, line numbers, wrap long lines
 export PAGER="less"
 
 # rust

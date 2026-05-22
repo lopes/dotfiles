@@ -39,7 +39,6 @@ alias tcpdump="sudo tcpdump -nn"
 alias metadata="exiftool"
 
 # log & data analysis
-alias less="less -RNS"
 alias jl="jq -C . | less -R"
 alias csv="mlr --csv"
 alias tsv="mlr --tsv"
