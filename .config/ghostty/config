@@ -38,15 +38,8 @@ keybind = global:ctrl+`=toggle_quick_terminal
 
 # disable native macos tabs/windows to enforce tmux usage
 keybind = cmd+n=unbind
-
-# tmux integration (all using ctrl-a prefix = \x01)
-keybind = cmd+t=text:\x01\x63
-keybind = cmd+w=text:\x01\x26
-keybind = cmd+1=text:\x011
-keybind = cmd+2=text:\x012
-keybind = cmd+3=text:\x013
-keybind = cmd+4=text:\x014
-keybind = cmd+5=text:\x015
+keybind = cmd+t=unbind
+keybind = cmd+w=unbind
 
 command = /opt/homebrew/bin/tmux new-session -A -s main
 
