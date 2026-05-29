@@ -80,6 +80,22 @@ Fill in this partial rule: [paste incomplete YAML]
 
 ---
 
+## analyse-chronicle-delays
+
+Diagnose ingestion and detection latency across one or more Chronicle (Google SecOps) SOAR cases. Pulls each case's alerts and computes deltas between `event_timestamp` → `ingested_timestamp` (ingestion delay) and `ingested_timestamp` → `detection_timestamp` (SIEM/rule-engine delay). Flags `DETECTION_TIMING_DETAILS_*` tags (e.g. `REPROCESSING`, `BACKFILL`).
+
+**Input:** numeric case IDs or full Chronicle case URLs (mixed is fine).
+**Read-only:** never closes cases, never posts comments.
+
+**Examples:**
+```
+/analyse-chronicle-delays 17945
+/analyse-chronicle-delays 17945 17946 18002
+Why is case 17945 slow?
+```
+
+---
+
 ## review-checkpoint
 
 Review and improve periodic career checkpoint notes — weekly, quarterly, yearly, and CV updates.
@@ -141,4 +157,30 @@ Review and polish technical blog post drafts for lopes.id (Quarto).
 
 /review-blog-post
 Proofread and check MITRE references: [paste draft]
+```
+
+---
+
+## review-cv
+
+Brutally honest CV / résumé review for a Lead Security Engineer. Format-agnostic — handles LaTeX, Typst, Markdown, or plain text. Cross-references against `Master CV.md` when available.
+
+**Four-pass review:**
+1. Credibility — future-dated claims, label honesty (CEFR/ILR), Master CV mismatches, risky framing
+2. Structure & Positioning — first-screen anchor, section order, role density, people-leadership evidence
+3. Bullet Quality — problem→action→result, quantification, first-person ownership, length
+4. Format & Polish — duplicates, location specificity, tense consistency, page count
+
+**Output:** Severity-tiered review (Critical / Important / Minor) with file:line citations. Author triages → skill applies fixes on request.
+
+**Examples:**
+```
+/review-cv
+[point at a CV file or paste content]
+
+/review-cv
+Review my CV against best practices: [path to CV]
+
+/review-cv
+Is everything OK?
 ```
