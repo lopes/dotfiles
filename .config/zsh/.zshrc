@@ -93,7 +93,7 @@ test -f $HOME/.config/zsh/functions.sh && source $HOME/.config/zsh/functions.sh
 
 # private settings, like API keys and sensitive functions
 if [ -f "$HOME/.config/zsh/private.sh" ]; then
-  [ "$(stat -f %Lp "$HOME/.config/zsh/private.sh")" != "600" ] && chmod 600 "$HOME/.config/zsh/private.sh"
+  chmod 600 "$HOME/.config/zsh/private.sh"
   source "$HOME/.config/zsh/private.sh"
 fi
 
