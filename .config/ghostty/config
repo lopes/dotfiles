@@ -8,7 +8,7 @@ font-size = 16
 
 theme = GitHub Dark Dimmed
 
-bell-features = none
+bell-features = system, no-audio, no-attention, no-title, no-border
 
 cursor-color = #57ab5a
 cursor-style = bar
