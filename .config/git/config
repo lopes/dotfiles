@@ -75,6 +75,7 @@
 
 [tag]
   sort = version:refname
+	gpgsign = true
 
 [help]
   autocorrect = prompt
