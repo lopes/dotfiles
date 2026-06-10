@@ -16,6 +16,10 @@ At the end of each phase, stop. State what was done, what's next, what I should 
 
 When I tell you to continue: if in a git repo, commit the reviewed phase's changes first with a message describing what it accomplished, then proceed.
 
+## Dependencies
+
+When adding or updating dependencies, always use the latest stable version available. Never pin to an old version without an explicit reason stated by the user.
+
 ## Commits
 
-Prefer short commit messages. One line is usually enough; add a body only when the *why* isn't obvious. Before pushing to remote, consider rebasing and squashing fixup/incremental commits into a cleaner history — propose the plan, don't rewrite shared history without confirmation.
+Follow Scoped Commits (https://scopedcommits.com/): `<scope>: <description>` — scope first, then a one-sentence description. No Conventional Commits type prefixes (`feat:`, `fix:`, `chore:`). Scope identifies the subsystem/module; use comma-separated scopes for multi-area changes, or `treewide`/`all` for repo-wide ones. Keep the subject to one sentence; add a body only when the *why* isn't obvious. Before pushing to remote, consider rebasing and squashing fixup/incremental commits into a cleaner history — propose the plan, don't rewrite shared history without confirmation.
