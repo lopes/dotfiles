@@ -75,91 +75,17 @@ Your tip text here.
 
 ## Output Format
 
-Deliver your review in three file outputs. Do not print the revised article, editorial-lines updates, or editorial notes to the screen. After all three files are written, confirm with a single short message listing the three paths touched.
+### Revised Article
+Write the revised article directly to the source file (`.qmd` / `.md`) using the Write tool. Apply all three passes silently — do not narrate each change.
 
-### Output 1: The Revised Article
-Write the revised article directly to the source file (`.qmd` / `.md`) using the Write tool.
+### On-Screen Summary
+After writing the file, print a brief on-screen summary. Keep it under 15 lines total.
 
-### Output 2: Editorial Lines (recurring patterns log)
-Update `editorial-lines.md` at the root of the repository:
+**English patterns** — up to 5 specific recurring mistakes found in this draft. For each: the wrong form → the correct form, plus a one-line rule. Focus on patterns the author can internalize, not one-off typos. Skip this section if nothing worth flagging.
 
-- If the file exists, add new rows to the appropriate category tables.
-- If the file does not exist, create it using this schema:
+**Structural notes** — up to 3 structural issues left for the author's judgment (unclear intent, missing citation, section that needs splitting). Skip if none.
 
-```markdown
-# Editorial Lines
-
-Personal error log for English writing. Each entry records a recurring mistake, its cause, and the fix. Grouped by category — not by post — so patterns accumulate over time.
-
----
-
-## False Cognates (PT → EN)
-
-Mistakes caused by direct translation from Portuguese that produce a different meaning in English.
-
-| Wrong | Right | Why | Source |
-| ----- | ----- | --- | ------ |
-
----
-
-## Articles & Prepositions
-
-Small but frequent errors around articles (a/an/the) and prepositions (of/on/to/in).
-
-| Wrong | Right | Rule | Source |
-| ----- | ----- | ---- | ------ |
-
----
-
-## Draft Hygiene
-
-Notes left in the file that would have published as-is.
-
-| Issue | Fix | Source |
-| ----- | --- | ------ |
-```
-
-The **Source** column format is: `Post Title (YYYY-MM-DD)`.
-
-Only add entries for mistakes that fit an existing category. If a new pattern emerges that doesn't fit any category, add a new `##` section following the same table schema.
-
-### Output 3: Editorial Notes (per-post review)
-Write a `review-notes.md` file in the same directory as the post being reviewed (sibling of `index.qmd`). This file is plain Markdown without YAML frontmatter so Quarto will not render it; the author reads it during revision and deletes it before publishing.
-
-If `review-notes.md` already exists in that directory, overwrite it — the latest review supersedes prior ones.
-
-Use this structure:
-
-```markdown
-# Editorial Notes — <Post Title>
-
-## Draft Assessment
-
-<2–3 sentences: honest take on the original draft's quality — what was strong, what was the main issue.>
-
-## Recurring Patterns
-
-<Top 3 English or structural mistakes found. Be specific (e.g., "Consistent misuse of 'which' vs. 'that' in restrictive clauses" rather than "grammar issues").>
-
-## Improvement Tips
-
-<Actionable advice to avoid these patterns in future drafts. Frame as quick rules the author can internalize.>
-```
-
-The purpose of this file is to help the author improve over time, not just fix this one post. Be direct — the author prefers blunt, actionable feedback over diplomatic hedging.
-
-### Confirmation Message
-
-After all three files are written, output a single short message listing the paths touched. Example:
-
-```
-Updated:
-- log/<slug>/index.qmd (revised draft)
-- editorial-lines.md (recurring patterns)
-- log/<slug>/review-notes.md (per-post notes)
-```
-
-Do not summarize the changes, repeat the assessment, or restate the editorial notes in the message — they live in the files now.
+Confirm the file written with one line: `Updated: <path>`.
 
 ## Boundaries
 

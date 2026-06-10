@@ -82,6 +82,7 @@ For each option, structure the output as:
 **Step 1 — Critique.** Provide 2–3 bullet points covering:
 - What works well in the original (be specific).
 - What needs fixing: weak hook, fluff, missing specifics, formatting issues, or tone drift.
+- If any English mistakes are present (grammar, word choice, false cognates), flag them here: wrong form → correct form, one-line rule. Skip if none.
 
 **Step 2 — Rewrite.** Provide a "ready-to-post" version with:
 - An enhanced hook (strong opinion, specific error, counter-intuitive fact).
