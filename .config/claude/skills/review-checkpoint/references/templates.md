@@ -1,19 +1,53 @@
 # Checkpoint Templates
 
-These are the author's Obsidian templates for each checkpoint level. The skill must understand and respect this structure when reviewing notes.
+These are the author's Obsidian templates for each checkpoint level. The skill must respect this structure when reviewing notes. The single source of truth for the framework is the author's `[[Career Checkpoint Framework]]` note in the vault — this file mirrors the rules and shapes so the skill can apply them without loading the vault note every time.
 
 ## Hierarchy
 
-The checkpoint system is hierarchical and feeds upward:
-
 ```
-Weekly Impact Notes (every Friday)
-  └─► Quarterly Performance (end of quarter, synthesized from weeklies)
-       └─► Yearly Review (end of year, synthesized from quarterlies)
-            └─► Master CV (updated with outstanding yearly achievements)
+Weekly Impact (every Friday)
+  └─► Quarterly Performance (end of quarter, from weeklies)
+       └─► Yearly Review (end of year, from quarterlies)
+            └─► Master CV (refreshed once per year, from yearly)
 ```
 
-Each level filters for increasing impact. Weeklies capture everything meaningful. Quarterlies distill the high-impact items. Yearly reviews extract career-defining wins. The Master CV keeps only the best of the best.
+Each level filters for increasing impact. Weeklies capture everything meaningful. Quarterlies promote only items that change the author's narrative. Yearlies promote only career-defining wins. The CV keeps the best of the best.
+
+## The 4 Tracks (used at every level — no renaming)
+
+- **🛠️ Engineering** — build work for impact. Employer projects and personal research live together. Detection systems, platforms, tooling, services, prototypes, RFCs that ship code.
+- **📣 Voice** — public-facing signal. Blog posts published, talks given, OSS releases with users, written pieces that traveled.
+- **📚 Learning** — knowledge acquired. Bar is **completion** of a learning artifact: books finished, labs completed, courses with deliverables, certifications earned. Application of the learning surfaces in Engineering / Voice / Leadership, not in Learning. The same source can legitimately appear in multiple tracks (book finished → Learning; review post → Voice; technique applied → Engineering).
+- **🤝 Leadership** — visible influence: mentorship outcomes, hiring outcomes, cross-team RFCs that changed someone else's roadmap, internal advocacy that moved a decision.
+
+**No renaming between levels.** Same 4 names, same order. Track-name drift breaks aggregation.
+
+## The Status Verbs (weekly level only)
+
+Three sub-headings under each track in the weekly: `Shipped`, `Building`, `Blocked`. Each carries a strict rule.
+
+### Shipped — must include the impact
+
+Measurable change: numbers, time saved, scope, audience, detections added. If the author can't state the impact, it isn't Shipped. It's Building (waiting for measurement) or it doesn't belong.
+
+- Weak: "Updated 5 wiki pages"
+- Strong: "Updated 5 wiki pages covering onboarding for the data pipeline — cut new-hire ramp questions in the team channel by ~half over two weeks"
+
+### Building — must include the status
+
+Valid statuses: in review (with reviewers), awaiting deploy / approval (with owner), drafted to N% / a specific stage. "In progress" or "ongoing" is not a status.
+
+- Weak: "Working on the platform RFC"
+- Strong: "Platform RFC drafted, in review with two reviewers — expected merge by next Friday"
+
+### Blocked — must include the reason
+
+Named blocker, named unblocker. "Waiting on X" is weak; "Waiting on the infra team's IAM perms — pinged Alex Tuesday, no response yet" is real.
+
+- Weak: "Waiting on infra"
+- Strong: "Waiting on infra-team IAM permissions for the deploy account — pinged Alex on Tuesday, no response yet"
+
+Empty status sub-headings get deleted. An entirely empty track section in a quiet week is valid — don't fill with filler.
 
 ---
 
@@ -21,10 +55,13 @@ Each level filters for increasing impact. Weeklies capture everything meaningful
 
 ```markdown
 ---
-tags: [kind/summary, topic/career]
+tags:
+  - topic/career
 week: <week_number>
 quarter: <quarter_number>
 year: <year>
+references:
+  - "[[Career Checkpoint Framework]]"
 ---
 
 ## Context & Vibe
@@ -32,37 +69,73 @@ year: <year>
 
 ---
 
-## 🚀 Professional Tracks
-### 🔹 Track: [Detection Engineering]
-- **Deliverable:** [What was delivered]
-  - **Impact:** [Measurable result]
-  - **Blockers/Risks:** [What's in the way]
+## 🛠️ Engineering
+*Build work for impact — employer projects and personal research.*
 
-### 🔹 Track: [Mentorship & Hiring]
-- **Deliverable:**
-  - **Impact:**
+#### Shipped
+*Each bullet must state the impact.*
+- 
 
-### 🔹 Track: Operational Excellence
-- **Incident:** [Investigation summary]
-- **Maintenance:** [Upkeep work done]
+#### Building
+*Each bullet must state the status.*
+- 
 
----
-
-## 🌟 Personal Tracks
-### 🔸 Track: [Open Source / Blog]
-- **Update:** [What was published/contributed]
-- **Impact:** [Reach, engagement]
-
-### 🔸 Track: Continuous Learning
-- **Study:** [What was studied]
+#### Blocked
+*Each bullet must state the reason.*
+- 
 
 ---
 
-## ⏭️ Next Week's "Big Rocks"
-1. [Absolute must-win]
+## 📣 Voice
+*Public-facing signal — blog, social, talks, releases.*
+
+#### Shipped
+- 
+#### Building
+- 
+#### Blocked
+- 
+
+---
+
+## 📚 Learning
+*Books, labs, courses, sessions attended.*
+
+#### Shipped
+- 
+#### Building
+- 
+#### Blocked
+- 
+
+---
+
+## 🤝 Leadership
+*Mentorship, hiring, cross-team influence.*
+
+#### Shipped
+- 
+#### Building
+- 
+#### Blocked
+- 
+
+---
+
+## ⏭️ Next Week's Big Rocks
+1. 
+
+---
+
+## 📂 Notes Modified This Week
+[dataview]
 ```
 
-**Key principle:** Weeklies focus on deliverables and their impact, not tasks. "Updated 5 wiki pages" is a task. "Updated 5 outdated wiki pages, reducing onboarding confusion" is a deliverable with impact.
+**Key principles:**
+- Apply the per-status rule to every bullet before committing it.
+- Track-name drift between weeks kills aggregation — reject it.
+- Building is not a parking lot for "stuff I touched." If a thing didn't move this week, it goes in Blocked (with a reason) or off the weekly.
+- Big Rocks are concrete and achievable — 1–3 items, not aspirations.
 
 ---
 
@@ -70,61 +143,68 @@ year: <year>
 
 ```markdown
 ---
-tags: [kind/summary, topic/career]
+tags:
+  - topic/career
 weeks: <range>
 quarter: <quarter_number>
 year: <year>
+references:
+  - "[[Career Checkpoint Framework]]"
 ---
 
 > [!abstract] Executive Summary
-> [The "Elevator Pitch" for your quarter. Primary focus, biggest win, general sentiment.]
+> [Elevator pitch — theme, biggest win, trajectory.]
 
 ---
 
-## 📊 Impact Registry
-### 🔹 Track: [Detection Engineering]
-#### [Achievement Title]
-- **Context:** [Why this mattered / what problem existed]
-- **Action:** [What you did]
-- **Result:** [Measurable impact]
-- **Collaborators:** [Key people involved]
+## 🛠️ Engineering
+*Aggregate Shipped + Building-that-shipped from this quarter's weeklies. Full STAR per item.*
 
-### 🔹 Track: Operational Excellence
-#### [Achievement Title]
-- **Context:**
-- **Action:**
-- **Result:**
-- **Collaborators:**
+#### [Achievement title]
+- **Context:** [Why this mattered]
+- **Action:** [What the author specifically did]
+- **Result:** [Measurable outcome]
+- **Collaborators:** [Named people]
 
 ---
 
-## 🌟 Personal Initiatives
-### Thought Leadership
-- [Blogs, talks, or papers written this quarter]
+## 📣 Voice
+[same STAR shape]
 
-### Community
-- [Open source contributions, conference attendance]
+## 📚 Learning
+[same STAR shape — 2–3 max, capability shifts only]
+
+## 🤝 Leadership
+[same STAR shape]
+
+---
+
+## 🎯 Principal Plan Checkpoint
+*Reference: [[Track - Project Principal]]*
+
+- **Current phase:**
+- **On track for phase milestones?**
+- **Adjustments:**
 
 ---
 
 ## 💡 Retro
 ### Keep Doing
-- [Item_1]
-
-### Stop/Fix
-- [Item_1]
+### Stop / Fix
 
 ---
 
 ## 🔮 Forward Look
 ### Primary Objectives
-1. [Objective_1]
-
 ### Skills to Develop
-1. [Skill_1]
 ```
 
-**Key principle:** Quarterlies use the Context-Action-Result (CAR) format. Each achievement should tell a story: what was broken, what you did, what changed. Only items with real impact graduate from weeklies to quarterlies.
+**Key principles:**
+- Roll-up traceability: every STAR Result must trace to a weekly Shipped (or Building-that-shipped) item from this quarter.
+- Promotion filter: maintenance doesn't graduate, routine doesn't graduate, team-owned doesn't graduate as the author's achievement.
+- Empty Leadership is honest signal — don't fabricate.
+- Demand the Principal Plan Checkpoint is filled — it's the link to the long-horizon plan.
+- Executive Summary written last.
 
 ---
 
@@ -132,80 +212,87 @@ year: <year>
 
 ```markdown
 ---
-tags: [kind/summary, topic/career]
+tags:
+  - topic/career
 year: <year>
+references:
+  - "[[Career Checkpoint Framework]]"
 ---
 
 > [!abstract] Year in Review
-> [One paragraph: the narrative arc of this year. What defined it? What shifted?]
+> [One paragraph: the narrative arc of the year. What defined it? What shifted?]
 
 ---
 
 ## 🏆 Top Achievements
-_The items worth adding to Master CV. Pick the career-defining wins, not everything._
+*Career-defining wins only, 5–7 total, organized by track. These graduate to [[Master CV]].*
 
-### [Achievement 1]
-- **Context:** [Why this mattered]
-- **Action:** [What you did]
-- **Result:** [Measurable impact]
-
-### [Achievement 2]
+### 🛠️ Engineering
+#### [Achievement 1]
 - **Context:**
 - **Action:**
 - **Result:**
 
+### 📣 Voice
+[same shape]
+
+### 📚 Learning
+[1–2 max — capability shifts, not course completions]
+
+### 🤝 Leadership
+[1–2 max — visible influence, not meetings attended]
+
 ---
 
-## 📈 Growth & Visibility
-### Content & Thought Leadership
-- [Blogs, talks, open source — aggregate from quarterlies]
+## 🎯 Principal Plan Status
+*Reference: [[Track - Project Principal]]*
 
-### Skills Acquired
-- [New capabilities that changed how you work]
-
-### Network & Community
-- [Conferences, SIGs, industry recognition]
+- **Phase completed this year:**
+- **Phase entering next year:**
+- **Plan adjustments:**
 
 ---
 
 ## 🧠 Reflection
 ### What Worked
-- [Patterns, habits, or approaches to keep]
-
 ### What Didn't
-- [Patterns to break, things that drained energy without impact]
-
 ### Surprises
-- [Things you didn't expect — positive or negative]
 
 ---
 
 ## 🔮 Next Year Direction
 ### Strategic Themes
-1. [Where do you want to invest your time?]
-
 ### Career Goals
-1. [Promotion, role change, skill pivot, visibility target]
-
 ### Things to Let Go
-1. [What to stop doing or deprioritize]
 ```
 
-**Key principle:** The yearly review is a narrative, not a list. It should tell the story of the year: the arc, the turning points, the growth. Only career-defining achievements make it here.
+**Key principles:**
+- Career-defining filter: "Would a top-tier interviewer spend time on this?" If no, it stays in the quarterly.
+- Traceability: every Top Achievement must trace to a quarterly STAR block.
+- Year in Review abstract is a narrative arc, not a summary of quarters — written last.
+- Demand the Principal Plan Status is filled.
 
 ---
 
 ## Master CV Template
 
-The Master CV is a living document that accumulates the best achievements from yearly reviews. It follows a standard professional format with:
+The Master CV (`3 Atlas/Work/Master CV.md`) is the living document that accumulates the best achievements from yearly reviews. Standard professional format:
 
+- Header (name, tagline, contact)
 - Professional Summary (narrative paragraph)
-- Professional Experience (organized by company and role, each bullet using the CAR pattern)
+- Areas of Focus
+- Open Source
+- Professional Experience (organized by company and role; each bullet uses problem → action → measurable result)
 - Education
 - Certifications
 - Key Skills (Technical + Leadership)
-- Projects / Major Achievements
-- Publications / Awards / Volunteering
+- Speaking & Publications
+- Awards & Volunteering
 - Languages
 
-**Key principle:** CV entries must be written in accomplishment language: "To [solve problem], I [action], which resulted in [measurable outcome]." Never list responsibilities — list results.
+**Key principles:**
+- Accomplishment language only: "To [solve problem], I [action], which resulted in [measurable outcome]."
+- Never list responsibilities — list results.
+- Past tense for previous roles, present tense for the current role.
+- Quantify everywhere; hedge approximate numbers with "~"; never invent.
+- Every new bullet must trace back to a Top Achievement in the most recent Yearly Review.
