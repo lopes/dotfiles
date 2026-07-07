@@ -26,4 +26,8 @@ Solve problems with the standard library and standard tools first. Only reach fo
 
 ## Commits
 
-Follow Scoped Commits (https://scopedcommits.com/): `<scope>: <description>` — scope first, one-sentence description. No Conventional Commits prefixes (`feat:`, `fix:`, `chore:`). Use comma-separated scopes for multi-area changes; `treewide` or `all` for repo-wide ones. Add a body only when the *why* isn't obvious. Before pushing, propose rebasing/squashing fixup commits — don't rewrite shared history without confirmation.
+Follow Scoped Commits (https://scopedcommits.com/): `<scope>: <description>` — scope first, one-sentence description. No Conventional Commits prefixes (`feat:`, `fix:`, `chore:`). Use comma-separated scopes for multi-area changes; `treewide` or `all` for repo-wide ones.
+
+Don't ever create long commits unless directly required. Don't put advertisements in commits, like "Co-authored by..." or "Generated with...".
+
+Before pushing, propose rebasing/squashing fixup commits — don't rewrite shared history without confirmation.
