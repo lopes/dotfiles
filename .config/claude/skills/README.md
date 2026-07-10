@@ -80,6 +80,27 @@ Fill in this partial rule: [paste incomplete YAML]
 
 ---
 
+## scaffold-deck
+
+Scaffold a Quarto revealjs deck for lopes.id from a rough outline, a talk brief, or an existing blog post. Emits `decks/<slug>/index.qmd` with the vigil-reveal theme, correct front matter (`tlp`, `duration`, `theme`), and slide conventions applied. Duration-aware — budgets against the speaker's time slot and refuses to overfill.
+
+**Inputs:** outline, talk brief, or blog post path.
+**Output:** `decks/<slug>/index.qmd` — silent-publishable (no navbar entry, no talks index, TLP badge applied).
+
+**Examples:**
+```
+/scaffold-deck
+25-min conference talk on Chronicle DaC. Outline: [paste]
+
+/scaffold-deck
+Turn this blog post into a talk: [path to .qmd]
+
+/scaffold-deck
+Scaffold a 10-minute internal deck on our SIEM ingestion pipeline.
+```
+
+---
+
 ## analyse-chronicle-delays
 
 Diagnose ingestion and detection latency across one or more Chronicle (Google SecOps) SOAR cases. Pulls each case's alerts and computes deltas between `event_timestamp` → `ingested_timestamp` (ingestion delay) and `ingested_timestamp` → `detection_timestamp` (SIEM/rule-engine delay). Flags `DETECTION_TIMING_DETAILS_*` tags (e.g. `REPROCESSING`, `BACKFILL`).
