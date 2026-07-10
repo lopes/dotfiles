@@ -2,12 +2,10 @@
 
 source ${HOME}/.config/aliases.unix.sh
 
-alias ls="eza -lh --group-directories-first --icons=auto --git"
-alias ll="eza -lah --group-directories-first --icons=auto --git"
-alias la="eza -a --group-directories-first --icons=auto"
-alias tree="eza --tree --level=3 --icons=auto"
+alias ls="gls --color=auto -lhF --group-directories-first"
+alias ll="gls --color=auto -lAhF --group-directories-first"
+alias la="gls --color=auto -A"
 
-alias cat="bat --paging=never"
 alias diff="diff --color"
 alias wget="wget -c"
 alias ps="ps aux"

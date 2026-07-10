@@ -21,9 +21,6 @@ export EDITOR="vim"
 export VISUAL="vim"
 export VIMINIT="source $HOME/.config/vim/vimrc"
 
-# tool themes
-export BAT_THEME="base16-256"
-
 # tells zsh where to look for .zshrc; must be set before zsh searches for it
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 
