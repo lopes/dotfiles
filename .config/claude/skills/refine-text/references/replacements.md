@@ -298,8 +298,7 @@ Most of these can be deleted. They're decorative.
 | AI character | Plain replacement (when context warrants) |
 |---|---|
 | → (Unicode arrow) | -> or "to" |
-| ✓ ✗ ✅ ❌ (used as bullet markers) | regular bullets (-) or remove |
-| 🚀 💡 ✨ (used as section markers) | (delete) |
+| Emoji (any) | **leave alone** — the author places emoji by hand as part of his voice; never touch them |
 | `word—word` (unspaced em-dash, when stacked) | `word, word` or `word (word)` |
 | ; before "however" / "but" / "and" | replace with `.` |
 | Decorative `:` introducing a 3-item list when stacked | rephrase as prose |

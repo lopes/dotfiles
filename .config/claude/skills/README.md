@@ -4,30 +4,26 @@ Custom Claude Code skills for personal workflows. Invoke with `/skill-name`.
 
 ---
 
-## ai-tells-cleaner
+## refine-text
 
-Review text and remove AI-generated patterns — overused vocabulary, formulaic structures, em-dash drench, sycophantic openers, hedging filler, and closing offers — while preserving the original meaning, opinions, structure, and voice.
+Refine my own writing (blog post, .qmd, LinkedIn post, email, notes) so it reads as natural, native English while staying unmistakably mine. Two jobs: fix grammar and unnatural (Portuguese-influenced) phrasing, and strip AI tells — then teach the recurring mistakes. Edits in place; leaves emoji alone. Replaces the old review-blog-post, review-linkedin-post, and refine-ai-text skills.
 
-**Passes:**
-1. Lexical Sweep — Tier-1/Tier-2 vocabulary substitution
-2. Phrase Sweep — filler phrases deleted or flattened
-3. Structural Sweep — "It's not X, it's Y" reframes, rule-of-three, anaphora abuse
-4. Tonal Sweep — hedging frames, sycophancy, closing offers
-5. Punctuation Sweep — em-dash density, decorative emoji, semicolons
-6. Specificity Flag — unsourced claims flagged for author (not auto-fixed)
+**Passes:** Grammar & naturalness → Lexical → Phrase → Structural → Tonal → Punctuation → Specificity flag.
 
-**Output:** cleaned text + change log + manual review items.
+**Output:** the text edited in place (file) or returned inline (paste), then an on-screen tutor summary — recurring English patterns (wrong → right + rule), voice/AI-tell notes, and items flagged for my judgment.
+
+**Voice anchor:** `references/author-profile.md` holds real "this is you / this is drift" samples.
 
 **Examples:**
 ```
-/ai-tells-cleaner
-[paste text from ChatGPT/Claude/Gemini]
+/refine-text
+[point at a .qmd/.md file or paste a draft]
 
-/ai-tells-cleaner
-Humanize this: [paste draft]
+/refine-text
+Make this sound natural and more like me: [paste draft]
 
-/ai-tells-cleaner
-De-slop this LinkedIn post: [paste post]
+/refine-text
+Fix my English and de-slop this: [paste post]
 ```
 
 ---
@@ -133,51 +129,6 @@ Which of these weekly items should be promoted to quarterly?
 
 /review-checkpoint
 Review my CV with this year's wins: [paste CV]
-```
-
----
-
-## review-linkedin-post
-
-Draft, review, or polish LinkedIn posts. Enforces zero-fluff, technically credible voice — no teasers, no bro-etry, exactly 3 hashtags.
-
-**Modes:**
-- **Ideation** — notes or topic → 3 post options (Tooling, Philosophy, Quick Win)
-- **Review & Polish** — draft → critique + ready-to-post rewrite
-- **Blog → LinkedIn** — blog post → standalone LinkedIn post (no URL in body)
-
-**Examples:**
-```
-/review-linkedin-post
-Post idea about our SIEM migration: [paste notes]
-
-/review-linkedin-post
-Review this draft: [paste post]
-
-/review-linkedin-post
-Turn this blog post into a LinkedIn post: [paste draft or link]
-```
-
----
-
-## review-blog-post
-
-Review and polish technical blog post drafts for lopes.id (Quarto).
-
-**Three-pass review:**
-1. Language & Fluency — grammar, flow, tense
-2. Structure & Readability — headings, section length, code blocks
-3. Technical Accuracy — infosec terminology, tool names, code validity
-
-**Output:** full revised article in a Markdown code block + editorial notes with recurring patterns and improvement tips.
-
-**Examples:**
-```
-/review-blog-post
-[paste .md or .qmd draft]
-
-/review-blog-post
-Proofread and check MITRE references: [paste draft]
 ```
 
 ---

@@ -40,6 +40,8 @@ These have empirical post-2022 frequency spikes (Kobak 2025, Stanford Liang 2024
 
 **Filler adjectives**: vibrant, bustling, rich, vital, multifaceted, dynamic, sophisticated, compelling, robust, seamless, cutting-edge, state-of-the-art, bespoke, tailored, nuanced, groundbreaking, transformative, ever-evolving, game-changing.
 
+**Enthusiasm inflation** (this author's top tell): staggering, mesmerizing, game-changer, supercharged, unprecedented, blazingly, revolutionary, effortless, "incredibly excited", "big time". These praise the work instead of describing it — cut the word and state the fact; a concrete number beats a superlative.
+
 **Filler adverbs**: truly, indeed, undoubtedly, absolutely, certainly, remarkably, incredibly, quietly, deeply, fundamentally, arguably, effectively, efficiently, strategically, consistently.
 
 **BEFORE**: "We leverage cutting-edge AI to harness data, empower teams, and revolutionize workflows."
@@ -240,12 +242,9 @@ Bullets where each starts with a bolded keyword followed by a colon and a one-se
 
 A four-paragraph email broken into "## Background ## Issue ## Recommendation ## Next Steps" is almost always AI.
 
-### 3.5 Emoji as bullet markers or section dividers
+### 3.5 Emoji — DO NOT TOUCH
 
-✅ 🚀 💡 ✨ — direct artifact of LinkedIn-trained data.
-
-**BEFORE**: "✅ Boost productivity 🚀 Save time 💡 Get smarter ✨ Transform your workflow."
-**AFTER**: "It saves about an hour a week."
+This author uses emoji deliberately, placed by hand, as part of his voice. Leave every emoji exactly where it is — as a bullet marker, a section sign-off, or inline. Never add, remove, relocate, or flag them. This overrides the generic "emoji are a LinkedIn-AI artifact" heuristic that applies to other authors.
 
 ### 3.6 Tables forced onto content that flows better as prose
 
