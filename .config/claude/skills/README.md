@@ -28,34 +28,6 @@ Fix my English and de-slop this: [paste post]
 
 ---
 
-## audit-obsidian-vault
-
-Audit an Obsidian vault's organizational health: tags, folder placement, naming conventions, and structural integrity.
-
-**Modes:**
-- **Vault Audit** — full health report from a tree listing or vault summary file
-- **Single Note Review** — where should this note go? how should it be tagged?
-- **Taxonomy Evolution** — add/merge tags, restructure folders
-
-**Examples:**
-```
-/audit-obsidian-vault
-Here's my vault summary: [paste vault-summary.txt]
-
-/audit-obsidian-vault
-Where does this note belong? [paste frontmatter]
-
-/audit-obsidian-vault
-I want to add a tag for "threat modeling" — where does it fit?
-```
-
-**Tip:** Generate vault input with the bundled script:
-```bash
-python ~/.config/claude/skills/audit-obsidian-vault/scripts/vault-summary.py ~/Documents/Nexus -o vault-summary.txt
-```
-
----
-
 ## scaffold-detection-rule
 
 Scaffold a complete DaC YAML rule from minimal input. Provide logic + context; everything else is inferred.
@@ -113,46 +85,10 @@ Why is case 17945 slow?
 
 ---
 
-## review-checkpoint
+## Moved to the Obsidian vault
 
-Review and improve periodic career checkpoint notes — weekly, quarterly, yearly, and CV updates.
+These vault-coupled skills now live **inside the vault repo** (`~/Documents/obsidian/.claude/skills/`) so they travel and version with the notes they operate on. They load automatically when working inside the vault:
 
-**Hierarchy:** Weekly → Quarterly → Yearly → CV. Each level filters the one below.
-
-**Examples:**
-```
-/review-checkpoint
-Here's my weekly note: [paste note]
-
-/review-checkpoint
-Which of these weekly items should be promoted to quarterly?
-
-/review-checkpoint
-Review my CV with this year's wins: [paste CV]
-```
-
----
-
-## review-cv
-
-Brutally honest CV / résumé review for a Lead Security Engineer. Format-agnostic — handles LaTeX, Typst, Markdown, or plain text. Cross-references against `Master CV.md` when available.
-
-**Four-pass review:**
-1. Credibility — future-dated claims, label honesty (CEFR/ILR), Master CV mismatches, risky framing
-2. Structure & Positioning — first-screen anchor, section order, role density, people-leadership evidence
-3. Bullet Quality — problem→action→result, quantification, first-person ownership, length
-4. Format & Polish — duplicates, location specificity, tense consistency, page count
-
-**Output:** Severity-tiered review (Critical / Important / Minor) with file:line citations. Author triages → skill applies fixes on request.
-
-**Examples:**
-```
-/review-cv
-[point at a CV file or paste content]
-
-/review-cv
-Review my CV against best practices: [path to CV]
-
-/review-cv
-Is everything OK?
-```
+- **audit-obsidian-vault** — vault organizational health (tags, placement, naming, orphans). Bundled script: `~/Documents/obsidian/.claude/skills/audit-obsidian-vault/scripts/vault-summary.py`.
+- **review-checkpoint** — weekly / quarterly / yearly / CV checkpoint reviews.
+- **review-cv** — brutally honest CV / résumé review against `Master CV.md`.
