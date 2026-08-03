@@ -29,13 +29,6 @@ export LESSHISTFILE="-"  # no history for less command
 export LESS="-R"         # color, wrap long lines
 export PAGER="less"
 
-# rust — toolchains and the registry are data, not disposable cache
-export RUSTUP_HOME="$XDG_DATA_HOME/rustup"
-export CARGO_HOME="$XDG_DATA_HOME/cargo"
-if [ -f "$CARGO_HOME/env" ]; then
-  source "$CARGO_HOME/env"
-fi
-
 export CLAUDE_CONFIG_DIR="$HOME/.config/claude"
 
 export LEDGER_FILE="$HOME/Documents/hledger/journal/main.journal"

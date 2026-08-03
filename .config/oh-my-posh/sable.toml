@@ -110,17 +110,6 @@ display_mode = 'context'
 tooling = ['uv']
 
 [[blocks.segments]]
-type = 'rust'
-style = 'plain'
-foreground = 'p:gh_dimmed_purple'
-background = 'transparent'
-template = ' <p:gh_dimmed_subtext0>󱘗</> {{ .Major }}.{{ .Minor }}'
-
-[blocks.segments.properties]
-display_mode = 'context'
-tooling = ['rustc']
-
-[[blocks.segments]]
 type = 'status'
 style = 'plain'
 foreground = 'p:gh_dimmed_text'
