@@ -10,7 +10,7 @@ FILES := aliases.bsd.sh aliases.linux.sh aliases.unix.sh aliases.windows.sh inpu
 .PHONY: install uninstall list brew brew-check brew-dump bootstrap
 
 install:
-	@mkdir -p "$(HOME)/.cache/zsh" "$(HOME)/.local/bin"
+	@mkdir -p "$(HOME)/.cache/zsh" "$(HOME)/.local/state/zsh" "$(HOME)/.local/bin"
 	@for d in $(DIRS); do \
 		if [ -L "$(CONFIG)/$$d" ]; then \
 			echo "skip  $(CONFIG)/$$d (already linked)"; \

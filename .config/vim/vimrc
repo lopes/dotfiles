@@ -52,19 +52,30 @@ nnoremap <esc> :noh<return><esc>
 nnoremap <leader>w :w<cr>
 nnoremap <leader>q :q<cr>
 
-" persistent undo
+" persistent undo (cache — regenerable)
 set undofile
-set undodir=~/.cache/vim/undodir
+if !isdirectory($XDG_CACHE_HOME . '/vim/undodir')
+  call mkdir($XDG_CACHE_HOME . '/vim/undodir', 'p')
+endif
+set undodir=$XDG_CACHE_HOME/vim/undodir
 set undolevels=1000
 set undoreload=10000
 
-" file handling
-set viminfo='10,\"30,:40,%,n~/.viminfo
+" file handling — viminfo is state (command/search history, marks), not cache
+if !isdirectory($XDG_STATE_HOME . '/vim')
+  call mkdir($XDG_STATE_HOME . '/vim', 'p')
+endif
+set viminfo='10,\"30,:40,%,n$XDG_STATE_HOME/vim/viminfo
 au BufReadPost * if line("'\"")|execute("normal `\"")|endif
 let g:netrw_dirhistmax = 0
 set nobackup
 set noswapfile
 set nowritebackup
+
+" hledger journals: treat ':' as a keyword char so <C-n>/<C-p> complete whole
+" account paths (expenses:food:groceries) from open buffers — no need to retype
+" or remember the chart while categorizing an import
+au BufRead,BufNewFile *.journal setlocal iskeyword+=:
 
 " visual improvements
 set cursorline

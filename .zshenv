@@ -5,6 +5,7 @@
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_DATA_HOME="$HOME/.local/share"
 export XDG_CACHE_HOME="$HOME/.cache"
+export XDG_STATE_HOME="$HOME/.local/state"
 export XDG_DESKTOP_DIR="$HOME/Desktop"
 export XDG_DOWNLOAD_DIR="$HOME/Downloads"
 export XDG_TEMPLATES_DIR="$HOME/Projects"
@@ -28,9 +29,9 @@ export LESSHISTFILE="-"  # no history for less command
 export LESS="-R"         # color, wrap long lines
 export PAGER="less"
 
-# rust
-export RUSTUP_HOME="$XDG_CACHE_HOME/rustup"
-export CARGO_HOME="$XDG_CACHE_HOME/cargo"
+# rust — toolchains and the registry are data, not disposable cache
+export RUSTUP_HOME="$XDG_DATA_HOME/rustup"
+export CARGO_HOME="$XDG_DATA_HOME/cargo"
 if [ -f "$CARGO_HOME/env" ]; then
   source "$CARGO_HOME/env"
 fi

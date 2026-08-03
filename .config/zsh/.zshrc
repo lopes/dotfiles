@@ -4,8 +4,9 @@
 # .zshenv and before this file and clobbers HISTFILE/HISTSIZE/SAVEHIST,
 # so anything history-related has to live here (not .zshenv) to stick.
 
-# history
-HISTFILE="$XDG_CACHE_HOME/zsh/zsh_history"
+# history — shell history is state, not disposable cache
+HISTFILE="$XDG_STATE_HOME/zsh/history"
+[[ -d "$XDG_STATE_HOME/zsh" ]] || mkdir -p "$XDG_STATE_HOME/zsh"
 HISTSIZE=2000
 SAVEHIST=15000
 HISTORY_IGNORE="(ls(| *)|pwd|exit|cd(| *)|bg(| *)|fg(| *)|history)"
