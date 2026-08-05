@@ -67,13 +67,15 @@ uninstall:
 	@echo "\ndone. all symlinks removed."
 
 brew:
+	@brew tap jandedobbeleer/oh-my-posh        # ensure tap exists before trusting it
+	@brew trust jandedobbeleer/oh-my-posh      # third-party tap: brew refuses to load it until trusted
 	@brew bundle install --file="$(DOTFILES)/Brewfile"
 
 brew-check:
 	@brew bundle check --file="$(DOTFILES)/Brewfile" --verbose
 
 brew-dump:
-	@brew bundle dump --file="$(DOTFILES)/Brewfile" --force
+	@brew bundle dump --file="$(DOTFILES)/Brewfile" --force --no-vscode
 	@echo "Brewfile regenerated. review the diff before committing."
 
 bootstrap:
