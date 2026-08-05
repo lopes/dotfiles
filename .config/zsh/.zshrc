@@ -50,25 +50,12 @@ zstyle ':completion:*' rehash true  # auto-update PATH completions
 zmodload zsh/complist
 _comp_options+=(globdots)  # include hidden files
 
-# homebrew + zsh plugins
-if [ -d "/opt/homebrew" ]; then  # arm
-  export BREW_PREFIX="/opt/homebrew"
+# zsh plugins — interactive only; brew itself is on PATH via .zshenv, which also
+# exports BREW_PREFIX (the real prefix, so share/ is always $BREW_PREFIX/share)
+if [ -n "$BREW_PREFIX" ]; then
   test -f $BREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh && source $_
   test -f $BREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh && source $_
-  PATH="$BREW_PREFIX/bin:$PATH"
-elif [ -d "/usr/local/Homebrew" ]; then  # intel mac
-  export BREW_PREFIX="/usr/local/Homebrew"
-  test -f $BREW_PREFIX/../share/zsh-autosuggestions/zsh-autosuggestions.zsh && source $_
-  test -f $BREW_PREFIX/../share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh && source $_
-  PATH="$BREW_PREFIX/bin:$PATH"
-elif [ -d "/home/linuxbrew/.linuxbrew" ]; then  # linux
-  export BREW_PREFIX="/home/linuxbrew/.linuxbrew"
-  test -f $BREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh && source $_
-  test -f $BREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh && source $_
-  PATH="$BREW_PREFIX/bin:$PATH"
 fi
-
-test -d $HOME/.local/bin && PATH="$HOME/.local/bin:$PATH"  # local binaries to PATH
 
 # prompt
 export PROMPT='%F{#768390}%n@%m❯%f%F{#539bf5}%3~%f%(?.%F{#adbac7}.%F{#f47067})❯%f '

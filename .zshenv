@@ -18,6 +18,26 @@ export XDG_VIDEOS_DIR="$HOME/Videos"
 # default file mode: owner rwx, group rx, others nothing
 umask 027
 
+# Homebrew — brew is a system package manager (like dpkg or rpm), so brew and the
+# tools it installs belong on PATH for *every* shell: non-interactive scripts,
+# editors, and `make` all need them, not only interactive sessions. This used to
+# live in .zshrc (interactive-only), which meant a broken .zshrc silently took
+# brew and all its binaries off PATH — and then `make bootstrap` couldn't even
+# find brew to repair the machine. PATH belongs here; only the interactive zsh
+# plugins (autosuggestions, syntax-highlighting) stay in .zshrc.
+typeset -U path PATH  # keep PATH unique — .zshenv also runs for nested shells
+if [ -d "/opt/homebrew" ]; then                  # apple silicon
+  export BREW_PREFIX="/opt/homebrew"
+elif [ -d "/usr/local/Homebrew" ]; then          # intel mac
+  export BREW_PREFIX="/usr/local"
+elif [ -d "/home/linuxbrew/.linuxbrew" ]; then   # linux
+  export BREW_PREFIX="/home/linuxbrew/.linuxbrew"
+fi
+[ -n "$BREW_PREFIX" ] && PATH="$BREW_PREFIX/bin:$PATH"
+
+# user-local binaries
+[ -d "$HOME/.local/bin" ] && PATH="$HOME/.local/bin:$PATH"
+
 export EDITOR="vim"
 export VISUAL="vim"
 export VIMINIT="source $HOME/.config/vim/vimrc"
