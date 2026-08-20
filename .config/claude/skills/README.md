@@ -66,9 +66,9 @@ Why is case 17945 slow?
 
 ## Moved to the Obsidian vault
 
-These vault-coupled skills now live **inside the vault repo** (`~/Documents/obsidian/.claude/skills/`) so they travel and version with the notes they operate on. They load automatically when working inside the vault:
+These vault-coupled skills now live **inside the vault repo** (`~/Documents/notes/.claude/skills/`) so they travel and version with the notes they operate on. They load automatically when working inside the vault:
 
-- **audit-obsidian-vault** — vault organizational health (tags, placement, naming, orphans). Bundled script: `~/Documents/obsidian/.claude/skills/audit-obsidian-vault/scripts/vault-summary.py`.
+- **audit-obsidian-vault** — vault organizational health (tags, placement, naming, orphans). Bundled script: `~/Documents/notes/.claude/skills/audit-obsidian-vault/scripts/vault-summary.py`.
 - **review-checkpoint** — weekly / quarterly / yearly / CV checkpoint reviews.
 - **review-cv** — brutally honest CV / résumé review against `Master CV.md`.
 
