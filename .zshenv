@@ -51,5 +51,5 @@ export PAGER="less"
 
 export CLAUDE_CONFIG_DIR="$HOME/.config/claude"
 
-export LEDGER_FILE="$HOME/Documents/hledger/journal/main.journal"
+export LEDGER_FILE="$HOME/Documents/finances/journal/main.journal"
 
