@@ -50,24 +50,26 @@ zstyle ':completion:*' rehash true  # auto-update PATH completions
 zmodload zsh/complist
 _comp_options+=(globdots)  # include hidden files
 
-# zsh plugins — interactive only; brew itself is on PATH via .zshenv, which also
-# exports BREW_PREFIX (the real prefix, so share/ is always $BREW_PREFIX/share)
+# zsh plugins — interactive only
 if [ -n "$BREW_PREFIX" ]; then
-  test -f $BREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh && source $_
-  test -f $BREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh && source $_
+  test -f "$BREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh" && source "$_"
+  test -f "$BREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" && source "$_"
+elif [ -d "/usr/share" ]; then
+  test -f "/usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh" && source "$_"
+  test -f "/usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" && source "$_"
 fi
 
 # prompt
 export PROMPT='%F{#768390}%n@%m❯%f%F{#539bf5}%3~%f%(?.%F{#adbac7}.%F{#f47067})❯%f '
-if [ "$TERM_PROGRAM" != "Apple_Terminal" ]; then
+if [ "$TERM_PROGRAM" != "Apple_Terminal" ] && command -v oh-my-posh >/dev/null 2>&1; then
   eval "$(oh-my-posh init zsh --config "$HOME/.config/oh-my-posh/sable.toml")"
 fi
 
 
 # modern tools
-eval "$(zoxide init zsh)"
-eval "$(direnv hook zsh)"
-source <(fzf --zsh)
+command -v zoxide >/dev/null 2>&1 && eval "$(zoxide init zsh)"
+command -v direnv >/dev/null 2>&1 && eval "$(direnv hook zsh)"
+command -v fzf >/dev/null 2>&1 && source <(fzf --zsh)
 export FZF_DEFAULT_OPTS="
   --color=fg:#adbac7,bg:#22272e,hl:#539bf5
   --color=fg+:#adbac7,bg+:#2d333b,hl+:#539bf5

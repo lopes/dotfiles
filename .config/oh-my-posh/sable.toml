@@ -63,7 +63,7 @@ type = 'session'
 style = 'plain'
 foreground = 'p:gh_dimmed_subtext0'
 background = 'transparent'
-template = ' {{ (.UserName | splitList ".") | first | trunc 8 }} 󰒋 {{ (.HostName | splitList ".") | first | trunc 8 }}'
+template = ' {{ (.UserName | splitList ".") | first | trunc 8 }} 󰒋 {{ (.HostName | splitList "." | first | replace "lopes-" "") }}'
 
 [[blocks.segments]]
 type = 'path'

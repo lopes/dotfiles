@@ -2,9 +2,11 @@
 
 source ${HOME}/.config/aliases.unix.sh
 
-alias ls="ls --color=auto -lhF"
-alias ll="ls -alF"
-alias la="ls -A"
+alias ls="ls --color=auto -lhF --group-directories-first"
+alias ll="ls --color=auto -lAhF --group-directories-first"
+alias la="ls --color=auto -A"
+
+alias missing="grep -v -F -x -f" # usage: missing f1 f2 -> lines in f2 and not in f1
 
 alias ifconfig="ip address"
 alias route="ip route"
@@ -18,7 +20,7 @@ alias pubip="dig +short myip.opendns.com @resolver1.opendns.com"
 
 alias diff="diff --color"
 alias wget="wget -c"
-alias ps="ps auxf"
+alias psa="ps auxf"
 alias free="free -mlt"
 alias df="df -Tah --total"
 alias mount="mount | column -t"

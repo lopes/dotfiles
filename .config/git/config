@@ -3,7 +3,7 @@
 [user]
   name = Joe Lopes
   email = 2897144+lopes@users.noreply.github.com
-  signingkey = /Users/jose.lopes/.ssh/id_ed25519.pub
+  signingkey = ~/.ssh/id_ed25519.pub
 
 [gpg]
   format = ssh

@@ -7,7 +7,7 @@ DIRS := bash claude ghostty git htop nano oh-my-posh termux tmux vim zsh
 # loose files symlinked into ~/.config/
 FILES := aliases.bsd.sh aliases.linux.sh aliases.unix.sh aliases.windows.sh inputrc
 
-.PHONY: install uninstall list brew brew-check brew-dump bootstrap
+.PHONY: install uninstall list brew brew-check brew-dump bootstrap apt
 
 install:
 	@mkdir -p "$(HOME)/.cache/zsh" "$(HOME)/.local/state/zsh" "$(HOME)/.local/bin"
@@ -77,6 +77,31 @@ brew-check:
 brew-dump:
 	@brew bundle dump --file="$(DOTFILES)/Brewfile" --force --no-vscode
 	@echo "Brewfile regenerated. review the diff before committing."
+
+apt:
+	@sudo apt update && sudo apt install -y \
+		ripgrep \
+		fzf \
+		zoxide \
+		direnv \
+		git-delta \
+		htop \
+		miller \
+		lnav \
+		pv \
+		shellcheck \
+		zsh-autosuggestions \
+		zsh-syntax-highlighting \
+		gh
+	@mkdir -p "$(HOME)/.local/bin"
+	@if ! command -v oh-my-posh >/dev/null 2>&1; then \
+		echo "Installing oh-my-posh..."; \
+		curl -s https://ohmyposh.dev/install.sh | bash -s -- -d "$(HOME)/.local/bin"; \
+	fi
+	@if ! command -v uv >/dev/null 2>&1; then \
+		echo "Installing uv..."; \
+		curl -LsSf https://astral.sh/uv/install.sh | sh; \
+	fi
 
 bootstrap:
 	@$(MAKE) brew
