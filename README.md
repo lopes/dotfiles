@@ -20,7 +20,7 @@ All packages are declared in [`Brewfile`](Brewfile): formulae, casks, taps, and 
 
 ## Quick Start
 
-### New machine (macOS)
+### 1. Workstation (macOS)
 ```sh
 # 1. install Homebrew (https://brew.sh)
 # 2. clone and bootstrap
@@ -31,11 +31,44 @@ make bootstrap   # brew bundle + make install + macos-defaults.sh
 # 3. restart your shell
 ```
 
+### 2. Server (Linux / Debian)
+```sh
+# 1. clone and bootstrap
+cd "$HOME/Projects"
+git clone https://github.com/lopes/dotfiles
+cd dotfiles
+make apt         # installs apt packages + oh-my-posh + uv to ~/.local/bin
+make install     # creates ~/.config symlinks, ~/.zshenv, ~/.ssh/config
+
+# 2. launch zsh
+exec zsh -l
+```
+
+#### Cloudtop & Web Terminal Idiosyncrasies (ChromeOS / Secure Shell)
+When accessing a Debian-based Cloudtop from ChromeOS or Chrome Secure Shell (`hterm`), keep in mind:
+
+1. **Nerd Fonts in Chrome Secure Shell**: Web terminals cannot access local system fonts directly and Git LFS raw links fail to parse as binary fonts. To render prompt glyphs (``, `󰒋`, ``, ``, etc.), open the terminal tab's DevTools console (`Ctrl + Shift + J`) and inject the hosted TrueType font with row binding:
+   ```javascript
+   term_.prefs_.set('font-family', '"JetBrains Mono Nerd Font", monospace');
+   term_.prefs_.set('user-css-text', '@font-face { font-family: "JetBrains Mono Nerd Font"; src: url("https://cdn.jsdelivr.net/gh/ryanoasis/nerd-fonts@v2.3.3/patched-fonts/JetBrainsMono/Ligatures/Regular/complete/JetBrains%20Mono%20Regular%20Nerd%20Font%20Complete.ttf") format("truetype"); font-weight: normal; font-style: normal; } x-row { font-family: "JetBrains Mono Nerd Font", monospace !important; text-rendering: optimizeLegibility; }');
+   ```
+   Then reload the tab (`Ctrl + R`).
+
+2. **gLinux Puppet & Zsh Compatibility**:
+   - `.zshenv` exports `google_zsh_flysolo=1` to prevent corporate Puppet startup scripts from clobbering custom prompts and completions.
+   - Pre-exec security hooks (`skippy_zsh_preexec`) call `ps -o ppid= -p $$` before every command. Never alias `ps` directly (use `psa="ps auxf"` instead) to avoid conflicting argument errors.
+
+3. **Default Shell Auto-Launch**:
+   - `~/.bashrc` includes an interactive hook that automatically launches `zsh -l` upon SSH or terminal login.
+
+---
+
 ### Existing machine
 ```sh
 make install       # symlinks only
-make brew          # apt-style: install anything in Brewfile that's missing
-make brew-check    # show drift (what's in Brewfile but not installed)
+make brew          # macOS: install anything in Brewfile that's missing
+make apt           # Debian/Linux: install missing apt packages & CLI binaries
+make brew-check    # show brew drift
 make brew-dump     # regenerate Brewfile from current state (review diff before committing)
 ```
 
@@ -53,11 +86,12 @@ Because these are symlinks, **editing a file in either location is the same thin
 ### Makefile targets
 | Target | What it does |
 | :--- | :--- |
-| `make bootstrap` | Full new-machine setup: `brew` + `install` + `macos-defaults.sh`. |
+| `make bootstrap` | Full new-machine setup for macOS: `brew` + `install` + `macos-defaults.sh`. |
+| `make apt` | Debian/Linux package setup: installs CLI tools via `apt` and binaries (`oh-my-posh`, `uv`) to `~/.local/bin`. |
 | `make install` | Creates all symlinks. Safe to run repeatedly — skips existing links, warns on conflicts. |
 | `make uninstall` | Removes all managed symlinks. Does not delete any config files. |
 | `make list` | Shows all managed symlinks and whether they're connected. |
-| `make brew` | `brew bundle install` — installs anything in `Brewfile` that's missing. |
+| `make brew` | `brew bundle install` — installs anything in `Brewfile` that's missing (macOS). |
 | `make brew-check` | `brew bundle check` — reports drift between Brewfile and what's installed. |
 | `make brew-dump` | Regenerate `Brewfile` from current state. Review the diff before committing. |
 
