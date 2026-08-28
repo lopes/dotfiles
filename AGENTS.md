@@ -1,6 +1,6 @@
-# CLAUDE.md
+# AGENTS.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This file provides guidance to AI coding assistants (Gemini, Jetski, Claude Code, etc.) when working with code in this repository.
 
 ## What this repo is
 
@@ -18,11 +18,12 @@ Configs live under `.config/` in the repo and are exposed to the system via **sy
 ## Common commands
 
 ```sh
-make bootstrap   # new-machine setup: brew bundle + symlinks + macos-defaults.sh
+make bootstrap   # new macOS workstation setup: brew bundle + symlinks + macos-defaults.sh
+make apt         # new Debian/Linux server setup: apt packages + oh-my-posh + uv
 make install     # create symlinks only (idempotent; skips existing, warns on conflicts)
 make uninstall   # remove the symlinks only (config files in the repo are untouched)
 make list        # show every managed symlink and whether it resolves
-make brew        # brew bundle install (apply Brewfile)
+make brew        # brew bundle install (apply Brewfile on macOS)
 make brew-check  # report drift between Brewfile and installed packages
 make brew-dump   # regenerate Brewfile from current state (review diff before committing)
 ```
@@ -57,6 +58,9 @@ Mirror this in reverse when removing a config: drop the Makefile entry, drop the
 - **SSH client config is mode-sensitive.** `~/.ssh/config` is a symlink, but ssh checks the resolved target file's mode. The Makefile `install` target chmods the repo file to 600 before symlinking, and ensures `~/.ssh` is 700. Don't relax those.
 - **Private secrets** are sourced from `~/.config/zsh/private.sh` (untracked, chmod 600 enforced by `.zshrc`). Never commit anything to that path.
 - **Git signing uses SSH keys**, not GPG. `[gpg] format = ssh` plus a `signingkey` pointing at `~/.ssh/id_ed25519.pub`. There is no GPG installation expected.
+- **Debian / Linux package management.** Linux dependencies are installed via `make apt` (APT packages + `oh-my-posh` & `uv` to `~/.local/bin`). Zsh plugins are sourced from `/usr/share/zsh-...` on Debian/apt and `$BREW_PREFIX/share/...` on macOS/brew.
+- **Cloudtop / gLinux compatibility.** `.zshenv` exports `google_zsh_flysolo=1` to disable gLinux sysops Puppet overrides. `aliases.linux.sh` uses `psa="ps auxf"` rather than aliasing `ps` directly (avoids breaking internal security pre-exec hooks like `skippy_zsh_preexec`).
+- **Web Terminal (ChromeOS / Secure Shell) Nerd Fonts.** Web terminals cannot read OS system fonts. In `hterm`, load the jsDelivr TTF Nerd Font via DevTools (`Ctrl + Shift + J`) setting `term_.prefs_.set('user-css-text', ...)` with `x-row { font-family: ... !important; }`.
 
 ## Claude skills live in this repo
 
