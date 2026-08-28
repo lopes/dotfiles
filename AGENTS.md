@@ -62,9 +62,11 @@ Mirror this in reverse when removing a config: drop the Makefile entry, drop the
 - **Cloudtop / gLinux compatibility.** `.zshenv` exports `google_zsh_flysolo=1` to disable gLinux sysops Puppet overrides. `aliases.linux.sh` uses `psa="ps auxf"` rather than aliasing `ps` directly (avoids breaking internal security pre-exec hooks like `skippy_zsh_preexec`).
 - **Web Terminal (ChromeOS / Secure Shell) Nerd Fonts.** Web terminals cannot read OS system fonts. In `hterm`, load the jsDelivr TTF Nerd Font via DevTools (`Ctrl + Shift + J`) setting `term_.prefs_.set('user-css-text', ...)` with `x-row { font-family: ... !important; }`.
 
-## Claude skills live in this repo
+## Claude & Gemini / Jetski skills live in this repo
 
-`.config/claude/skills/` contains custom skills (one folder per skill, each with `SKILL.md` and optional `references/` and `scripts/`). They are tracked, and the symlinked `~/.config/claude/skills/` makes them available as `/skill-name` slash commands. Editing a skill here updates it live for future Claude Code sessions. See `.config/claude/skills/README.md` for the catalog.
+- `.config/claude/skills/` contains custom Claude Code skills (one folder per skill, each with `SKILL.md` and optional `references/` and `scripts/`).
+- `.config/gemini/skills/` and `.config/gemini/rules/` contain custom Gemini / Jetski skills and rules. Symlinked via `Makefile` to both `~/.config/gemini/` and `~/.gemini/config/`, making them active across all Gemini/Jetski sessions on the machine. Editing a skill or rule here updates it live. See `.config/gemini/skills/README.md` for the catalog.
+
 
 ## Things to leave alone
 

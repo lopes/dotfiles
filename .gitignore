@@ -24,6 +24,11 @@
 !.config/claude/
 !.config/claude/CLAUDE.md
 !.config/claude/skills/**
+!.config/gemini/
+!.config/gemini/AGENTS.md
+!.config/gemini/rules/**
+!.config/gemini/skills/**
+
 !.config/zsh/.zshrc
 !.config/zsh/functions.sh
 !.gitignore

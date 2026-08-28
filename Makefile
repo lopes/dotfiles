@@ -2,7 +2,7 @@ DOTFILES := $(HOME)/Projects/dotfiles
 CONFIG   := $(HOME)/.config
 
 # directories symlinked entirely into ~/.config/
-DIRS := bash claude ghostty git htop nano oh-my-posh termux tmux vim zsh
+DIRS := bash claude gemini ghostty git htop nano oh-my-posh termux tmux vim zsh
 
 # loose files symlinked into ~/.config/
 FILES := aliases.bsd.sh aliases.linux.sh aliases.unix.sh aliases.windows.sh inputrc
@@ -52,6 +52,16 @@ install:
 	else \
 		ln -sv "$(DOTFILES)/.config/ssh/config" "$(HOME)/.ssh/config"; \
 	fi
+	@mkdir -p "$(HOME)/.gemini/config"
+	@for item in rules skills AGENTS.md; do \
+		if [ -L "$(HOME)/.gemini/config/$$item" ]; then \
+			echo "skip  $(HOME)/.gemini/config/$$item (already linked)"; \
+		elif [ -e "$(HOME)/.gemini/config/$$item" ]; then \
+			echo "WARN  $(HOME)/.gemini/config/$$item exists and is not a symlink — skipping"; \
+		elif [ -e "$(CONFIG)/gemini/$$item" ]; then \
+			ln -sv "$(CONFIG)/gemini/$$item" "$(HOME)/.gemini/config/$$item"; \
+		fi; \
+	done
 	@echo "\ndone. restart your shell to apply changes."
 
 uninstall:
@@ -64,6 +74,9 @@ uninstall:
 	@[ -L "$(HOME)/.zshenv" ] && rm -v "$(HOME)/.zshenv" || true
 	@[ -L "$(HOME)/.bashrc" ] && rm -v "$(HOME)/.bashrc" || true
 	@[ -L "$(HOME)/.ssh/config" ] && rm -v "$(HOME)/.ssh/config" || true
+	@for item in rules skills AGENTS.md; do \
+		[ -L "$(HOME)/.gemini/config/$$item" ] && rm -v "$(HOME)/.gemini/config/$$item" || true; \
+	done
 	@echo "\ndone. all symlinks removed."
 
 brew:
@@ -119,3 +132,7 @@ list:
 	@printf "  %-20s -> %s\n" "$(HOME)/.zshenv" "$$(readlink "$(HOME)/.zshenv" 2>/dev/null || echo 'NOT LINKED')"
 	@printf "  %-20s -> %s\n" "$(HOME)/.bashrc" "$$(readlink "$(HOME)/.bashrc" 2>/dev/null || echo 'NOT LINKED')"
 	@printf "  %-20s -> %s\n" "$(HOME)/.ssh/config" "$$(readlink "$(HOME)/.ssh/config" 2>/dev/null || echo 'NOT LINKED')"
+	@for item in rules skills AGENTS.md; do \
+		printf "  %-20s -> %s\n" "$(HOME)/.gemini/config/$$item" "$$(readlink "$(HOME)/.gemini/config/$$item" 2>/dev/null || echo 'NOT LINKED')"; \
+	done
+
