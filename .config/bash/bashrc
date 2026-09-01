@@ -1,5 +1,8 @@
 # bash configuration
 
+# abort immediately if not running in an interactive terminal (headless/subshell safety)
+[[ -t 0 ]] || return 0
+
 test -z "$PS1" && return
 
 test -f /etc/bashrc && . "$_"

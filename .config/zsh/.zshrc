@@ -4,6 +4,9 @@
 # .zshenv and before this file and clobbers HISTFILE/HISTSIZE/SAVEHIST,
 # so anything history-related has to live here (not .zshenv) to stick.
 
+# abort immediately if not running in an interactive terminal (headless/subshell safety)
+[[ -t 0 ]] || return 0
+
 # history — shell history is state, not disposable cache
 HISTFILE="$XDG_STATE_HOME/zsh/history"
 [[ -d "$XDG_STATE_HOME/zsh" ]] || mkdir -p "$XDG_STATE_HOME/zsh"
@@ -60,15 +63,15 @@ elif [ -d "/usr/share" ]; then
 fi
 
 # OpenSSH agent for Linux / Cloudtop (rodete) — bypasses gcr-ssh-agent for Ed25519 support
-if [[ "$OSTYPE" == linux* ]] && [[ -f /etc/os-release ]] && grep -q 'rodete' /etc/os-release; then
-  export SSH_AUTH_SOCK_FILE="${XDG_RUNTIME_DIR:-/tmp}/openssh_agent_${USER}.sock"
-  if [[ -S "$SSH_AUTH_SOCK_FILE" ]] && (SSH_AUTH_SOCK="$SSH_AUTH_SOCK_FILE" ssh-add -l >/dev/null 2>&1; test $? -le 1); then
-    export SSH_AUTH_SOCK="$SSH_AUTH_SOCK_FILE"
-  else
-    rm -f "$SSH_AUTH_SOCK_FILE"
-    eval "$(env -u CHROME_REMOTE_DESKTOP_SESSION ssh-agent -a "$SSH_AUTH_SOCK_FILE" -s)" >/dev/null
-  fi
-fi
+# if [[ "$OSTYPE" == linux* ]] && [[ -f /etc/os-release ]] && grep -q 'rodete' /etc/os-release; then
+#   export SSH_AUTH_SOCK_FILE="${XDG_RUNTIME_DIR:-/tmp}/openssh_agent_${USER}.sock"
+#   if [[ -S "$SSH_AUTH_SOCK_FILE" ]] && (SSH_AUTH_SOCK="$SSH_AUTH_SOCK_FILE" ssh-add -l >/dev/null 2>&1; test $? -le 1); then
+#     export SSH_AUTH_SOCK="$SSH_AUTH_SOCK_FILE"
+#   else
+#     rm -f "$SSH_AUTH_SOCK_FILE"
+#     eval "$(env -u CHROME_REMOTE_DESKTOP_SESSION ssh-agent -a "$SSH_AUTH_SOCK_FILE" -s)" >/dev/null
+#   fi
+# fi
 
 # prompt
 export PROMPT='%F{#768390}%n@%m❯%f%F{#539bf5}%3~%f%(?.%F{#adbac7}.%F{#f47067})❯%f '

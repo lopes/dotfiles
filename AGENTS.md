@@ -57,7 +57,7 @@ Mirror this in reverse when removing a config: drop the Makefile entry, drop the
 - **`.config/macos/macos-defaults.sh` is NOT symlinked.** It is a one-shot `defaults write` script run manually on a new machine (or via `make bootstrap`). It lives in the repo for tracking only.
 - **SSH client config is mode-sensitive.** `~/.ssh/config` is a symlink, but ssh checks the resolved target file's mode. The Makefile `install` target chmods the repo file to 600 before symlinking, and ensures `~/.ssh` is 700. Don't relax those.
 - **Private secrets** are sourced from `~/.config/zsh/private.sh` (untracked, chmod 600 enforced by `.zshrc`). Never commit anything to that path.
-- **Git signing uses SSH keys**, not GPG. `[gpg] format = ssh` plus a `signingkey` pointing at `~/.ssh/id_ed25519.pub`. There is no GPG installation expected.
+- **Git signing uses SSH keys**, not GPG. `[gpg] format = ssh` plus a `signingkey` pointing at `~/.ssh/github_ed25519.pub`. Automatic signing is disabled on Cloudtop (`commit.gpgsign = false`) to prevent headless automation hangs.
 - **Debian / Linux package management.** Linux dependencies are installed via `make apt` (APT packages + `oh-my-posh` & `uv` to `~/.local/bin`). Zsh plugins are sourced from `/usr/share/zsh-...` on Debian/apt and `$BREW_PREFIX/share/...` on macOS/brew.
 - **Cloudtop / gLinux compatibility.** `.zshenv` exports `google_zsh_flysolo=1` to disable gLinux sysops Puppet overrides. `aliases.linux.sh` uses `psa="ps auxf"` rather than aliasing `ps` directly (avoids breaking internal security pre-exec hooks like `skippy_zsh_preexec`).
 - **Web Terminal (ChromeOS / Secure Shell) Nerd Fonts.** Web terminals cannot read OS system fonts. In `hterm`, load the jsDelivr TTF Nerd Font via DevTools (`Ctrl + Shift + J`) setting `term_.prefs_.set('user-css-text', ...)` with `x-row { font-family: ... !important; }`.
@@ -66,7 +66,7 @@ Mirror this in reverse when removing a config: drop the Makefile entry, drop the
 
 - `.config/claude/skills/` contains custom Claude Code skills (one folder per skill, each with `SKILL.md` and optional `references/` and `scripts/`).
 - `.config/gemini/skills/` and `.config/gemini/rules/` contain custom Gemini / Jetski skills and rules. Symlinked via `Makefile` to both `~/.config/gemini/` and `~/.gemini/config/`, making them active across all Gemini/Jetski sessions on the machine. Editing a skill or rule here updates it live. See `.config/gemini/skills/README.md` for the catalog.
-- **WikiSkill Private Knowledge Base.** Persistent pattern wiki and execution traces live in `~/.local/state/gemini/wiki/` (symlinked to `~/.gemini/config/wiki/`) and `~/.local/state/gemini/raw/`. They are strictly untracked in this repo to protect confidential/internal data from public git exposure.
+- **Jetski Configuration Boundary & Guardrails:** Never place unindexed markdown wikis, raw session logs, or database stores inside `~/.gemini/config/`. All persistent data must live in `~/.local/state/gemini/`. Any custom skill added to `~/.gemini/config/skills/` must specify `disable-model-invocation: true` unless explicitly designed for autonomous triggering.
 
 
 ## Things to leave alone

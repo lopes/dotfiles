@@ -10,7 +10,7 @@ FILES := aliases.bsd.sh aliases.linux.sh aliases.unix.sh aliases.windows.sh inpu
 .PHONY: install uninstall list brew brew-check brew-dump bootstrap apt
 
 install:
-	@mkdir -p "$(HOME)/.cache/zsh" "$(HOME)/.local/state/zsh" "$(HOME)/.local/bin" "$(HOME)/.local/state/gemini/wiki/patterns" "$(HOME)/.local/state/gemini/raw" "$(HOME)/.local/state/gemini/skills" "$(HOME)/.local/state/gemini/scripts"
+	@mkdir -p "$(HOME)/.cache/zsh" "$(HOME)/.local/state/zsh" "$(HOME)/.local/bin" "$(HOME)/.local/state/gemini/skills" "$(HOME)/.local/state/gemini/scripts"
 	@for d in $(DIRS); do \
 		if [ -L "$(CONFIG)/$$d" ]; then \
 			echo "skip  $(CONFIG)/$$d (already linked)"; \
@@ -62,13 +62,6 @@ install:
 			ln -sv "$(CONFIG)/gemini/$$item" "$(HOME)/.gemini/config/$$item"; \
 		fi; \
 	done
-	@if [ -L "$(HOME)/.gemini/config/wiki" ]; then \
-		echo "skip  $(HOME)/.gemini/config/wiki (already linked)"; \
-	elif [ -e "$(HOME)/.gemini/config/wiki" ]; then \
-		echo "WARN  $(HOME)/.gemini/config/wiki exists and is not a symlink — skipping"; \
-	elif [ -d "$(HOME)/.local/state/gemini/wiki" ]; then \
-		ln -sv "$(HOME)/.local/state/gemini/wiki" "$(HOME)/.gemini/config/wiki"; \
-	fi
 	@echo "\ndone. restart your shell to apply changes."
 
 uninstall:
@@ -81,7 +74,7 @@ uninstall:
 	@[ -L "$(HOME)/.zshenv" ] && rm -v "$(HOME)/.zshenv" || true
 	@[ -L "$(HOME)/.bashrc" ] && rm -v "$(HOME)/.bashrc" || true
 	@[ -L "$(HOME)/.ssh/config" ] && rm -v "$(HOME)/.ssh/config" || true
-	@for item in rules skills AGENTS.md wiki; do \
+	@for item in rules skills AGENTS.md; do \
 		[ -L "$(HOME)/.gemini/config/$$item" ] && rm -v "$(HOME)/.gemini/config/$$item" || true; \
 	done
 	@echo "\ndone. all symlinks removed."

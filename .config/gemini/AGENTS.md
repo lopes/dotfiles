@@ -38,3 +38,7 @@ description: "Personal workflow, communication, and engineering guidelines for j
 ## 6. Google3 Verification & Search
 - Use Code Search (`cs`) for repository queries across Google3 (never raw `find` or `grep` across the virtual filesystem).
 - Always verify code modifications with `blaze test` before reporting completion.
+
+## 7. Jetski & Gemini Workspace Guardrails
+- Never place unindexed markdown wikis, raw session logs, or database stores inside `~/.gemini/config/`. All persistent data must live in `~/.local/state/gemini/`.
+- Any custom skill added to `~/.gemini/config/skills/` must specify `disable-model-invocation: true` unless explicitly designed for autonomous triggering.

@@ -3,7 +3,7 @@
 [user]
   name = Joe Lopes
   email = 2897144+lopes@users.noreply.github.com
-  signingkey = ~/.ssh/id_ed25519.pub
+  signingkey = ~/.ssh/github_ed25519.pub
 
 [gpg]
   format = ssh
@@ -24,7 +24,7 @@
   side-by-side = false
 
 [commit]
-  gpgsign = true
+	gpgsign = false
   verbose = true
 
 [branch]
@@ -39,6 +39,7 @@
   prune = true
   pruneTags = true
   all = true
+	auto = 0
 
 [diff]
   algorithm = histogram
@@ -75,7 +76,7 @@
 
 [tag]
   sort = version:refname
-	gpgsign = true
+	gpgsign = false
 
 [help]
   autocorrect = prompt
