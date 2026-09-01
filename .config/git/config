@@ -3,10 +3,13 @@
 [user]
   name = Joe Lopes
   email = 2897144+lopes@users.noreply.github.com
-  signingkey = ~/.ssh/github_ed25519.pub
+  signingkey = ~/.ssh/github_signing_ed25519.pub
 
 [gpg]
   format = ssh
+
+[gpg "ssh"]
+  allowedSignersFile = ~/.ssh/allowed_signers
 
 [core]
   editor = vim
@@ -24,7 +27,7 @@
   side-by-side = false
 
 [commit]
-	gpgsign = false
+  gpgsign = true
   verbose = true
 
 [branch]
@@ -76,7 +79,7 @@
 
 [tag]
   sort = version:refname
-	gpgsign = false
+  gpgsign = true
 
 [help]
   autocorrect = prompt
