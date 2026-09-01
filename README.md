@@ -61,6 +61,18 @@ When accessing a Debian-based Cloudtop from ChromeOS or Chrome Secure Shell (`ht
 3. **Default Shell Auto-Launch**:
    - `~/.bashrc` includes an interactive hook that automatically launches `zsh -l` upon SSH or terminal login.
 
+4. **GitHub SSH Keys & Cloudtop Sync Workflow**:
+   - **Two Distinct SSH Keys**:
+     - `~/.ssh/github_ed25519` (*passphrase-encrypted*): Authentication key for pushing/pulling from GitHub (`git@github.com`).
+     - `~/.ssh/github_signing_ed25519` (*passphrase-free*): Dedicated commit-signing key (`[user] signingkey = ~/.ssh/github_signing_ed25519.pub`, `commit.gpgsign = true`). Allows automated commit signing without passphrase prompts or agent locks.
+   - **Syncing from Cloudtop (`agent refused operation` bypass)**:
+     Under Chrome Remote Desktop sessions, `SSH_AUTH_SOCK` defaults to `gcr-ssh-agent`, which does not support Ed25519 keys. Furthermore, `/usr/bin/ssh-agent` refuses to start while `$CHROME_REMOTE_DESKTOP_SESSION` is set. To sync changes to GitHub, unlock `github_ed25519` in an OpenSSH agent:
+     ```sh
+     eval "$(env -u CHROME_REMOTE_DESKTOP_SESSION ssh-agent -s)"
+     ssh-add ~/.ssh/github_ed25519
+     git sync
+     ```
+
 ---
 
 ### Existing machine
