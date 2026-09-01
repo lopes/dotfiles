@@ -66,6 +66,7 @@ Mirror this in reverse when removing a config: drop the Makefile entry, drop the
 
 - `.config/claude/skills/` contains custom Claude Code skills (one folder per skill, each with `SKILL.md` and optional `references/` and `scripts/`).
 - `.config/gemini/skills/` and `.config/gemini/rules/` contain custom Gemini / Jetski skills and rules. Symlinked via `Makefile` to both `~/.config/gemini/` and `~/.gemini/config/`, making them active across all Gemini/Jetski sessions on the machine. Editing a skill or rule here updates it live. See `.config/gemini/skills/README.md` for the catalog.
+- **WikiSkill Private Knowledge Base.** Persistent pattern wiki and execution traces live in `~/.local/state/gemini/wiki/` (symlinked to `~/.gemini/config/wiki/`) and `~/.local/state/gemini/raw/`. They are strictly untracked in this repo to protect confidential/internal data from public git exposure.
 
 
 ## Things to leave alone
