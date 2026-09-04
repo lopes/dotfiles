@@ -6,7 +6,7 @@ My personal, **minimalist** configuration files built on simplicity, security, a
 ## Philosophy
 1. **Layout**: Optimize screen space by removing superfluous elements.
 2. **Colors**: Consistent GitHub Dark Dimmed colorscheme across all tools.
-3. **Symbols**: Meaningful icons and glyphs via Nerd Fonts.
+3. **Symbols**: Meaningful icons and glyphs via standard JetBrains Mono and Unicode.
 4. **Controls**: Streamlined shortcuts with vi-style navigation where it fits.
 5. **Relevancy**: Only settings and tools that serve actual, practical usage.
 
@@ -47,10 +47,10 @@ exec zsh -l
 #### Cloudtop & Web Terminal Idiosyncrasies (ChromeOS / Secure Shell)
 When accessing a Debian-based Cloudtop from ChromeOS or Chrome Secure Shell (`hterm`), keep in mind:
 
-1. **Nerd Fonts in Chrome Secure Shell**: Web terminals cannot access local system fonts directly and Git LFS raw links fail to parse as binary fonts. To render prompt glyphs (``, `󰒋`, ``, ``, etc.), open the terminal tab's DevTools console (`Ctrl + Shift + J`) and inject the hosted TrueType font with row binding:
+1. **JetBrains Mono in Chrome Secure Shell**: Web terminals cannot access local system fonts directly. To load standard JetBrains Mono via Google Fonts, open the terminal tab's DevTools console (`Ctrl + Shift + J`) and inject the webfont:
    ```javascript
-   term_.prefs_.set('font-family', '"JetBrains Mono Nerd Font", monospace');
-   term_.prefs_.set('user-css-text', '@font-face { font-family: "JetBrains Mono Nerd Font"; src: url("https://cdn.jsdelivr.net/gh/ryanoasis/nerd-fonts@v2.3.3/patched-fonts/JetBrainsMono/Ligatures/Regular/complete/JetBrains%20Mono%20Regular%20Nerd%20Font%20Complete.ttf") format("truetype"); font-weight: normal; font-style: normal; } x-row { font-family: "JetBrains Mono Nerd Font", monospace !important; text-rendering: optimizeLegibility; }');
+   term_.prefs_.set('font-family', '"JetBrains Mono", monospace');
+   term_.prefs_.set('user-css-text', '@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap"); x-row { font-family: "JetBrains Mono", monospace !important; text-rendering: optimizeLegibility; }');
    ```
    Then reload the tab (`Ctrl + R`).
 
