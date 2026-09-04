@@ -2,7 +2,7 @@
 
 gtk-single-instance = true
 
-font-family = JetBrainsMono Nerd Font
+font-family = JetBrains Mono
 font-style = Regular
 font-size = 16
 

@@ -25,7 +25,7 @@ alias grep="grep --color=auto"
 # nocorrect is zsh-only; bash would treat it as a missing command
 [ -n "$ZSH_VERSION" ] && alias sudo="nocorrect sudo"
 
-alias tx="tmux new -As "󰁞""
+alias tx="tmux new -As main"
 
 # security & file analysis
 alias hexdump="hexdump -C"
