@@ -105,7 +105,8 @@ apt:
 		shellcheck \
 		zsh-autosuggestions \
 		zsh-syntax-highlighting \
-		gh
+		gh \
+		fonts-jetbrains-mono
 	@mkdir -p "$(HOME)/.local/bin"
 	@if ! command -v oh-my-posh >/dev/null 2>&1; then \
 		echo "Installing oh-my-posh..."; \
