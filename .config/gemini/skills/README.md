@@ -43,3 +43,15 @@ Analyse a Chronicle (Google SecOps) SOAR case and produce a tight, IR/SOC-grade 
 **Input:** numeric case ID or full Chronicle case URL.
 **Read-only:** never closes cases, never posts comments.
 **Requirements:** SecOps MCP server configured in `mcp_config.json`.
+
+---
+
+## checkpoint
+
+Synthesize weekly, quarterly, and annual career impact checkpoints for a Security Engineer at Google Cloud. Automatically harvests footprint (recent Drive edits, Git commits, code review changelists), prompts for completed tasks, applies temporal grounding (negative cache, honest blanks, persistent doc date limits), and produces structured recaps (Key Moves, Artifacts, Blockers) with a Chief of Staff executive assessment.
+
+**Triggers:** `/checkpoint [weekly|quarterly|annual]` or "run checkpoint weekly", "weekly recap", "checkpoint quarterly", "checkpoint annual".
+**Cadences:**
+- `weekly`: 3-part Weekly Recap + Chief of Staff feedback → feeds weekly snippets and quarterly doc tab.
+- `quarterly`: 4-Track STAR synthesis across 13 weeks + Role Expectation Check + triggers strategy refresh.
+- `annual`: Year-end synthesis of top 5–7 wins into Master CV Delta format.
