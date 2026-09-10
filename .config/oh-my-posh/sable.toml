@@ -1,6 +1,6 @@
 # oh-my-posh configuration file - sable
 # minimalistic single-line prompt with github dark dimmed colors
-# layout: user @ host ▶ ~/path ⌥ branch*⇡⇣ λ py314❯ 5s
+# layout: user·host ~/path branch*⇡⇣ py314❯ 5s
 
 console_title_template = '{{ .Folder }}'
 version = 3
@@ -63,14 +63,14 @@ type = 'session'
 style = 'plain'
 foreground = 'p:gh_dimmed_subtext0'
 background = 'transparent'
-template = '{{ (.UserName | splitList ".") | first | trunc 8 }} <p:gh_dimmed_subtext0>@</> {{ (.HostName | splitList "." | first | replace "lopes-" "") }}'
+template = '{{ (.UserName | splitList ".") | first | trunc 8 }}·{{ (.HostName | splitList "." | first | replace "lopes-" "") }}'
 
 [[blocks.segments]]
 type = 'path'
 style = 'plain'
 foreground = 'p:gh_dimmed_blue'
 background = 'transparent'
-template = ' <p:gh_dimmed_subtext0>▶</> {{ .Path }}'
+template = ' {{ .Path }}'
 
 [blocks.segments.properties]
 style = 'agnoster_short'
@@ -93,7 +93,7 @@ foreground_templates = [
 ]
 
 [blocks.segments.properties]
-branch_icon = ' <p:gh_dimmed_subtext0>⌥</> '
+branch_icon = ' '
 commit_icon = '@'
 fetch_status = true
 branch_template = '{{ trunc 20 .Branch }}'
@@ -103,7 +103,7 @@ type = 'python'
 style = 'plain'
 foreground = 'p:gh_dimmed_purple'
 background = 'transparent'
-template = ' <p:gh_dimmed_subtext0>λ py</>{{ .Major }}{{ .Minor }}'
+template = ' py{{ .Major }}{{ .Minor }}'
 
 [blocks.segments.properties]
 display_mode = 'context'
