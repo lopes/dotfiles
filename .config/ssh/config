@@ -5,7 +5,6 @@ Host github.com
   User git
   IdentityFile ~/.ssh/github_ed25519
   IdentitiesOnly yes
-  BatchMode yes
 
 Host *
   # ignore macos-only directives on linux instead of erroring out
