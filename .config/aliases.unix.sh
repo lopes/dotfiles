@@ -1,3 +1,4 @@
+#!/bin/sh
 # general unix aliases
 
 alias aka="alias | grep"

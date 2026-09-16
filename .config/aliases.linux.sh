@@ -1,6 +1,7 @@
+#!/bin/sh
 # linux-friendly aliases
 
-source ${HOME}/.config/aliases.unix.sh
+. "${HOME}/.config/aliases.unix.sh"
 
 alias ls="ls --color=auto -lhF --group-directories-first"
 alias ll="ls --color=auto -lAhF --group-directories-first"

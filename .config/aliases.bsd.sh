@@ -1,6 +1,7 @@
+#!/bin/sh
 # bsd-friendly aliases
 
-source ${HOME}/.config/aliases.unix.sh
+. "${HOME}/.config/aliases.unix.sh"
 
 alias ls="gls --color=auto -lhF --group-directories-first"
 alias ll="gls --color=auto -lAhF --group-directories-first"
