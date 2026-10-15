@@ -21,14 +21,8 @@
 !.config/nano/nanorc
 !.config/ssh/config
 !.config/
-!.config/claude/
-!.config/claude/CLAUDE.md
-!.config/claude/skills/
-!.config/claude/skills/**
 !.config/gemini/
 !.config/gemini/AGENTS.md
-!.config/gemini/rules/
-!.config/gemini/rules/**
 !.config/gemini/skills/
 !.config/gemini/skills/**
 
@@ -38,7 +32,6 @@
 !.zshenv
 !Brewfile
 !AGENTS.md
-!CLAUDE.md
 !LICENSE
 !Makefile
 !README.md

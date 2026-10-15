@@ -11,6 +11,7 @@ description: >
   detection latency for cases <ids>", or shares one or more Chronicle case URLs
   with timing questions. Read-only by design: never closes cases, never posts
   comments.
+disable-model-invocation: true
 ---
 
 # Chronicle Case Delay Analyser
@@ -37,7 +38,7 @@ Every `mcp__remote-mcp-secops__*` call requires three fields:
 Source these values, in order of preference:
 
 1. From an auto-memory entry that documents the Chronicle / SecOps tenant params (look for a memory whose `description` mentions Chronicle tenant params, customerId, or `mcp__remote-mcp-secops`).
-2. From a `CLAUDE.md` in the working directory tree.
+2. From an `AGENTS.md` in the working directory tree.
 3. From environment variables (`CHRONICLE_PROJECT_ID`, `CHRONICLE_CUSTOMER_ID`, `CHRONICLE_REGION`).
 4. Ask the user.
 

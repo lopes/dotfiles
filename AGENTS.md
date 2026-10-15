@@ -1,6 +1,6 @@
 # AGENTS.md
 
-This file provides guidance to AI coding assistants (Gemini, Jetski, Claude Code, etc.) when working with code in this repository.
+This file provides guidance to AI coding assistants when working with code in this repository.
 
 ## What this repo is
 
@@ -51,22 +51,21 @@ Mirror this in reverse when removing a config: drop the Makefile entry, drop the
 ## Architecture notes that aren't obvious from the tree
 
 - **OS-specific aliases dispatch.** `.config/zsh/.zshrc` sources one of `aliases.{bsd,linux,windows}.sh` based on `$OSTYPE`. `aliases.unix.sh` is the shared baseline and is sourced *from within* `aliases.bsd.sh` (and the others where applicable) — don't assume it loads automatically; check the OS-specific file when adding a cross-platform alias.
-- **`.zshenv` vs `.zshrc` boundary.** `.zshenv` holds env vars that child processes and non-interactive zsh need (XDG paths, `EDITOR`, `PAGER`, `BAT_THEME`, `ZDOTDIR`, `umask`, `CLAUDE_CONFIG_DIR`, `LEDGER_FILE`). Everything interactive-only (HISTFILE, HISTSIZE, SAVEHIST, HISTORY_IGNORE, KEYTIMEOUT, TMOUT) lives in `.zshrc`. Don't mix the two.
+- **`.zshenv` vs `.zshrc` boundary.** `.zshenv` holds env vars that child processes and non-interactive zsh need (XDG paths, `EDITOR`, `PAGER`, `BAT_THEME`, `ZDOTDIR`, `umask`, `LEDGER_FILE`). Everything interactive-only (HISTFILE, HISTSIZE, SAVEHIST, HISTORY_IGNORE, KEYTIMEOUT, TMOUT) lives in `.zshrc`. Don't mix the two.
 - **macOS `/etc/zshrc` trap.** On macOS, Apple's `/etc/zshrc` runs after `.zshenv` and before `.zshrc`, and silently clobbers `HISTFILE`, `HISTSIZE`, `SAVEHIST`. The repo's `.zshrc` re-asserts them; never move those three back to `.zshenv` "for tidiness" — they'll be overwritten and the user loses history.
-- **`CLAUDE_CONFIG_DIR` is redirected** to `~/.config/claude` in `.zshenv`. That directory exists under `.config/claude/` in this repo but only `claude/skills/**` and `claude/settings.json`-adjacent files are tracked (see `.gitignore`). Runtime state (`sessions/`, `history.jsonl`, `projects/`, `tasks/`, etc.) is intentionally untracked.
 - **`.config/macos/macos-defaults.sh` is NOT symlinked.** It is a one-shot `defaults write` script run manually on a new machine (or via `make bootstrap`). It lives in the repo for tracking only.
 - **SSH client config is mode-sensitive.** `~/.ssh/config` is a symlink, but ssh checks the resolved target file's mode. The Makefile `install` target chmods the repo file to 600 before symlinking, and ensures `~/.ssh` is 700. Don't relax those.
-- **Private secrets** are sourced from `~/.config/zsh/private.sh` (untracked, chmod 600 enforced by `.zshrc`). Never commit anything to that path.
+- **Private secrets & local overrides** are sourced from `~/.config/zsh/private.sh` (untracked, chmod 600 enforced by `.zshenv` and `.zshrc`). Never commit anything to that path.
 - **Git signing uses SSH keys**, not GPG. `[gpg] format = ssh` plus a dedicated unencrypted `signingkey` pointing at `~/.ssh/github_signing_ed25519.pub`. This enables automated, verified signing (`commit.gpgsign = true`) without passphrase prompts.
 - **Debian / Linux package management.** Linux dependencies are installed via `make apt` (APT packages + `oh-my-posh` & `uv` to `~/.local/bin`). Zsh plugins are sourced from `/usr/share/zsh-...` on Debian/apt and `$BREW_PREFIX/share/...` on macOS/brew.
-- **Cloudtop / gLinux compatibility.** `.zshenv` exports `google_zsh_flysolo=1` to disable gLinux sysops Puppet overrides. `aliases.linux.sh` uses `psa="ps auxf"` rather than aliasing `ps` directly (avoids breaking internal security pre-exec hooks like `skippy_zsh_preexec`). To sync commits to GitHub over SSH on Cloudtop under Chrome Remote Desktop, bypass `gcr-ssh-agent` with `eval "$(env -u CHROME_REMOTE_DESKTOP_SESSION ssh-agent -s)" && ssh-add ~/.ssh/github_ed25519`.
+- **Remote Linux / Chrome Remote Desktop compatibility.** `aliases.linux.sh` uses `psa="ps auxf"` rather than aliasing `ps` directly to avoid breaking system pre-exec hooks. To sync commits to GitHub over SSH under Chrome Remote Desktop, bypass `gcr-ssh-agent` with `eval "$(env -u CHROME_REMOTE_DESKTOP_SESSION ssh-agent -s)" && ssh-add ~/.ssh/github_ed25519`.
 - **Web Terminal (ChromeOS / Secure Shell) Fonts.** Web terminals cannot read OS system fonts. In `hterm`, load standard JetBrains Mono via Google Fonts in DevTools (`Ctrl + Shift + J`) setting `term_.prefs_.set('font-family', '"JetBrains Mono", monospace')` and `term_.prefs_.set('user-css-text', '@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap"); x-row { font-family: "JetBrains Mono", monospace !important; }')`.
 
-## Claude & Gemini / Jetski skills live in this repo
+## Gemini skills & rules live in this repo
 
-- `.config/claude/skills/` contains custom Claude Code skills (one folder per skill, each with `SKILL.md` and optional `references/` and `scripts/`).
-- `.config/gemini/skills/` and `.config/gemini/rules/` contain custom Gemini / Jetski skills and rules. Symlinked via `Makefile` to both `~/.config/gemini/` and `~/.gemini/config/`, making them active across all Gemini/Jetski sessions on the machine. Editing a skill or rule here updates it live. See `.config/gemini/skills/README.md` for the catalog.
-- **Jetski Configuration Boundary & Guardrails:** Never place unindexed markdown wikis, raw session logs, or database stores inside `~/.gemini/config/`. All persistent data must live in `~/.local/state/gemini/`. Any custom skill added to `~/.gemini/config/skills/` must specify `disable-model-invocation: true` unless explicitly designed for autonomous triggering.
+- `.config/gemini/AGENTS.md` is the global user preference file, and `.config/gemini/skills/` contains custom skills (`SKILL.md` plus optional `references/` and `scripts/`). Untracked local workstation rules live in `.config/gemini/rules/` (git-ignored).
+- Symlinked via `Makefile` to both `~/.config/gemini/` and `~/.gemini/config/`, making them active across all sessions on the machine. Editing a skill or rule here updates it live. See `.config/gemini/skills/README.md` for the catalog.
+- **Configuration Boundary & Guardrails:** Never place unindexed markdown wikis, raw session logs, or database stores inside `~/.config/gemini/` or `~/.gemini/config/`. All persistent runtime data must live in `~/.local/state/gemini/`. Any custom skill added to `.config/gemini/skills/` must specify `disable-model-invocation: true` unless explicitly designed for autonomous triggering.
 
 
 ## Things to leave alone

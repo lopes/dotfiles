@@ -62,8 +62,8 @@ elif [ -d "/usr/share" ]; then
   test -f "/usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" && source "$_"
 fi
 
-# OpenSSH agent for Linux / Cloudtop (rodete) — bypasses gcr-ssh-agent for Ed25519 support
-# if [[ "$OSTYPE" == linux* ]] && [[ -f /etc/os-release ]] && grep -q 'rodete' /etc/os-release; then
+# OpenSSH agent for remote Linux desktop sessions — bypasses gcr-ssh-agent for Ed25519 support
+# if [[ "$OSTYPE" == linux* ]] && [ -n "$CHROME_REMOTE_DESKTOP_SESSION" ]; then
 #   export SSH_AUTH_SOCK_FILE="${XDG_RUNTIME_DIR:-/tmp}/openssh_agent_${USER}.sock"
 #   if [[ -S "$SSH_AUTH_SOCK_FILE" ]] && (SSH_AUTH_SOCK="$SSH_AUTH_SOCK_FILE" ssh-add -l >/dev/null 2>&1; test $? -le 1); then
 #     export SSH_AUTH_SOCK="$SSH_AUTH_SOCK_FILE"

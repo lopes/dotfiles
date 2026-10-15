@@ -18,8 +18,11 @@ export XDG_VIDEOS_DIR="$HOME/Videos"
 # default file mode: owner rwx, group rx, others nothing
 umask 027
 
-# prevent gLinux sysops /etc/zsh/zshrc overrides from clobbering compinit and prompt
-export google_zsh_flysolo=1
+# local environment overrides (untracked)
+if [ -f "$HOME/.config/zsh/private.sh" ]; then
+  chmod 600 "$HOME/.config/zsh/private.sh"
+  . "$HOME/.config/zsh/private.sh"
+fi
 
 # Homebrew — brew is a system package manager (like dpkg or rpm), so brew and the
 # tools it installs belong on PATH for *every* shell: non-interactive scripts,
@@ -51,7 +54,5 @@ export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 export LESSHISTFILE="-"  # no history for less command
 export LESS="-R"         # color, wrap long lines
 export PAGER="less"
-
-export CLAUDE_CONFIG_DIR="$HOME/.config/claude"
 
 export LEDGER_FILE="$HOME/Documents/finances/journal/main.journal"

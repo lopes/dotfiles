@@ -1,6 +1,6 @@
 # Skills
 
-Custom Gemini and Jetski skills for personal workflows.
+Custom Gemini skills for personal workflows.
 
 ---
 
@@ -13,16 +13,6 @@ Refine my own writing (blog post, .qmd, LinkedIn post, email, notes) so it reads
 **Output:** the text edited in place (file) or returned inline (paste), then an on-screen tutor summary — recurring English patterns (wrong → right + rule), voice/AI-tell notes, and items flagged for my judgment.
 
 **Voice anchor:** `references/author-profile.md` holds real "this is you / this is drift" samples.
-
----
-
-## scaffold-detection-rule
-
-Scaffold a complete DaC YAML rule from minimal input. Provide logic + context; everything else is inferred.
-
-**Minimum input:** detection query (YARA-L or similar) + a brief context note.
-**Output:** ready-to-use YAML + scaffolding notes listing assumptions and fields that need review.
-**Defaults:** `maturity: experimental`, `alerting: false`, `frequency: HOURLY`.
 
 ---
 
@@ -48,7 +38,7 @@ Analyse a Chronicle (Google SecOps) SOAR case and produce a tight, IR/SOC-grade 
 
 ## checkpoint
 
-Synthesize weekly, quarterly, and annual career impact checkpoints for a Security Engineer at Google Cloud. Automatically harvests footprint (recent Drive edits, Git commits, code review changelists), prompts for completed tasks, applies temporal grounding (negative cache, honest blanks, persistent doc date limits), and produces structured recaps (Key Moves, Artifacts, Blockers) with a Chief of Staff executive assessment.
+Synthesize weekly, quarterly, and annual career impact checkpoints for a Senior Security Customer Engineer and Platform Architect. Automatically harvests footprint (recent Drive edits, tasks, calendar alignments, issue tracker tickets, Git commits, and code review changelists), prompts only for qualitative context, applies temporal grounding and negative caching, and produces structured recaps (Key Moves, Artifacts, Blockers) with a Chief of Staff executive assessment.
 
 **Triggers:** `/checkpoint [weekly|quarterly|annual]` or "run checkpoint weekly", "weekly recap", "checkpoint quarterly", "checkpoint annual".
 **Cadences:**

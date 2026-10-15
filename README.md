@@ -44,8 +44,8 @@ make install     # creates ~/.config symlinks, ~/.zshenv, ~/.ssh/config
 exec zsh -l
 ```
 
-#### Cloudtop & Web Terminal Idiosyncrasies (ChromeOS / Secure Shell)
-When accessing a Debian-based Cloudtop from ChromeOS or Chrome Secure Shell (`hterm`), keep in mind:
+#### Remote Linux & Web Terminal Idiosyncrasies (ChromeOS / Secure Shell)
+When accessing a Debian-based Linux workstation from ChromeOS or Chrome Secure Shell (`hterm`), keep in mind:
 
 1. **JetBrains Mono in Chrome Secure Shell**: Web terminals cannot access local system fonts directly. To load standard JetBrains Mono via Google Fonts, open the terminal tab's DevTools console (`Ctrl + Shift + J`) and inject the webfont:
    ```javascript
@@ -54,18 +54,18 @@ When accessing a Debian-based Cloudtop from ChromeOS or Chrome Secure Shell (`ht
    ```
    Then reload the tab (`Ctrl + R`).
 
-2. **gLinux Puppet & Zsh Compatibility**:
-   - `.zshenv` exports `google_zsh_flysolo=1` to prevent corporate Puppet startup scripts from clobbering custom prompts and completions.
-   - Pre-exec security hooks (`skippy_zsh_preexec`) call `ps -o ppid= -p $$` before every command. Never alias `ps` directly (use `psa="ps auxf"` instead) to avoid conflicting argument errors.
+2. **System Zsh & Pre-Exec Hook Compatibility**:
+   - Local environment overrides that must run before `/etc/zsh/zshrc` live in untracked `~/.config/zsh/private.sh` (sourced by `.zshenv` and `.zshrc`).
+   - System pre-exec hooks may call `ps -o ppid= -p $$` before every command. Never alias `ps` directly (use `psa="ps auxf"` instead) to avoid conflicting argument errors.
 
 3. **Default Shell Auto-Launch**:
    - `~/.bashrc` includes an interactive hook that automatically launches `zsh -l` upon SSH or terminal login.
 
-4. **GitHub SSH Keys & Cloudtop Sync Workflow**:
+4. **GitHub SSH Keys & Remote Desktop Sync Workflow**:
    - **Two Distinct SSH Keys**:
      - `~/.ssh/github_ed25519` (*passphrase-encrypted*): Authentication key for pushing/pulling from GitHub (`git@github.com`).
      - `~/.ssh/github_signing_ed25519` (*passphrase-free*): Dedicated commit-signing key (`[user] signingkey = ~/.ssh/github_signing_ed25519.pub`, `commit.gpgsign = true`). Allows automated commit signing without passphrase prompts or agent locks.
-   - **Syncing from Cloudtop (`agent refused operation` bypass)**:
+   - **Syncing under Chrome Remote Desktop (`agent refused operation` bypass)**:
      Under Chrome Remote Desktop sessions, `SSH_AUTH_SOCK` defaults to `gcr-ssh-agent`, which does not support Ed25519 keys. Furthermore, `/usr/bin/ssh-agent` refuses to start while `$CHROME_REMOTE_DESKTOP_SESSION` is set. To sync changes to GitHub, unlock `github_ed25519` in an OpenSSH agent:
      ```sh
      eval "$(env -u CHROME_REMOTE_DESKTOP_SESSION ssh-agent -s)"
@@ -130,7 +130,7 @@ mkdir -p ~/Projects/dotfiles/.config/wezterm
 vim ~/Projects/dotfiles/.config/wezterm/wezterm.lua
 
 # 2. register it in the Makefile (add to the DIRS list)
-DIRS := bash claude ghostty git nano oh-my-posh termux tmux vim wezterm zsh
+DIRS := bash gemini ghostty git htop nano oh-my-posh termux tmux vim wezterm zsh
 
 # 3. track it in git (allowlist gitignore requires -f)
 echo '!.config/wezterm/**' >> ~/Projects/dotfiles/.gitignore
