@@ -38,30 +38,29 @@
   autoSetupRemote = true
   followTags = true
 
+[pull]
+  rebase = true
+
 [fetch]
   prune = true
   pruneTags = true
   all = true
-	auto = 0
+  auto = 0
 
 [diff]
   algorithm = histogram
   colorMoved = plain
   mnemonicPrefix = true
   renames = true
-  # tool = nvimdiff # external diff tool
-
-[difftool]
-  # prompt = false # use the external diff tool and skip prompt
 
 [init]
   defaultBranch = main
 
 [color]
-  ui = auto # auto coloring for all commands
-	diff = auto
-	status = auto
-	branch = auto
+  ui = auto
+  diff = auto
+  status = auto
+  branch = auto
 [color "branch"]
   current = yellow bold
   local = green bold
@@ -99,100 +98,36 @@
   updateRefs = true
 
 [alias]
-  # general shortcuts
-  a = add --all
-  ai = add -i
-  st = status -sb # short status with branch info
+  # status & diff (status -> st, diff -> df/dc)
+  st = status -sb
   df = diff
-  ls = ls-files
-  d = diff
   dc = diff --cached
-  dt = difftool
-  dw = diff --word-diff
 
+  # log (log -> lg/lo)
+  lg = log --oneline --graph --decorate
   lo = log --oneline --decorate --graph --all
-  lg = log --oneline --graph --decorate # concise log graph
-  search = log -G
-  graph = log --all --decorate --oneline --graph
 
-  # branch/checkout/switch
+  # branch & switch (switch -> sw/main/mk, branch -> br/del)
   sw = switch
-  cd = switch
   main = switch main
   mk = switch --create
+  br = branch
   del = branch --delete
-  b = branch
-  ba = branch -a # all branches
-  bd = branch -d # delete branch
-  bdd = branch -D # force delete branch
-  bc = rev-parse --abbrev-ref HEAD # current branch name
 
-  conf = config --list --show-origin --show-scope
-  aka = config --get-regexp ^alias
-
-  save = commit --verbose -S -m # signed commits with msg
-  c = commit
-  ca = commit -a
+  # commit & stage (add -> a, commit -> cm/amend)
+  a = add --all
   cm = commit -m
-  cam = commit -am
   amend = commit --amend --no-edit
 
-  # reset/restore/clean
+  # push & pull (push -> ps/psf, pull -> pl)
+  ps = push
+  psf = push --force-with-lease
+  pl = pull
+
+  # undo & clean
   undo = reset HEAD~1 --mixed
   cleanall = clean --force --directory
-  restore = restore --staged --worktree
-  unstage = reset HEAD --
-  re = reset
-  rh = reset HEAD
-  reh = reset --hard
-  rem = reset --mixed
-  res = reset --soft
 
-  ps = push
-  psu = push -u # set upstream
-  pst = push --tags
-  psf = push --force-with-lease
-  sync = push origin
-
-  pl = pull
-  pb = pull --rebase # pull with rebase
-
-  rb = rebase
-  rba = rebase --abort
-  rbc = rebase --continue
-  rbi = rebase --interactive
-  rbs = rebase --skip
-
-  r = remote
-  rv = remote -v
-  ra = remote add
-  rr = remote rm
-  rpo = remote prune origin
-
-  sa = stash apply
-  sc = stash clear
-  sd = stash drop
-  sl = stash list
-  sp = stash pop
-  ss = stash save
-
-  cp = cherry-pick
-  cpa = cherry-pick --abort
-  cpc = cherry-pick --continue
-
-  ap = apply
-  as = apply --stat
-  ac = apply --check
-
-  m = merge
-  ma = merge --abort
-  mc = merge --continue
-  ms = merge --skip
-
-  # assume/unassume
-  assume = update-index --assume-unchanged
-  unassume = update-index --no-assume-unchanged
-
-  # clone
-  cl = clone
-  cld = clone --depth 1
+  # config inspection
+  aka = config --get-regexp ^alias
+  conf = config --list --show-origin --show-scope

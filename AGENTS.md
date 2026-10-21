@@ -1,75 +1,15 @@
 # AGENTS.md
 
-This file provides guidance to AI coding assistants when working with code in this repository.
+Guidance for AI coding agents working in this repository.
 
-## What this repo is
+## Overview
+Personal, minimalist Linux dotfiles (`zsh`, `tmux`, `vim`, `git`, `ssh`, `oh-my-posh`, `gemini`). Configs under `.config/` are exposed to `~/.config/` via directory symlinks managed by [`Makefile`](Makefile). Because they are symlinks, the repo **is** the live configuration.
 
-Personal dotfiles for a security engineer who works on macOS (Apple Silicon, Homebrew-first) and SSHes to Debian. The repo doubles as (a) a sync mechanism between his work mac and personal computer and (b) a bootstrap helper that installs his daily toolchain. He is the only user.
+For repository maintenance (adding/removing configs, auditing, and committing), use the companion skill at [`.agents/skills/manage-dotfiles/SKILL.md`](.agents/skills/manage-dotfiles/SKILL.md) and run `make check`.
 
-Configs live under `.config/` in the repo and are exposed to the system via **symlinks** managed by a `Makefile`. The repo IS the live config — editing a file here and editing the symlinked target in `~/.config/` modify the same file. There is no build, no copy step, no "sync."
-
-## Style and taste
-
-- **Minimalist, useful, no hacks.** Plain config lines over clever ones. No plugin managers, no shell rewrites, no workarounds when a boring solution exists. If a config grows abstractions for one use site, simplify it.
-- **GitHub Dark Dimmed everywhere.** Palette is defined in `.config/tmux/tmux.conf` and `.config/oh-my-posh/sable.toml`; reuse those hex values when theming a new tool. Don't introduce a second palette.
-- **Known, safe tooling.** Prefer Homebrew formulae (mac) and Debian-packaged tools (Linux). Avoid curl-piped installers, vendored binaries, or anything experimental.
-- **Cross-OS friendliness.** Anything OS-specific belongs in `aliases.{bsd,linux,windows}.sh`. Anything that works on both belongs in `aliases.unix.sh` (sourced by the OS-specific files).
-
-## Common commands
-
-```sh
-make bootstrap   # new macOS workstation setup: brew bundle + symlinks + macos-defaults.sh
-make apt         # new Debian/Linux server setup: apt packages + oh-my-posh + uv
-make install     # create symlinks only (idempotent; skips existing, warns on conflicts)
-make uninstall   # remove the symlinks only (config files in the repo are untouched)
-make list        # show every managed symlink and whether it resolves
-make brew        # brew bundle install (apply Brewfile on macOS)
-make brew-check  # report drift between Brewfile and installed packages
-make brew-dump   # regenerate Brewfile from current state (review diff before committing)
-```
-
-Restart the shell after `make install` to pick up `.zshenv` / `.zshrc` changes.
-
-## Packages: Brewfile, not README
-
-Brew packages (formulae, casks, taps, VSCode extensions) are declared in `Brewfile` at the repo root and applied via `brew bundle install`. The Brewfile is the source of truth — don't add packages by hand-editing the README. When the user installs or removes a brew package they actually want to keep, run `make brew-dump` and commit the resulting diff.
-
-## Three coordinated places when adding a new config
-
-The Makefile, the gitignore, and the file itself must agree. Miss one and either the symlink won't be created or the file won't be tracked.
-
-1. **Create the file under `.config/<tool>/` in this repo** (never directly in `~/.config/`).
-2. **Register it in the `Makefile`:**
-   - Whole directory → add to `DIRS` (symlinked as `~/.config/<name>` → repo dir).
-   - Single loose file → add to `FILES` (symlinked into `~/.config/`).
-   - Special cases (`.zshenv`) are handled by their own block at the bottom of the `install` target.
-3. **Allow it in `.gitignore`.** The gitignore is an **allowlist** — `*` ignores everything, then `!path/...` lines re-include specific paths. New files must be added with both an allowlist entry AND `git add -f` (force, because the parent pattern still matches at add time).
-4. Run `make install` to materialize the symlink.
-
-Mirror this in reverse when removing a config: drop the Makefile entry, drop the `.gitignore` allowlist line, `make uninstall` (or `rm` the specific symlink), then remove the repo files.
-
-## Architecture notes that aren't obvious from the tree
-
-- **OS-specific aliases dispatch.** `.config/zsh/.zshrc` sources one of `aliases.{bsd,linux,windows}.sh` based on `$OSTYPE`. `aliases.unix.sh` is the shared baseline and is sourced *from within* `aliases.bsd.sh` (and the others where applicable) — don't assume it loads automatically; check the OS-specific file when adding a cross-platform alias.
-- **`.zshenv` vs `.zshrc` boundary.** `.zshenv` holds env vars that child processes and non-interactive zsh need (XDG paths, `EDITOR`, `PAGER`, `BAT_THEME`, `ZDOTDIR`, `umask`, `LEDGER_FILE`). Everything interactive-only (HISTFILE, HISTSIZE, SAVEHIST, HISTORY_IGNORE, KEYTIMEOUT, TMOUT) lives in `.zshrc`. Don't mix the two.
-- **macOS `/etc/zshrc` trap.** On macOS, Apple's `/etc/zshrc` runs after `.zshenv` and before `.zshrc`, and silently clobbers `HISTFILE`, `HISTSIZE`, `SAVEHIST`. The repo's `.zshrc` re-asserts them; never move those three back to `.zshenv` "for tidiness" — they'll be overwritten and the user loses history.
-- **`.config/macos/macos-defaults.sh` is NOT symlinked.** It is a one-shot `defaults write` script run manually on a new machine (or via `make bootstrap`). It lives in the repo for tracking only.
-- **SSH client config is mode-sensitive.** `~/.ssh/config` is a symlink, but ssh checks the resolved target file's mode. The Makefile `install` target chmods the repo file to 600 before symlinking, and ensures `~/.ssh` is 700. Don't relax those.
-- **Private secrets & local overrides** are sourced from `~/.config/zsh/private.sh` (untracked, chmod 600 enforced by `.zshenv` and `.zshrc`). Never commit anything to that path.
-- **Git signing uses SSH keys**, not GPG. `[gpg] format = ssh` plus a dedicated unencrypted `signingkey` pointing at `~/.ssh/github_signing_ed25519.pub`. This enables automated, verified signing (`commit.gpgsign = true`) without passphrase prompts.
-- **Debian / Linux package management.** Linux dependencies are installed via `make apt` (APT packages + `oh-my-posh` & `uv` to `~/.local/bin`). Zsh plugins are sourced from `/usr/share/zsh-...` on Debian/apt and `$BREW_PREFIX/share/...` on macOS/brew.
-- **Remote Linux / Chrome Remote Desktop compatibility.** `aliases.linux.sh` uses `psa="ps auxf"` rather than aliasing `ps` directly to avoid breaking system pre-exec hooks. To sync commits to GitHub over SSH under Chrome Remote Desktop, bypass `gcr-ssh-agent` with `eval "$(env -u CHROME_REMOTE_DESKTOP_SESSION ssh-agent -s)" && ssh-add ~/.ssh/github_ed25519`.
-- **Web Terminal (ChromeOS / Secure Shell) Fonts.** Web terminals cannot read OS system fonts. In `hterm`, load standard JetBrains Mono via Google Fonts in DevTools (`Ctrl + Shift + J`) setting `term_.prefs_.set('font-family', '"JetBrains Mono", monospace')` and `term_.prefs_.set('user-css-text', '@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap"); x-row { font-family: "JetBrains Mono", monospace !important; }')`.
-
-## Gemini skills & rules live in this repo
-
-- `.config/gemini/AGENTS.md` is the global user preference file, and `.config/gemini/skills/` contains custom skills (`SKILL.md` plus optional `references/` and `scripts/`). Untracked local workstation rules live in `.config/gemini/rules/` (git-ignored).
-- Symlinked via `Makefile` to both `~/.config/gemini/` and `~/.gemini/config/`, making them active across all sessions on the machine. Editing a skill or rule here updates it live. See `.config/gemini/skills/README.md` for the catalog.
-- **Configuration Boundary & Guardrails:** Never place unindexed markdown wikis, raw session logs, or database stores inside `~/.config/gemini/` or `~/.gemini/config/`. All persistent runtime data must live in `~/.local/state/gemini/`. Any custom skill added to `.config/gemini/skills/` must specify `disable-model-invocation: true` unless explicitly designed for autonomous triggering.
-
-
-## Things to leave alone
-
-- Don't "fix" the `.gitignore` allowlist style — it's deliberate and prevents committing untracked runtime state from `~/.config/`.
-- Don't introduce a copy-based install (e.g. `cp` instead of `ln -s`). The whole model depends on the repo being the live config.
-- Don't add `make install` steps that overwrite existing non-symlink files. The current behavior is to warn and skip; preserve that.
+## Key Guardrails
+- **Three coordinated places when adding/removing files**: [`Makefile`](Makefile) (`DIRS`), [`.gitignore`](.gitignore) (`!path` allowlist + `git add -f`), and `.config/<tool>/`. Always run `make check` after changes to verify parity.
+- **`.zshenv` vs `.zshrc` boundary**: [`.zshenv`](.zshenv) holds environment variables needed by all shells and child processes (XDG paths, `PATH`, `EDITOR`, `PAGER`, `ZDOTDIR`, `umask`, `LEDGER_FILE`). Interactive settings (history, completions, plugins, prompt, keybindings, aliases) live in [`.config/zsh/.zshrc`](.config/zsh/.zshrc).
+- **Untracked local overrides**: Never track or allowlist `~/.config/zsh/private.sh` (secrets/local env, `chmod 600`), `~/.config/gemini/rules/` (local workstation rules), or `~/.ssh/config.local`.
+- **SSH permissions**: `.config/ssh/config` must remain mode `600` (`make install` enforces this and `make check` verifies it).
+- **Theme consistency**: Reuse the GitHub Dark Dimmed hex palette from [`.config/tmux/tmux.conf`](.config/tmux/tmux.conf) and [`.config/oh-my-posh/sable.toml`](.config/oh-my-posh/sable.toml).

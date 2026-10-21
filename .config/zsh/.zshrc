@@ -1,8 +1,4 @@
-# zsh configuration
-#
-# everything below is interactive-only. on macos, /etc/zshrc runs after
-# .zshenv and before this file and clobbers HISTFILE/HISTSIZE/SAVEHIST,
-# so anything history-related has to live here (not .zshenv) to stick.
+# zsh interactive configuration
 
 # abort immediately if not running in an interactive terminal (headless/subshell safety)
 [[ -t 0 ]] || return 0
@@ -16,10 +12,6 @@ HISTORY_IGNORE="(ls(| *)|pwd|exit|cd(| *)|bg(| *)|fg(| *)|history)"
 
 # zsh line editor
 KEYTIMEOUT=1
-
-# idle-shell timeout (10 min) — auto-logs out abandoned ssh sessions etc.
-# TMOUT=600
-# readonly TMOUT
 
 # improved history settings
 setopt EXTENDED_HISTORY       # record timestamp and duration
@@ -54,58 +46,20 @@ zmodload zsh/complist
 _comp_options+=(globdots)  # include hidden files
 
 # zsh plugins — interactive only
-if [ -n "$BREW_PREFIX" ]; then
-  test -f "$BREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh" && source "$_"
-  test -f "$BREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" && source "$_"
-elif [ -d "/usr/share" ]; then
-  test -f "/usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh" && source "$_"
-  test -f "/usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" && source "$_"
-fi
-
-# OpenSSH agent for remote Linux desktop sessions — bypasses gcr-ssh-agent for Ed25519 support
-# if [[ "$OSTYPE" == linux* ]] && [ -n "$CHROME_REMOTE_DESKTOP_SESSION" ]; then
-#   export SSH_AUTH_SOCK_FILE="${XDG_RUNTIME_DIR:-/tmp}/openssh_agent_${USER}.sock"
-#   if [[ -S "$SSH_AUTH_SOCK_FILE" ]] && (SSH_AUTH_SOCK="$SSH_AUTH_SOCK_FILE" ssh-add -l >/dev/null 2>&1; test $? -le 1); then
-#     export SSH_AUTH_SOCK="$SSH_AUTH_SOCK_FILE"
-#   else
-#     rm -f "$SSH_AUTH_SOCK_FILE"
-#     eval "$(env -u CHROME_REMOTE_DESKTOP_SESSION ssh-agent -a "$SSH_AUTH_SOCK_FILE" -s)" >/dev/null
-#   fi
-# fi
+test -f "/usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh" && source "$_"
+test -f "/usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" && source "$_"
 
 # prompt
 export PROMPT='%F{#768390}%n@%m❯%f%F{#539bf5}%3~%f%(?.%F{#adbac7}.%F{#f47067})❯%f '
-if [ "$TERM_PROGRAM" != "Apple_Terminal" ] && command -v oh-my-posh >/dev/null 2>&1; then
+if command -v oh-my-posh >/dev/null 2>&1; then
   eval "$(oh-my-posh init zsh --config "$HOME/.config/oh-my-posh/sable.toml")"
-fi
-
-
-# modern tools
-command -v zoxide >/dev/null 2>&1 && eval "$(zoxide init zsh)"
-command -v direnv >/dev/null 2>&1 && eval "$(direnv hook zsh)"
-command -v fzf >/dev/null 2>&1 && source <(fzf --zsh)
-export FZF_DEFAULT_OPTS="
-  --color=fg:#adbac7,bg:#22272e,hl:#539bf5
-  --color=fg+:#adbac7,bg+:#2d333b,hl+:#539bf5
-  --color=info:#daaa3f,prompt:#57ab5a,pointer:#b083f0
-  --color=marker:#57ab5a,spinner:#b083f0,header:#539bf5
-  --color=border:#444c56,gutter:#22272e
-  --border=rounded --height=40% --layout=reverse"
-
-# extra functions for zsh
-test -f $HOME/.config/zsh/functions.sh && source $HOME/.config/zsh/functions.sh
-
-# private settings, like API keys and sensitive functions
-if [ -f "$HOME/.config/zsh/private.sh" ]; then
-  chmod 600 "$HOME/.config/zsh/private.sh"
-  source "$HOME/.config/zsh/private.sh"
 fi
 
 # key bindings
 # run `cat` and type your keys to get the sequences
-bindkey -e  # no vi mode
+bindkey -e  # emacs mode
 
-bindkey '^r'   history-incremental-search-backward  # control-r
+bindkey '^r'   history-incremental-search-backward  # control-r fallback when fzf is absent
 bindkey '^[[A' history-search-backward              # up
 bindkey '^[[B' history-search-forward               # down
 
@@ -116,15 +70,26 @@ bindkey '^[[H'  beginning-of-line  # home
 bindkey '^[[F'  end-of-line        # end
 bindkey '^[[3~' delete-char        # del
 
-bindkey '^[[1;9C' end-of-line        # cmd-right
-bindkey '^[[1;9D' beginning-of-line  # cmd-left
+bindkey '^U' backward-kill-line  # control-u
+bindkey '^K' kill-line           # control-k
 
-bindkey '^U' backward-kill-line  # control+U
-bindkey '^K' kill-line           # control+K
+# fzf — loaded after bindkey so fzf binds ctrl-r, ctrl-t, and alt-c when installed
+if command -v fzf >/dev/null 2>&1; then
+  source <(fzf --zsh)
+  export FZF_DEFAULT_OPTS="
+    --color=fg:#adbac7,bg:#22272e,hl:#539bf5
+    --color=fg+:#adbac7,bg+:#2d333b,hl+:#539bf5
+    --color=info:#daaa3f,prompt:#57ab5a,pointer:#b083f0
+    --color=marker:#57ab5a,spinner:#b083f0,header:#539bf5
+    --color=border:#444c56,gutter:#22272e
+    --border=rounded --height=40% --layout=reverse"
+fi
 
-# os-specific aliases
-case "$OSTYPE" in
-  linux*)          source "$ZDOTDIR/../aliases.linux.sh"   ;;
-  *bsd* | darwin*) source "$ZDOTDIR/../aliases.bsd.sh"     ;;
-  msys  | cygwin)  source "$ZDOTDIR/../aliases.windows.sh" ;;
-esac
+# aliases
+test -f "$ZDOTDIR/aliases.sh" && source "$ZDOTDIR/aliases.sh"
+
+# private settings, like API keys and sensitive functions (untracked)
+if [ -f "$HOME/.config/zsh/private.sh" ]; then
+  chmod 600 "$HOME/.config/zsh/private.sh"
+  source "$HOME/.config/zsh/private.sh"
+fi

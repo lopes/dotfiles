@@ -1,8 +1,3 @@
----
-trigger: always_on
-description: "Global personal communication, engineering, and security preferences"
----
-
 # Global Preferences
 
 ## 1. Direct & Brutally Honest
@@ -31,5 +26,4 @@ description: "Global personal communication, engineering, and security preferenc
 
 ## 5. Sanitization & Local State Hygiene
 - Never commit local workstation paths, internal hostnames, corporate identifiers/usernames, internal tool codenames, customer names, or credentials to public or open-source repositories.
-- Never place unindexed wikis, raw session logs, scratch files, or database stores inside version-controlled agent config directories (`~/.config/gemini/`); store persistent runtime state in `~/.local/state/gemini/`.
-- Custom skills added to `~/.config/gemini/skills/` must specify `disable-model-invocation: true` unless explicitly designed for autonomous triggering.
+- Keep `~/.config/gemini/` strictly for static user instructions; never place runtime state, session logs, scratch files, or databases inside config directories (store persistent runtime state in `~/.local/state/gemini/`).

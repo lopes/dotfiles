@@ -7,9 +7,6 @@ Host github.com
   IdentitiesOnly yes
 
 Host *
-  # ignore macos-only directives on linux instead of erroring out
-  IgnoreUnknown UseKeychain
-
   # known_hosts: hash hostnames, show fingerprint art on first connect
   HashKnownHosts yes
   VisualHostKey yes
