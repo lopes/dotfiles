@@ -1,5 +1,9 @@
 # ssh client configuration
 
+# machine-specific overrides go in ~/.ssh/config.local (untracked)
+# placed first so local rules win under OpenSSH first-match-wins semantics
+Include config.local
+
 Host github.com
   HostName github.com
   User git
@@ -18,6 +22,3 @@ Host *
 
   # only offer keys explicitly listed for each Host block (no key spray)
   IdentitiesOnly yes
-
-# machine-specific overrides go in ~/.ssh/config.local (untracked)
-Include config.local

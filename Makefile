@@ -71,6 +71,8 @@ check:
 	@echo "1. syntax check..."
 	@zsh -n "$(DOTFILES)/.zshenv" "$(DOTFILES)/.config/zsh/.zshrc" "$(DOTFILES)/.config/zsh/aliases.sh"
 	@git config --file "$(DOTFILES)/.config/git/config" --list >/dev/null
+	@ssh -F "$(DOTFILES)/.config/ssh/config" -G github.com >/dev/null
+	@vim --not-a-term -es -u "$(DOTFILES)/.config/vim/vimrc" -c 'q!'
 	@echo "2. symlinks & permissions..."
 	@for d in $(DIRS); do \
 		if [ "$$(readlink "$(CONFIG)/$$d" 2>/dev/null)" != "$(DOTFILES)/.config/$$d" ]; then \
@@ -83,6 +85,11 @@ check:
 	@if [ "$$(readlink "$(HOME)/.ssh/config" 2>/dev/null)" != "$(DOTFILES)/.config/ssh/config" ]; then \
 		echo "FAIL: $(HOME)/.ssh/config is not linked"; exit 1; \
 	fi
+	@for item in rules AGENTS.md; do \
+		if [ -e "$(CONFIG)/gemini/$$item" ] && [ "$$(readlink "$(HOME)/.gemini/config/$$item" 2>/dev/null)" != "$(CONFIG)/gemini/$$item" ]; then \
+			echo "FAIL: $(HOME)/.gemini/config/$$item is not linked to $(CONFIG)/gemini/$$item"; exit 1; \
+		fi; \
+	done
 	@for link in "$(CONFIG)"/* "$(HOME)/.gemini/config"/*; do \
 		if [ -L "$$link" ] && [ ! -e "$$link" ]; then \
 			echo "FAIL: dangling symlink $$link -> $$(readlink "$$link")"; exit 1; \
@@ -96,6 +103,13 @@ check:
 		if [ ! -e "$(DOTFILES)/$$p" ]; then \
 			echo "FAIL: .gitignore allowlists missing path: $$p"; exit 1; \
 		fi; \
+	done
+	@for d in "$(DOTFILES)/.config"/*; do \
+		[ -d "$$d" ] || continue; \
+		name=$$(basename "$$d"); \
+		case " $(DIRS) ssh " in *" $$name "*) ;; *) \
+			echo "FAIL: unexpected directory in .config/: $$name"; exit 1 ;; \
+		esac; \
 	done
 	@untracked=$$(find "$(DOTFILES)/.config" "$(DOTFILES)/.agents" -type f \
 		! -path "$(DOTFILES)/.config/zsh/private.sh" \
@@ -115,6 +129,11 @@ check:
 	@if git -C "$(DOTFILES)" grep -I -E '([g]ooglers\.com|[g]oogle3|[g]linux|[r]odete|/usr/local/[g]oogle)' -- . >/dev/null 2>&1; then \
 		echo "FAIL: internal marker found in tracked files:"; \
 		git -C "$(DOTFILES)" grep -I -n -E '([g]ooglers\.com|[g]oogle3|[g]linux|[r]odete|/usr/local/[g]oogle)' -- .; \
+		exit 1; \
+	fi
+	@if [ -n "$(USER)" ] && [ "$(USER)" != "lopes" ] && git -C "$(DOTFILES)" grep -I -F "$(USER)" -- . >/dev/null 2>&1; then \
+		echo "FAIL: local username '$(USER)' found in tracked files:"; \
+		git -C "$(DOTFILES)" grep -I -n -F "$(USER)" -- .; \
 		exit 1; \
 	fi
 	@echo "all checks passed."

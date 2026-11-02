@@ -16,7 +16,7 @@ Minimalist Linux configuration files built around standard Unix tools, a consist
 ### 1. Prerequisites (Debian / Linux)
 ```sh
 sudo apt update && sudo apt install -y \
-  zsh tmux vim fzf git-delta zsh-autosuggestions zsh-syntax-highlighting fonts-jetbrains-mono
+  zsh tmux vim fzf lsof git-delta zsh-autosuggestions zsh-syntax-highlighting fonts-jetbrains-mono
 
 # prompt binary (~/.local/bin/oh-my-posh)
 curl -s https://ohmyposh.dev/install.sh | bash -s -- -d "$HOME/.local/bin"
@@ -49,8 +49,8 @@ exec zsh -l
 ## Tool Notes & Non-Elementary Shortcuts
 
 ### Zsh & `fzf`
-- **Startup split**: `.zshenv` sets environment variables for all processes (`XDG_*`, `PATH`, `EDITOR`, `ZDOTDIR`, `umask 027`, `LEDGER_FILE`). `.zshrc` runs only in interactive terminals.
-- **Local secrets**: Untracked machine-specific overrides live in `~/.config/zsh/private.sh` (`chmod 600` enforced automatically).
+- **Startup split**: `.zshenv` sets environment variables for all processes (`XDG_*`, `PATH`, `EDITOR`, `ZDOTDIR`, `umask 027`, `LEDGER_FILE`, and `~/.config/zsh/private.sh`). `.zshrc` runs only in interactive terminals.
+- **Local secrets**: Untracked machine-specific overrides live in `~/.config/zsh/private.sh` (`chmod 600` enforced automatically in `.zshenv`).
 - **Notable aliases**: `tmux0` (`tmux new -As0`), `psa` (`ps auxf` — avoids aliasing `ps` directly so system pre-exec hooks don't break), `ports` (listening TCP sockets), `reload` (`exec $SHELL -l`), `aka` (`alias | grep`).
 
 | Shortcut | Action |
@@ -70,8 +70,10 @@ Prefix key: **`ctrl-space`**
 | `alt-h/j/k/l` | Navigate panes left/down/up/right (no prefix needed) |
 | `alt-1..5` | Jump to window 1–5 (no prefix needed) |
 | `alt-n` / `alt-p` | Next / previous window (no prefix needed) |
+| `prefix c` | New window in current path |
 | `prefix -` / `prefix \` | Split pane vertically / horizontally (in current path) |
 | `prefix H/J/K/L` | Resize active pane (repeatable) |
+| `prefix x` / `prefix q` | Confirm before killing active pane / window |
 | `prefix tab` | Toggle last active window |
 | `prefix r` | Reload `tmux.conf` |
 | `prefix [` | Enter vi copy mode (`v` select, `ctrl-v` block toggle, `y` copy, `prefix ]` paste) |

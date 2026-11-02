@@ -1,10 +1,10 @@
 " vim configuration
 
 " general
+set nocompatible
 set runtimepath^=~/.config/vim
 syntax on
 set encoding=utf-8
-set ruler
 set number
 set showmatch
 set laststatus=2
@@ -32,7 +32,6 @@ set expandtab
 set tabstop=2
 set shiftwidth=0
 set softtabstop=-1 " aligns with shiftwidth
-retab
 
 " new line in the end
 set eol
@@ -66,16 +65,20 @@ if !isdirectory($XDG_STATE_HOME . '/vim')
   call mkdir($XDG_STATE_HOME . '/vim', 'p')
 endif
 set viminfo='10,\"30,:40,%,n$XDG_STATE_HOME/vim/viminfo
-au BufReadPost * if line("'\"")|execute("normal `\"")|endif
 let g:netrw_dirhistmax = 0
 set nobackup
 set noswapfile
 set nowritebackup
 
-" hledger journals: treat ':' as a keyword char so <C-n>/<C-p> complete whole
-" account paths (expenses:food:groceries) from open buffers — no need to retype
-" or remember the chart while categorizing an import
-au BufRead,BufNewFile *.journal setlocal iskeyword+=:
+augroup dotfiles
+  autocmd!
+  " restore last cursor position when valid (skip commit messages)
+  autocmd BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") && &ft !~# 'commit' | execute "normal! g`\"" | endif
+  " hledger journals: treat ':' as a keyword char so <C-n>/<C-p> complete whole
+  " account paths (expenses:food:groceries) from open buffers — no need to retype
+  " or remember the chart while categorizing an import
+  autocmd BufRead,BufNewFile *.journal setlocal iskeyword+=:
+augroup END
 
 " visual improvements
 set cursorline
@@ -85,7 +88,7 @@ set display+=lastline
 
 " status line
 set statusline=
-set statusline+=%#NormalMode#%{(mode()=='n')?'NORMAL':''}%#InsertMode#%{(mode()=='i')?'INSERT':''}%#VisualMode#%{(mode()=='v')?'VISUAL':''}%#ReplaceMode#%{(mode()=='R')?'REPLACE':''}
+set statusline+=%#NormalMode#%{(mode()=='n')?'NORMAL':(mode()=='c')?'COMMAND':''}%#InsertMode#%{(mode()=='i')?'INSERT':''}%#VisualMode#%{(mode()=='v')?'VISUAL':(mode()=='V')?'V-LINE':(mode()==\"\<C-v>\")?'V-BLOCK':''}%#ReplaceMode#%{(mode()=='R')?'REPLACE':''}
 set statusline+=\  " space after mode
 set statusline+=%f\ %m
 set statusline+=%=

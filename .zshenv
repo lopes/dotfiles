@@ -10,15 +10,15 @@ export XDG_STATE_HOME="$HOME/.local/state"
 # default file mode: owner rwx, group rx, others nothing
 umask 027
 
-# local environment overrides (untracked)
-if [ -f "$HOME/.config/zsh/private.sh" ]; then
-  chmod 600 "$HOME/.config/zsh/private.sh"
-  . "$HOME/.config/zsh/private.sh"
-fi
-
 # keep PATH unique across nested shells and prepend user-local binaries
 typeset -U path PATH
 [ -d "$HOME/.local/bin" ] && PATH="$HOME/.local/bin:$PATH"
+
+# local environment overrides (untracked)
+if [ -f "$HOME/.config/zsh/private.sh" ]; then
+  [ "$(stat -c '%a' "$HOME/.config/zsh/private.sh")" = "600" ] || chmod 600 "$HOME/.config/zsh/private.sh"
+  . "$HOME/.config/zsh/private.sh"
+fi
 
 export EDITOR="vim"
 export VISUAL="vim"

@@ -87,9 +87,3 @@ fi
 
 # aliases
 test -f "$ZDOTDIR/aliases.sh" && source "$ZDOTDIR/aliases.sh"
-
-# private settings, like API keys and sensitive functions (untracked)
-if [ -f "$HOME/.config/zsh/private.sh" ]; then
-  chmod 600 "$HOME/.config/zsh/private.sh"
-  source "$HOME/.config/zsh/private.sh"
-fi
