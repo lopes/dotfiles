@@ -50,7 +50,7 @@ exec zsh -l
 
 ### Zsh & `fzf`
 - **Startup split**: `.zshenv` sets environment variables for all processes (`XDG_*`, `PATH`, `EDITOR`, `ZDOTDIR`, `umask 027`, `LEDGER_FILE`, and `~/.config/zsh/private.sh`). `.zshrc` runs only in interactive terminals.
-- **Local secrets**: Untracked machine-specific overrides live in `~/.config/zsh/private.sh` (`chmod 600` enforced automatically in `.zshenv`).
+- **Local secrets**: Untracked machine-specific overrides (such as `DEFAULT_USER` to hide the normal login prefix in the prompt) live in `~/.config/zsh/private.sh` (`chmod 600` enforced automatically in `.zshenv`).
 - **Notable aliases**: `tmux0` (`tmux new -As0`), `psa` (`ps auxf` — avoids aliasing `ps` directly so system pre-exec hooks don't break), `ports` (listening TCP sockets), `reload` (`exec $SHELL -l`), `aka` (`alias | grep`).
 
 | Shortcut | Action |

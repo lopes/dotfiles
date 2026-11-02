@@ -73,6 +73,7 @@ check:
 	@git config --file "$(DOTFILES)/.config/git/config" --list >/dev/null
 	@ssh -F "$(DOTFILES)/.config/ssh/config" -G github.com >/dev/null
 	@vim --not-a-term -es -u "$(DOTFILES)/.config/vim/vimrc" -c 'q!'
+	@! command -v oh-my-posh >/dev/null 2>&1 || oh-my-posh print primary --config "$(DOTFILES)/.config/oh-my-posh/sable.toml" >/dev/null
 	@echo "2. symlinks & permissions..."
 	@for d in $(DIRS); do \
 		if [ "$$(readlink "$(CONFIG)/$$d" 2>/dev/null)" != "$(DOTFILES)/.config/$$d" ]; then \

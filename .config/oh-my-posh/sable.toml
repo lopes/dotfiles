@@ -1,8 +1,8 @@
 # oh-my-posh configuration file - sable
-# minimalistic single-line prompt with github dark dimmed colors
-# layout: user·host ~/path branch*⇡⇣ py314❯ 5s
+# minimalistic single-line unix prompt with github dark dimmed colors
+# layout: host:path (git) [lang] +❯                                       5s
 
-console_title_template = '{{ .Folder }}'
+console_title_template = '{{ .HostName }}:{{ .Folder }}'
 version = 3
 final_space = true
 
@@ -30,14 +30,14 @@ gh_dimmed_mantle    = '#1c2128'
 gh_dimmed_crust     = '#181d23'
 
 [transient_prompt]
-template = '❯ '
+template = '{{ if .Root }}# {{ else }}❯ {{ end }}'
 foreground = 'p:gh_dimmed_text'
 background = 'transparent'
-foreground_templates = ['{{ if gt .Code 0 }}p:gh_dimmed_red{{ end }}']
+foreground_templates = ['{{ if or .Root (gt .Code 0) }}p:gh_dimmed_red{{ end }}']
 
 [secondary_prompt]
 template = '❯❯ '
-foreground = 'p:gh_dimmed_text'
+foreground = 'p:gh_dimmed_overlay1'
 background = 'transparent'
 
 [upgrade]
@@ -49,75 +49,94 @@ notice = false
 [[blocks]]
 type = 'prompt'
 alignment = 'left'
-newline = true
-
-# [[blocks.segments]]
-# type = 'os'
-# style = 'plain'
-# foreground = 'p:gh_dimmed_overlay1'
-# background = 'transparent'
-# template = '{{ .Icon }} '
+newline = false
 
 [[blocks.segments]]
 type = 'session'
 style = 'plain'
 foreground = 'p:gh_dimmed_subtext0'
 background = 'transparent'
-template = '{{ (.UserName | splitList ".") | first | trunc 8 }}·{{ (.HostName | splitList "." | first | replace "lopes-" "") }}'
+template = '{{ if .Root }}<p:gh_dimmed_red>root</><p:gh_dimmed_overlay1>@</>{{ else if ne .UserName .Env.DEFAULT_USER }}<p:gh_dimmed_orange>{{ (.UserName | splitList ".") | first }}</><p:gh_dimmed_overlay1>@</>{{ end }}{{ (.HostName | splitList "." | first | replace "lopes-" "") }}<p:gh_dimmed_overlay1>:</>'
 
 [[blocks.segments]]
 type = 'path'
 style = 'plain'
 foreground = 'p:gh_dimmed_blue'
 background = 'transparent'
-template = ' {{ .Path }}'
+template = '{{ regexReplaceAll "(\\.?[^/]{1,3})[^/]*/" .Path "$1/" }}'
 
-[blocks.segments.properties]
-style = 'agnoster_short'
-max_depth = 2
-display_root = true
+[blocks.segments.options]
+style = 'full'
 home_icon = '~'
-folder_icon = '..'
-folder_separator_icon = '/'
 
 [[blocks.segments]]
 type = 'git'
 style = 'plain'
 foreground = 'p:gh_dimmed_green'
 background = 'transparent'
-template = '{{ .HEAD }}{{ if or (.Working.Changed) (.Staging.Changed) }}*{{ end }}{{ if gt .Behind 0 }}⇣{{ end }}{{ if gt .Ahead 0 }}⇡{{ end }}'
+template = ' <p:gh_dimmed_overlay1>(</>{{ .HEAD }}{{ if or (.Working.Changed) (.Staging.Changed) }}*{{ end }}{{ if gt .Behind 0 }}⇣{{ end }}{{ if gt .Ahead 0 }}⇡{{ end }}<p:gh_dimmed_overlay1>)</>'
 foreground_templates = [
-  '{{ if or (.Working.Changed) (.Staging.Changed) }}p:gh_dimmed_yellow{{ end }}',
   '{{ if gt .Behind 0 }}p:gh_dimmed_red{{ end }}',
+  '{{ if or (.Working.Changed) (.Staging.Changed) }}p:gh_dimmed_yellow{{ end }}',
   '{{ if gt .Ahead 0 }}p:gh_dimmed_orange{{ end }}',
 ]
 
-[blocks.segments.properties]
-branch_icon = ' '
+[blocks.segments.options]
+branch_icon = ''
 commit_icon = '@'
 fetch_status = true
-branch_template = '{{ trunc 20 .Branch }}'
+branch_template = '{{ trunc 16 .Branch }}'
 
 [[blocks.segments]]
 type = 'python'
 style = 'plain'
 foreground = 'p:gh_dimmed_purple'
 background = 'transparent'
-template = ' py{{ .Major }}{{ .Minor }}'
+template = ' <p:gh_dimmed_overlay1>[</>py{{ .Major }}{{ .Minor }}<p:gh_dimmed_overlay1>]</>'
 
-[blocks.segments.properties]
+[blocks.segments.options]
 display_mode = 'context'
-tooling = ['uv']
+tooling = ['uv', 'python']
+
+[[blocks.segments]]
+type = 'go'
+style = 'plain'
+foreground = 'p:gh_dimmed_cyan'
+background = 'transparent'
+template = ' <p:gh_dimmed_overlay1>[</>go{{ .Major }}{{ .Minor }}<p:gh_dimmed_overlay1>]</>'
+
+[blocks.segments.options]
+display_mode = 'files'
+
+[[blocks.segments]]
+type = 'rust'
+style = 'plain'
+foreground = 'p:gh_dimmed_orange'
+background = 'transparent'
+template = ' <p:gh_dimmed_overlay1>[</>rs{{ .Major }}{{ .Minor }}<p:gh_dimmed_overlay1>]</>'
+
+[blocks.segments.options]
+display_mode = 'files'
+
+[[blocks.segments]]
+type = 'node'
+style = 'plain'
+foreground = 'p:gh_dimmed_green'
+background = 'transparent'
+template = ' <p:gh_dimmed_overlay1>[</>n{{ .Major }}<p:gh_dimmed_overlay1>]</>'
+
+[blocks.segments.options]
+display_mode = 'files'
 
 [[blocks.segments]]
 type = 'status'
 style = 'plain'
 foreground = 'p:gh_dimmed_text'
 background = 'transparent'
-template = '❯'
-foreground_templates = ['{{ if gt .Code 0 }}p:gh_dimmed_red{{ end }}']
+template = ' {{ if gt .Jobs 0 }}<p:gh_dimmed_orange>+</>{{ end }}{{ if .Root }}#{{ else }}❯{{ end }}'
+foreground_templates = ['{{ if or .Root (gt .Code 0) }}p:gh_dimmed_red{{ end }}']
 
-[blocks.segments.properties]
+[blocks.segments.options]
 always_enabled = true
 
 [[blocks]]
@@ -132,6 +151,6 @@ foreground = 'p:gh_dimmed_overlay1'
 background = 'transparent'
 template = '{{ div .Ms 1000 }}s'
 
-[blocks.segments.properties]
+[blocks.segments.options]
 threshold = 5000
 

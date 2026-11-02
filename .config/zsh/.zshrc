@@ -49,10 +49,58 @@ _comp_options+=(globdots)  # include hidden files
 test -f "/usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh" && source "$_"
 test -f "/usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" && source "$_"
 
-# prompt
-export PROMPT='%F{#768390}%n@%m❯%f%F{#539bf5}%3~%f%(?.%F{#adbac7}.%F{#f47067})❯%f '
+# prompt — layout: host:path (git) [venv] +❯                               5s
 if command -v oh-my-posh >/dev/null 2>&1; then
   eval "$(oh-my-posh init zsh --config "$HOME/.config/oh-my-posh/sable.toml")"
+else
+  autoload -Uz vcs_info add-zsh-hook
+  zstyle ':vcs_info:*' enable git
+  zstyle ':vcs_info:*' check-for-changes true
+  zstyle ':vcs_info:git:*' unstagedstr '*'
+  zstyle ':vcs_info:git:*' stagedstr '+'
+  zstyle ':vcs_info:git:*' formats ' %F{#545d68}(%f%F{#57ab5a}%b%f%F{#c69026}%u%c%f%F{#545d68})%f'
+  zstyle ':vcs_info:git:*' actionformats ' %F{#545d68}(%f%F{#daaa3f}%b|%a%u%c%f%F{#545d68})%f'
+
+  _prompt_short_pwd() {
+    local p="${PWD/#$HOME/~}"
+    local -a parts=("${(@s:/:)p}")
+    local i seg
+    for (( i = 1; i < ${#parts[@]}; i++ )); do
+      seg="${parts[$i]}"
+      [[ -z "$seg" || "$seg" == "~" ]] && continue
+      if [[ "$seg" == .* ]]; then
+        parts[$i]="${seg[1,4]}"
+      else
+        parts[$i]="${seg[1,3]}"
+      fi
+    done
+    _short_pwd="${(j:/:)parts}"
+    [[ -z "$_short_pwd" ]] && _short_pwd="/"
+  }
+
+  _prompt_preexec() { _cmd_start=$SECONDS }
+  _prompt_precmd() {
+    vcs_info
+    _prompt_short_pwd
+    _user_seg=""
+    if (( EUID == 0 )); then
+      _user_seg="%F{#f47067}root%f%F{#545d68}@%f"
+    elif [[ "$USER" != "$DEFAULT_USER" ]]; then
+      _user_seg="%F{#daaa3f}%n%f%F{#545d68}@%f"
+    fi
+    _venv_seg=""
+    [[ -n "$VIRTUAL_ENV" ]] && _venv_seg=" %F{#545d68}[%f%F{#b083f0}${VIRTUAL_ENV:t}%f%F{#545d68}]%f"
+    RPROMPT=""
+    if [[ -n "$_cmd_start" ]]; then
+      local elapsed=$(( SECONDS - _cmd_start ))
+      unset _cmd_start
+      (( elapsed >= 5 )) && RPROMPT="%F{#545d68}${elapsed}s%f"
+    fi
+  }
+  add-zsh-hook preexec _prompt_preexec
+  add-zsh-hook precmd _prompt_precmd
+
+  export PROMPT='${_user_seg}%F{#768390}${${HOST%%.*}#lopes-}%f%F{#545d68}:%f%F{#539bf5}${_short_pwd}%f${vcs_info_msg_0_}${_venv_seg} %(1j.%F{#daaa3f}+%f.)%(!.%F{#f47067}#%f.%(?.%F{#adbac7}.%F{#f47067})❯%f) '
 fi
 
 # key bindings
