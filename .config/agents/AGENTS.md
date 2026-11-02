@@ -24,6 +24,9 @@
 - Keep commits concise and focused on the rationale. Never add advertisements or promotional trailers (no "Generated with...", "Co-authored by...").
 - Before pushing, propose rebasing or squashing fixup commits; never rewrite shared history without confirmation.
 
-## 5. Sanitization & Local State Hygiene
-- Never commit local workstation paths, internal hostnames, corporate identifiers/usernames, internal tool codenames, customer names, or credentials to public or open-source repositories.
-- Keep `~/.config/gemini/` strictly for static user instructions; never place runtime state, session logs, scratch files, or databases inside config directories (store persistent runtime state in `~/.local/state/gemini/`).
+## 5. Sanitization, Secret Prevention & Local State Hygiene
+- Never commit local workstation paths, internal hostnames, corporate identifiers/usernames, internal tool codenames, customer names, or credentials to any repository.
+- **Synthetic-only fixtures in code, `tests/`, and docs:** Never copy verbatim strings, URLs, query parameters, headers, IPs, or tokens from runtime logs, terminal output, environment variables, or databases into source files, test fixtures, or documentation. Always construct synthetic values using reserved documentation ranges (RFC 5737: `192.0.2.0/24`, `198.51.100.0/24`, `203.0.113.0/24`; RFC 3849: `2001:db8::/32`; RFC 2606: `example.com`) and unmistakable dummy literals (`SYNTHETIC_TEST_<NAME>_000000`).
+- **Zero raw secret reads into context:** Never print or dump raw secret stores (`.env*`, `*secret*`, `*vault*`, `~/.config/zsh/private.sh`, SSH private keys, cloud credential files) into stdout or conversation context. Inspect key names only (`jq 'keys'`, `grep -o '^[^=]*='`) or pass `--redact`.
+- **Mandatory pre-commit diff check:** Before staging or committing, inspect `git diff --cached` across all paths (explicitly including `tests/` and fixtures) to verify no high-entropy literals, real IPs, workstation paths, or internal identifiers appear in added lines.
+- Keep `~/.config/agents/`, `~/.config/gemini/`, and `~/.claude/` strictly for static user instructions; store persistent runtime state in `~/.local/state/`.

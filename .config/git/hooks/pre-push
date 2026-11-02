@@ -1,0 +1,35 @@
+#!/bin/sh
+# Global git pre-push hook: deterministic commit-range secret scan via gitleaks + repo hook chaining.
+set -eu
+
+if [ "${SKIP_GITLEAKS:-0}" = "1" ]; then
+  printf 'WARN: SKIP_GITLEAKS=1 set — bypassing gitleaks pre-push check\n' >&2
+else
+  GITLEAKS_BIN="$(command -v gitleaks 2>/dev/null || true)"
+  if [ -z "$GITLEAKS_BIN" ] && [ -x "$HOME/.local/bin/gitleaks" ]; then
+    GITLEAKS_BIN="$HOME/.local/bin/gitleaks"
+  fi
+
+  if [ -n "$GITLEAKS_BIN" ]; then
+    REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
+    if [ -f "$REPO_ROOT/.gitleaks.toml" ]; then
+      GITLEAKS_CFG="$REPO_ROOT/.gitleaks.toml"
+    elif [ -f "$HOME/.config/git/gitleaks.toml" ]; then
+      GITLEAKS_CFG="$HOME/.config/git/gitleaks.toml"
+    else
+      GITLEAKS_CFG=""
+    fi
+
+    if [ -n "$GITLEAKS_CFG" ]; then
+      "$GITLEAKS_BIN" git --redact --no-banner --config "$GITLEAKS_CFG"
+    else
+      "$GITLEAKS_BIN" git --redact --no-banner
+    fi
+  fi
+fi
+
+# Chain any repository-local pre-push hook so per-repo hooks keep working.
+GIT_DIR="$(git rev-parse --git-dir 2>/dev/null || true)"
+if [ -n "$GIT_DIR" ] && [ -x "$GIT_DIR/hooks/pre-push" ]; then
+  exec "$GIT_DIR/hooks/pre-push" "$@"
+fi

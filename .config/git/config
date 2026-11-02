@@ -15,6 +15,7 @@
   editor = vim
   pager = delta
   autocrlf = input
+  hooksPath = ~/.config/git/hooks
   whitespace = fix,-indent-with-non-tab,trailing-space,cr-at-eol
 
 [interactive]
