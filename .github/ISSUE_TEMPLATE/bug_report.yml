@@ -1,0 +1,49 @@
+name: Bug Report
+description: "Report a broken symlink target, shell startup regression, or git hook defect"
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Report a defect, regression, or unexpected behavior in dotfiles.
+  - type: dropdown
+    id: subsystem
+    attributes:
+      label: Affected Subsystem
+      options:
+        - "Zsh, Tmux & Prompt Configuration (.config/zsh/, .config/tmux/)"
+        - "Git Configuration & Global Gitleaks Hooks (.config/git/)"
+        - "Global AI Agent Rules & Skills (.config/agents/, .agents/)"
+        - "Makefile Installer (`make install` / `make check`)"
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Description of the Bug
+      description: Clear and concise description of what is broken.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to Reproduce
+      description: Exact commands, inputs, or steps that trigger the issue.
+      placeholder: |
+        1. Run `make check` or start a new login shell
+        2. Observe error
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior
+      description: What should happen instead.
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Terminal Output / Error Logs
+      description: Paste relevant terminal output or stack trace here.
+      render: shell
