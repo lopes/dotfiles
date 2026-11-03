@@ -1,0 +1,30 @@
+name: Feature / Enhancement
+description: "Propose a shell workflow improvement, global git hook enhancement, or agent rule update"
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What gap, limitation, or operational friction exists today, and why does solving it matter?
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      description: "Background, affected tool directories (`.config/`, `.agents/`, `Makefile`), XDG Base Directory compliance, and portability considerations."
+    validations:
+      required: true
+  - type: textarea
+    id: dod
+    attributes:
+      label: Definition of Done
+      description: Concrete deliverables, invariants, and verification criteria required to close this issue.
+      value: |
+        - [ ] XDG Base Directory compliance preserved (zero `$HOME` clutter or runtime state in `.config/`)
+        - [ ] Zero machine-specific or non-public identifiers introduced
+        - [ ] `make check` and `gitleaks` hooks pass cleanly
+        - [ ] Documentation updated (`README.md`, `AGENTS.md` if applicable)
+    validations:
+      required: true

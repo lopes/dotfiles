@@ -1,0 +1,14 @@
+# Global default code owners
+* @lopes
+
+# XDG & Tool Configurations
+/.config/ @lopes
+/.zshenv @lopes
+/Makefile @lopes
+
+# Global Agent Rules & Skills
+/.agents/ @lopes
+/AGENTS.md @lopes
+
+# CI/CD Workflows & Repository Governance
+/.github/ @lopes
