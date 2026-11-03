@@ -56,6 +56,13 @@ install:
 	elif [ -e "$(CONFIG)/gemini/rules" ]; then \
 		ln -sv "$(CONFIG)/gemini/rules" "$(HOME)/.gemini/config/rules"; \
 	fi
+	@if [ -L "$(HOME)/.gemini/config/skills" ]; then \
+		echo "skip  $(HOME)/.gemini/config/skills (already linked)"; \
+	elif [ -e "$(HOME)/.gemini/config/skills" ]; then \
+		echo "WARN  $(HOME)/.gemini/config/skills exists and is not a symlink — skipping"; \
+	else \
+		ln -sv "$(CONFIG)/agents/skills" "$(HOME)/.gemini/config/skills"; \
+	fi
 	@mkdir -p "$(HOME)/.claude"
 	@if [ -L "$(HOME)/.claude/CLAUDE.md" ]; then \
 		echo "skip  $(HOME)/.claude/CLAUDE.md (already linked)"; \
@@ -63,6 +70,13 @@ install:
 		echo "WARN  $(HOME)/.claude/CLAUDE.md exists and is not a symlink — skipping"; \
 	else \
 		ln -sv "$(CONFIG)/agents/AGENTS.md" "$(HOME)/.claude/CLAUDE.md"; \
+	fi
+	@if [ -L "$(HOME)/.claude/skills" ]; then \
+		echo "skip  $(HOME)/.claude/skills (already linked)"; \
+	elif [ -e "$(HOME)/.claude/skills" ]; then \
+		echo "WARN  $(HOME)/.claude/skills exists and is not a symlink — skipping"; \
+	else \
+		ln -sv "$(CONFIG)/agents/skills" "$(HOME)/.claude/skills"; \
 	fi
 	@printf "\ndone. restart your shell to apply changes.\n"
 
@@ -73,10 +87,11 @@ uninstall:
 	@[ -L "$(HOME)/.zshenv" ] && rm -v "$(HOME)/.zshenv" || true
 	@[ -L "$(HOME)/.ssh/config" ] && rm -v "$(HOME)/.ssh/config" || true
 	@[ -L "$(CONFIG)/gemini/AGENTS.md" ] && rm -v "$(CONFIG)/gemini/AGENTS.md" || true
-	@for item in rules AGENTS.md; do \
+	@for item in rules skills AGENTS.md; do \
 		[ -L "$(HOME)/.gemini/config/$$item" ] && rm -v "$(HOME)/.gemini/config/$$item" || true; \
 	done
 	@[ -L "$(HOME)/.claude/CLAUDE.md" ] && rm -v "$(HOME)/.claude/CLAUDE.md" || true
+	@[ -L "$(HOME)/.claude/skills" ] && rm -v "$(HOME)/.claude/skills" || true
 	@printf "\ndone. all symlinks removed.\n"
 
 list:
@@ -87,10 +102,11 @@ list:
 	@printf "  %-28s -> %s\n" "$(HOME)/.zshenv" "$$(readlink "$(HOME)/.zshenv" 2>/dev/null || echo 'NOT LINKED')"
 	@printf "  %-28s -> %s\n" "$(HOME)/.ssh/config" "$$(readlink "$(HOME)/.ssh/config" 2>/dev/null || echo 'NOT LINKED')"
 	@printf "  %-28s -> %s\n" "$(CONFIG)/gemini/AGENTS.md" "$$(readlink "$(CONFIG)/gemini/AGENTS.md" 2>/dev/null || echo 'NOT LINKED')"
-	@for item in rules AGENTS.md; do \
+	@for item in rules skills AGENTS.md; do \
 		printf "  %-28s -> %s\n" "$(HOME)/.gemini/config/$$item" "$$(readlink "$(HOME)/.gemini/config/$$item" 2>/dev/null || echo 'NOT LINKED')"; \
 	done
 	@printf "  %-28s -> %s\n" "$(HOME)/.claude/CLAUDE.md" "$$(readlink "$(HOME)/.claude/CLAUDE.md" 2>/dev/null || echo 'NOT LINKED')"
+	@printf "  %-28s -> %s\n" "$(HOME)/.claude/skills" "$$(readlink "$(HOME)/.claude/skills" 2>/dev/null || echo 'NOT LINKED')"
 
 check:
 	@echo "1. syntax check..."
@@ -118,13 +134,19 @@ check:
 	@if [ "$$(readlink "$(HOME)/.gemini/config/AGENTS.md" 2>/dev/null)" != "$(CONFIG)/agents/AGENTS.md" ]; then \
 		echo "FAIL: $(HOME)/.gemini/config/AGENTS.md is not linked to $(CONFIG)/agents/AGENTS.md"; exit 1; \
 	fi
+	@if [ "$$(readlink "$(HOME)/.gemini/config/skills" 2>/dev/null)" != "$(CONFIG)/agents/skills" ]; then \
+		echo "FAIL: $(HOME)/.gemini/config/skills is not linked to $(CONFIG)/agents/skills"; exit 1; \
+	fi
 	@if [ -e "$(CONFIG)/gemini/rules" ] && [ "$$(readlink "$(HOME)/.gemini/config/rules" 2>/dev/null)" != "$(CONFIG)/gemini/rules" ]; then \
 		echo "FAIL: $(HOME)/.gemini/config/rules is not linked to $(CONFIG)/gemini/rules"; exit 1; \
 	fi
 	@if [ "$$(readlink "$(HOME)/.claude/CLAUDE.md" 2>/dev/null)" != "$(CONFIG)/agents/AGENTS.md" ]; then \
 		echo "FAIL: $(HOME)/.claude/CLAUDE.md is not linked to $(CONFIG)/agents/AGENTS.md"; exit 1; \
 	fi
-	@for link in "$(CONFIG)"/* "$(HOME)/.gemini/config"/* "$(HOME)/.claude/CLAUDE.md"; do \
+	@if [ "$$(readlink "$(HOME)/.claude/skills" 2>/dev/null)" != "$(CONFIG)/agents/skills" ]; then \
+		echo "FAIL: $(HOME)/.claude/skills is not linked to $(CONFIG)/agents/skills"; exit 1; \
+	fi
+	@for link in "$(CONFIG)"/* "$(HOME)/.gemini/config"/* "$(HOME)/.claude/CLAUDE.md" "$(HOME)/.claude/skills"; do \
 		if [ -L "$$link" ] && [ ! -e "$$link" ]; then \
 			echo "FAIL: dangling symlink $$link -> $$(readlink "$$link")"; exit 1; \
 		fi; \
