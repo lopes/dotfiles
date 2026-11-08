@@ -51,7 +51,7 @@ test -f "/usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" && sour
 
 # prompt — layout: host:path (git) [venv] +❯                               5s
 if command -v oh-my-posh >/dev/null 2>&1; then
-  eval "$(oh-my-posh init zsh --config "$HOME/.config/oh-my-posh/sable.toml")"
+  eval "$(oh-my-posh init zsh --config "$HOME/.config/oh-my-posh/vigil.toml")"
 else
   autoload -Uz vcs_info add-zsh-hook
   zstyle ':vcs_info:*' enable git

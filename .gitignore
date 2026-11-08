@@ -26,7 +26,7 @@
 !.github/workflows/
 !.github/workflows/security.yml
 !.config/oh-my-posh/
-!.config/oh-my-posh/sable.toml
+!.config/oh-my-posh/vigil.toml
 !.config/ssh/
 !.config/ssh/config
 !.config/tmux/

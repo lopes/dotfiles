@@ -117,7 +117,7 @@ check:
 	@tmux -f "$(DOTFILES)/.config/tmux/tmux.conf" start-server \; source-file "$(DOTFILES)/.config/tmux/tmux.conf"
 	@vim --not-a-term -es -u "$(DOTFILES)/.config/vim/vimrc" -c 'q!'
 	@! command -v hx >/dev/null 2>&1 || hx --health >/dev/null
-	@! command -v oh-my-posh >/dev/null 2>&1 || oh-my-posh print primary --config "$(DOTFILES)/.config/oh-my-posh/sable.toml" >/dev/null
+	@! command -v oh-my-posh >/dev/null 2>&1 || oh-my-posh print primary --config "$(DOTFILES)/.config/oh-my-posh/vigil.toml" >/dev/null
 	@echo "2. symlinks & permissions..."
 	@for d in $(DIRS); do \
 		if [ "$$(readlink "$(CONFIG)/$$d" 2>/dev/null)" != "$(DOTFILES)/.config/$$d" ]; then \
