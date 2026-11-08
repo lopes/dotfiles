@@ -1,43 +1,20 @@
 # oh-my-posh configuration file - sable
-# minimalistic single-line unix prompt with github dark dimmed colors
+# minimalistic single-line unix prompt using terminal-native base16 colors
 # layout: host:path (git) [lang] +❯                                       5s
 
 console_title_template = '{{ .HostName }}:{{ .Folder }}'
 version = 3
 final_space = true
 
-[palette]
-# color palette: GitHub Dark Dimmed
-gh_dimmed_red       = '#f47067'
-gh_dimmed_orange    = '#daaa3f'
-gh_dimmed_yellow    = '#c69026'
-gh_dimmed_green     = '#57ab5a'
-gh_dimmed_cyan      = '#39c5cf'
-gh_dimmed_blue      = '#539bf5'
-gh_dimmed_purple    = '#b083f0'
-gh_dimmed_pink      = '#ff938a'
-gh_dimmed_text      = '#adbac7'
-gh_dimmed_subtext1  = '#909dab'
-gh_dimmed_subtext0  = '#768390'
-gh_dimmed_overlay2  = '#636e7b'
-gh_dimmed_overlay1  = '#545d68'
-gh_dimmed_overlay0  = '#444c56'
-gh_dimmed_surface2  = '#373e47'
-gh_dimmed_surface1  = '#2d333b'
-gh_dimmed_surface0  = '#272e35'
-gh_dimmed_base      = '#22272e'
-gh_dimmed_mantle    = '#1c2128'
-gh_dimmed_crust     = '#181d23'
-
 [transient_prompt]
 template = '{{ if .Root }}# {{ else }}❯ {{ end }}'
-foreground = 'p:gh_dimmed_text'
+foreground = 'white'
 background = 'transparent'
-foreground_templates = ['{{ if or .Root (gt .Code 0) }}p:gh_dimmed_red{{ end }}']
+foreground_templates = ['{{ if or .Root (gt .Code 0) }}red{{ end }}']
 
 [secondary_prompt]
 template = '❯❯ '
-foreground = 'p:gh_dimmed_overlay1'
+foreground = 'darkGray'
 background = 'transparent'
 
 [upgrade]
@@ -54,14 +31,14 @@ newline = false
 [[blocks.segments]]
 type = 'session'
 style = 'plain'
-foreground = 'p:gh_dimmed_subtext0'
+foreground = 'darkGray'
 background = 'transparent'
-template = '{{ if .Root }}<p:gh_dimmed_red>root</><p:gh_dimmed_overlay1>@</>{{ else if ne .UserName .Env.DEFAULT_USER }}<p:gh_dimmed_orange>{{ (.UserName | splitList ".") | first }}</><p:gh_dimmed_overlay1>@</>{{ end }}{{ (.HostName | splitList "." | first | replace "lopes-" "") }}<p:gh_dimmed_overlay1>:</>'
+template = '{{ if .Root }}<red>root</><darkGray>@</>{{ else if ne .UserName .Env.DEFAULT_USER }}<yellow>{{ (.UserName | splitList ".") | first }}</><darkGray>@</>{{ end }}{{ (.HostName | splitList "." | first | replace "lopes-" "") }}<darkGray>:</>'
 
 [[blocks.segments]]
 type = 'path'
 style = 'plain'
-foreground = 'p:gh_dimmed_blue'
+foreground = 'blue'
 background = 'transparent'
 template = '{{ regexReplaceAll "(\\.?[^/]{1,3})[^/]*/" .Path "$1/" }}'
 
@@ -72,13 +49,13 @@ home_icon = '~'
 [[blocks.segments]]
 type = 'git'
 style = 'plain'
-foreground = 'p:gh_dimmed_green'
+foreground = 'green'
 background = 'transparent'
-template = ' <p:gh_dimmed_overlay1>(</>{{ .HEAD }}{{ if or (.Working.Changed) (.Staging.Changed) }}*{{ end }}{{ if gt .Behind 0 }}⇣{{ end }}{{ if gt .Ahead 0 }}⇡{{ end }}<p:gh_dimmed_overlay1>)</>'
+template = ' <darkGray>(</>{{ .HEAD }}{{ if or (.Working.Changed) (.Staging.Changed) }}*{{ end }}{{ if gt .Behind 0 }}⇣{{ end }}{{ if gt .Ahead 0 }}⇡{{ end }}<darkGray>)</>'
 foreground_templates = [
-  '{{ if gt .Behind 0 }}p:gh_dimmed_red{{ end }}',
-  '{{ if or (.Working.Changed) (.Staging.Changed) }}p:gh_dimmed_yellow{{ end }}',
-  '{{ if gt .Ahead 0 }}p:gh_dimmed_orange{{ end }}',
+  '{{ if gt .Behind 0 }}red{{ end }}',
+  '{{ if or (.Working.Changed) (.Staging.Changed) }}yellow{{ end }}',
+  '{{ if gt .Ahead 0 }}lightYellow{{ end }}',
 ]
 
 [blocks.segments.options]
@@ -90,9 +67,9 @@ branch_template = '{{ trunc 16 .Branch }}'
 [[blocks.segments]]
 type = 'python'
 style = 'plain'
-foreground = 'p:gh_dimmed_purple'
+foreground = 'magenta'
 background = 'transparent'
-template = ' <p:gh_dimmed_overlay1>[</>py{{ .Major }}{{ .Minor }}<p:gh_dimmed_overlay1>]</>'
+template = ' <darkGray>[</>py{{ .Major }}{{ .Minor }}<darkGray>]</>'
 
 [blocks.segments.options]
 display_mode = 'context'
@@ -101,9 +78,9 @@ tooling = ['uv', 'python']
 [[blocks.segments]]
 type = 'go'
 style = 'plain'
-foreground = 'p:gh_dimmed_cyan'
+foreground = 'cyan'
 background = 'transparent'
-template = ' <p:gh_dimmed_overlay1>[</>go{{ .Major }}{{ .Minor }}<p:gh_dimmed_overlay1>]</>'
+template = ' <darkGray>[</>go{{ .Major }}{{ .Minor }}<darkGray>]</>'
 
 [blocks.segments.options]
 display_mode = 'files'
@@ -111,19 +88,9 @@ display_mode = 'files'
 [[blocks.segments]]
 type = 'rust'
 style = 'plain'
-foreground = 'p:gh_dimmed_orange'
+foreground = 'yellow'
 background = 'transparent'
-template = ' <p:gh_dimmed_overlay1>[</>rs{{ .Major }}{{ .Minor }}<p:gh_dimmed_overlay1>]</>'
-
-[blocks.segments.options]
-display_mode = 'files'
-
-[[blocks.segments]]
-type = 'node'
-style = 'plain'
-foreground = 'p:gh_dimmed_green'
-background = 'transparent'
-template = ' <p:gh_dimmed_overlay1>[</>n{{ .Major }}<p:gh_dimmed_overlay1>]</>'
+template = ' <darkGray>[</>rs{{ .Major }}{{ .Minor }}<darkGray>]</>'
 
 [blocks.segments.options]
 display_mode = 'files'
@@ -131,10 +98,10 @@ display_mode = 'files'
 [[blocks.segments]]
 type = 'status'
 style = 'plain'
-foreground = 'p:gh_dimmed_text'
+foreground = 'white'
 background = 'transparent'
-template = ' {{ if gt .Jobs 0 }}<p:gh_dimmed_orange>+</>{{ end }}{{ if .Root }}#{{ else }}❯{{ end }}'
-foreground_templates = ['{{ if or .Root (gt .Code 0) }}p:gh_dimmed_red{{ end }}']
+template = ' {{ if gt .Jobs 0 }}<yellow>+</>{{ end }}{{ if .Root }}#{{ else }}❯{{ end }}'
+foreground_templates = ['{{ if or .Root (gt .Code 0) }}red{{ end }}']
 
 [blocks.segments.options]
 always_enabled = true
@@ -147,10 +114,9 @@ overflow = 'hidden'
 [[blocks.segments]]
 type = 'executiontime'
 style = 'plain'
-foreground = 'p:gh_dimmed_overlay1'
+foreground = 'darkGray'
 background = 'transparent'
 template = '{{ div .Ms 1000 }}s'
 
 [blocks.segments.options]
 threshold = 5000
-

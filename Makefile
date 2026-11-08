@@ -2,7 +2,7 @@ DOTFILES := $(HOME)/Projects/dotfiles
 CONFIG   := $(HOME)/.config
 
 # directories symlinked entirely into ~/.config/
-DIRS := agents gemini git oh-my-posh tmux vim zsh
+DIRS := agents gemini git helix oh-my-posh tmux vim zsh
 
 .PHONY: install uninstall list check
 
@@ -114,7 +114,9 @@ check:
 	@sh -n "$(DOTFILES)/.config/git/hooks/pre-commit" "$(DOTFILES)/.config/git/hooks/pre-push"
 	@git config --file "$(DOTFILES)/.config/git/config" --list >/dev/null
 	@ssh -F "$(DOTFILES)/.config/ssh/config" -G github.com >/dev/null
+	@tmux -f "$(DOTFILES)/.config/tmux/tmux.conf" start-server \; source-file "$(DOTFILES)/.config/tmux/tmux.conf"
 	@vim --not-a-term -es -u "$(DOTFILES)/.config/vim/vimrc" -c 'q!'
+	@! command -v hx >/dev/null 2>&1 || hx --health >/dev/null
 	@! command -v oh-my-posh >/dev/null 2>&1 || oh-my-posh print primary --config "$(DOTFILES)/.config/oh-my-posh/sable.toml" >/dev/null
 	@echo "2. symlinks & permissions..."
 	@for d in $(DIRS); do \
@@ -175,6 +177,7 @@ check:
 	@untracked=$$(find "$(DOTFILES)/.config" "$(DOTFILES)/.agents" -type f \
 		! -path "$(DOTFILES)/.config/zsh/private.sh" \
 		! -path "$(DOTFILES)/.config/gemini/rules/*" \
+		! -path "$(DOTFILES)/.config/helix/runtime/*" \
 		-printf '%P\n' | while read -r rel; do \
 			parent=$$(echo "$$rel" | cut -d/ -f1); \
 			case " $(DIRS) ssh skills " in *" $$parent "*) ;; *) continue ;; esac; \

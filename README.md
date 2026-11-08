@@ -1,28 +1,64 @@
 # dotfiles
 
-Minimalist Linux configuration files built around standard Unix tools, a consistent GitHub Dark Dimmed palette, and zero-copy symlink management.
+Minimalist Linux configuration files built around standard Unix tools, terminal-native transparent themes, and zero-copy symlink management.
 
 ## Philosophy
 1. **Layout**: Remove superfluous UI elements to maximize screen space.
-2. **Colors**: Consistent GitHub Dark Dimmed palette across shell, prompt, multiplexer, and editor.
+2. **Colors**: Terminal-native `base16` / `default` ANSI colors and transparent backgrounds (`transparent` / `bg=default` / `NONE`) across shell, prompt, multiplexer, pager, and editors—zero hardcoded hex palettes.
 3. **Symbols**: Standard JetBrains Mono and Unicode only (no patched Nerd Fonts required).
-4. **Controls**: Intentional keyboard shortcuts with vi-style navigation where it fits.
+4. **Controls**: Intentional keyboard shortcuts with modal navigation where it fits.
 5. **Relevancy**: Only track tools and settings used daily.
 
 ---
 
 ## Install & Update
 
-### 1. Prerequisites (Debian / Linux)
+### 1. Core Prerequisites (Debian / Linux)
 ```sh
 sudo apt update && sudo apt install -y \
-  zsh tmux vim fzf lsof git-delta zsh-autosuggestions zsh-syntax-highlighting fonts-jetbrains-mono
+  zsh tmux vim git gh git-delta gitleaks fzf ripgrep fd-find jq lsof curl \
+  zsh-autosuggestions zsh-syntax-highlighting fonts-jetbrains-mono
 
 # prompt binary (~/.local/bin/oh-my-posh)
 curl -s https://ohmyposh.dev/install.sh | bash -s -- -d "$HOME/.local/bin"
 ```
 
-### 2. Link Configurations
+### 2. Development Stack (Helix, LSPs, Linters & Formatters)
+The development environment is terminal-native (`tmux` + `hx`) so it runs identically on local Debian and remote SSH hosts without port forwarding or web IDE servers.
+
+| Architectural Layer | Purpose | Tools in Stack |
+| :--- | :--- | :--- |
+| **Editor (`hx`)** | Modal project editor with built-in fuzzy/tree pickers and multi-cursor editing (`vim` remains `$EDITOR` for quick single-file edits and git commits). | `hx` (Helix), `ripgrep` (`rg`), `fd-find` (`fdfind`) |
+| **Tree-sitter** | Incremental AST parser compiled into Helix for syntax highlighting, structural indentation, and syntax-node selection (`alt-o`/`i`/`n`/`p`). | Bundled with Debian `hx` |
+| **Language Servers (LSP)** | Live code intelligence over stdio: autocompletion, go-to-definition (`gd`), references (`gr`), hover docs (`space k`), and workspace rename (`space r`). | `pylsp` + `ruff server` (Python), `gopls` (Go), `rust-analyzer` (Rust), `clangd` (C/C++) |
+| **Linters** | Static analysis for bugs, security rules, and style both inside the editor and from the CLI / agent workflows. | `ruff` (Python), `shellcheck` (Shell), `ansible-lint` (Ansible), `yamllint` (YAML) |
+| **Typecheckers** | Static type verification in editor diagnostics (`pylsp-mypy`) and CI/CLI gates. | `mypy` (Python), `gopls` / `rustc` / `clangd` |
+| **Formatters** | Deterministic code formatting triggered automatically on save in Helix. | `ruff format` (Python), `shfmt` (Shell), `gofmt` (Go), `rustfmt` (Rust), `clang-format` (C/C++) |
+
+```sh
+# 1. System packages: editor, compilers, language servers, and shell linters
+sudo apt update && sudo apt install -y \
+  hx python3 ansible shellcheck shfmt \
+  golang-go gopls \
+  rustc cargo rust-analyzer rustfmt \
+  build-essential clangd clang-format
+
+# 2. Python package & tool manager (~/.local/bin/uv)
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# 3. User-local Python/YAML/Ansible LSPs, linters, typechecker, and test runner (~/.local/bin/*)
+uv tool install --with pylsp-mypy python-lsp-server
+uv tool install ruff
+uv tool install mypy
+uv tool install pytest
+uv tool install ansible-lint
+uv tool install yamllint
+
+# 4. Fetch & compile the allowlisted Tree-sitter grammars (after 'make install')
+hx --grammar fetch && hx --grammar build && rm -rf "$HOME/.config/helix/runtime/grammars/sources"
+```
+
+### 3. Link Configurations
 ```sh
 git clone https://github.com/lopes/dotfiles "$HOME/Projects/dotfiles"
 cd "$HOME/Projects/dotfiles"
@@ -31,15 +67,15 @@ make check
 exec zsh -l
 ```
 
-### 3. Managing the Repo
-`make install` creates symlinks from `~/.config/<tool>` (plus `~/.zshenv`, `~/.ssh/config`, and `~/.gemini/config/`) directly into this repo. Editing either path edits the same file.
+### 4. Managing the Repo
+`make install` creates symlinks from `~/.config/<tool>` (plus `~/.zshenv`, `~/.ssh/config`, `~/.gemini/config/`, and `~/.claude/`) directly into this repo. Editing either path edits the same file.
 
 | Command | Action |
 | :--- | :--- |
 | `make install` | Create missing symlinks (skips existing links, warns on conflicts). |
 | `make uninstall` | Remove managed symlinks without deleting repo files. |
 | `make list` | Display all managed symlinks and their targets. |
-| `make check` | Validate shell/git syntax, symlinks, SSH permissions, `.gitignore` parity, and sanitization. |
+| `make check` | Validate shell/git/editor syntax, symlinks, SSH permissions, `.gitignore` parity, and sanitization. |
 
 > [!IMPORTANT]
 > `.gitignore` uses an **allowlist** (`*` ignores everything by default). When adding a new file, add a `!path` rule to `.gitignore`, stage it with `git add -f`, and run `make check`.
@@ -63,22 +99,49 @@ exec zsh -l
 | `alt-left` / `alt-right` | Jump word backward / forward |
 
 ### Tmux
-Prefix key: **`ctrl-space`**
+- **Prefix key**: **`ctrl-space`** (all `alt-*` chords are left unbound so terminal apps like Helix receive them directly).
+- **Terminal & UI**: 24-bit `RGB`, `usstyle` undercurls, `extended-keys` (`CSI u`), and OSC-52 clipboard passthrough enabled. Top status bar and pane dividers use transparent backgrounds (`bg=default`) and terminal-native `base16` ANSI colors (`brightblack` / `white` split borders, and a solid `green` session badge that flips to `red` when `ctrl-space` is active) matching Helix's `base16_transparent` statusline.
 
 | Shortcut | Action |
 | :--- | :--- |
-| `alt-h/j/k/l` | Navigate panes left/down/up/right (no prefix needed) |
-| `alt-1..5` | Jump to window 1–5 (no prefix needed) |
-| `alt-n` / `alt-p` | Next / previous window (no prefix needed) |
 | `prefix c` | New window in current path |
+| `prefix ,` | Rename current window |
 | `prefix -` / `prefix \` | Split pane vertically / horizontally (in current path) |
+| `prefix h/j/k/l` | Navigate panes left/down/up/right |
 | `prefix H/J/K/L` | Resize active pane (repeatable) |
-| `prefix x` / `prefix q` | Confirm before killing active pane / window |
+| `prefix x` / `prefix &` | Confirm before killing active pane / window |
+| `prefix z` | Toggle active pane zoom (`+` indicator on window tab) |
 | `prefix tab` | Toggle last active window |
 | `prefix r` | Reload `tmux.conf` |
 | `prefix [` | Enter vi copy mode (`v` select, `ctrl-v` block toggle, `y` copy, `prefix ]` paste) |
 
+### Helix (`hx`) — Migration Quick Guide (from Vim & VSCode)
+- **Core Mindset (`selection → action`)**:
+  - In Vim, you type `action + motion` (`dw` = delete word, `dd` = delete line, `ci"` = change inside quotes).
+  - In Helix, **every movement selects first**, then you act on the visible selection (`wd` = select word → delete, `xd` = select line → delete, `mi"c` = match inside `"` → change).
+  - Because selections are always live, press `v` (`select` mode) whenever you want subsequent movements (`w`, `j`, `f`, etc.) to **extend** the current selection instead of moving it.
+
+| Workflow | Shortcut | How It Works (The Helix Way) |
+| :--- | :--- | :--- |
+| **File Explorer (Tree)** | `space e` | Open hierarchical directory explorer (`enter` open/toggle dir, `a` new file/dir, `r` rename, `d` delete) |
+| **Fuzzy File Picker** | `space f` | Fuzzy find file in repo (`ctrl-v` open in vertical split, `ctrl-s` horizontal split) |
+| **Buffers & Splits** | `space b` / `gn` / `gp` | Fuzzy switch open buffers / next buffer / previous buffer (`:bc` close buffer, `ctrl-w w` cycle splits) |
+| **Vertical Cursors** | `C` (`shift-c`) / `alt-c` | Duplicate cursor/selection onto the next / previous line; press `,` to collapse back to a single cursor |
+| **Split Lines to Cursors** | `x` (repeat) → `alt-s` | Select multiple lines with `x`, then press `alt-s` to place an independent cursor on every line |
+| **Tree-sitter Selection** | `alt-o` / `alt-i` / `alt-n` / `alt-p` | Expand selection to parent AST node / shrink to child / jump to next or previous sibling node |
+| **Find in File** | `/` then `n` / `N` | Regex search in current buffer (`*` uses current selection as search pattern) |
+| **Find & Replace (File)** | `%` → `s` → `<regex><enter>` → `c` | Select file (`%`), select all regex matches (`s`), and type replacement live (`c`) across all matches at once |
+| **Search Workspace** | `space /` | Live project-wide `ripgrep` search with preview |
+| **Rename Symbol (LSP)** | `space r` | Semantic rename of variable/function/class across the entire project |
+| **Block Indent** | `x` (repeat) → `>` or `<` | Select lines and indent/unindent (selection stays active, so press `>` or `<` repeatedly) |
+| **Git Hunks & Status** | `]g` / `[g` / `space g` | Jump to next / prev git diff hunk / open picker of modified files in repo |
+| **LSP Navigation** | `gd` / `gr` / `space k` / `space a` | Go to definition / find references / hover documentation / apply code action |
+| **Diagnostics** | `]d` / `[d` / `space d` / `space D` | Next / prev diagnostic / buffer diagnostics picker / workspace diagnostics picker |
+| **Word Suggestion** | Automatic / `ctrl-x` | LSP & path completions pop up automatically as you type; `ctrl-x` triggers buffer/LSP completion manually (`ctrl-n`/`ctrl-p` or `tab` to cycle) |
+| **System Clipboard** | `space y` / `space p` | Yank / paste directly to/from the ChromeOS system clipboard over SSH (via OSC-52) |
+
 ### Vim
+- **Role**: Standard `$EDITOR` / `$VISUAL` for quick single-file edits, `vi`, and `git commit`.
 - **State & Undo**: Persistent undo in `$XDG_CACHE_HOME/vim/undodir`; `viminfo` in `$XDG_STATE_HOME/vim/viminfo` (no swap/backup files).
 - **Ledger completion**: In `*.journal` files, `:` is part of `iskeyword` so `ctrl-n` / `ctrl-p` autocompletes full `hledger` account paths (`expenses:food:groceries`).
 

@@ -19,6 +19,9 @@
 !.config/git/hooks/
 !.config/git/hooks/pre-commit
 !.config/git/hooks/pre-push
+!.config/helix/
+!.config/helix/config.toml
+!.config/helix/languages.toml
 !.github/
 !.github/workflows/
 !.github/workflows/security.yml
@@ -30,8 +33,6 @@
 !.config/tmux/tmux.conf
 !.config/vim/
 !.config/vim/vimrc
-!.config/vim/colors/
-!.config/vim/colors/github_dark_dimmed.vim
 !.config/zsh/
 !.config/zsh/.zshrc
 !.config/zsh/aliases.sh

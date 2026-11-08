@@ -2,7 +2,6 @@
 
 " general
 set nocompatible
-set runtimepath^=~/.config/vim
 syntax on
 set encoding=utf-8
 set number
@@ -11,15 +10,9 @@ set laststatus=2
 set nojoinspaces
 set belloff=all
 
-" colorscheme
-set termguicolors
-colorscheme github_dark_dimmed
-
-" transparent background
-highlight Normal     ctermbg=NONE guibg=NONE
-highlight NonText    ctermbg=NONE guibg=NONE
-highlight LineNr     ctermbg=NONE guibg=NONE
-highlight SignColumn ctermbg=NONE guibg=NONE
+" colorscheme (built-in default: respects terminal background & base16 ANSI palette)
+set background=dark
+colorscheme default
 
 " improved wildmenu
 set wildmode=longest:full,full
@@ -81,28 +74,25 @@ augroup dotfiles
 augroup END
 
 " visual improvements
-set cursorline
 set scrolloff=5
 set sidescrolloff=5
 set display+=lastline
 
-" status line
+" status line (solid mode pill matching tmux & helix on transparent bar)
 set statusline=
-set statusline+=%#NormalMode#%{(mode()=='n')?'NORMAL':(mode()=='c')?'COMMAND':''}%#InsertMode#%{(mode()=='i')?'INSERT':''}%#VisualMode#%{(mode()=='v')?'VISUAL':(mode()=='V')?'V-LINE':(mode()==\"\<C-v>\")?'V-BLOCK':''}%#ReplaceMode#%{(mode()=='R')?'REPLACE':''}
-set statusline+=\  " space after mode
-set statusline+=%f\ %m
+set statusline+=%#NormalMode#%{(mode()=='n')?'\ NORMAL\ ':(mode()=='c')?'\ COMMAND\ ':''}%#InsertMode#%{(mode()=='i')?'\ INSERT\ ':''}%#VisualMode#%{(mode()=='v')?'\ VISUAL\ ':(mode()=='V')?'\ V-LINE\ ':(mode()==\"\<C-v>\")?'\ V-BLOCK\ ':''}%#ReplaceMode#%{(mode()=='R')?'\ REPLACE\ ':''}
+set statusline+=%#StatusLine#\ %f\ %m
 set statusline+=%=
 set statusline+=%y\ %{&fenc}
 set statusline+=\ %l:%c
-set statusline+=\ %P
+set statusline+=\ %P\ 
 
-highlight NormalMode  guifg=#57ab5a gui=bold
-highlight InsertMode  guifg=#b083f0 gui=bold
-highlight VisualMode  guifg=#daaa3f gui=bold
-highlight ReplaceMode guifg=#f47067 gui=bold
-
-highlight StatusLine   guibg=NONE guifg=#adbac7
-highlight StatusLineNC guibg=NONE guifg=#444c56
+highlight NormalMode   cterm=bold ctermfg=0 ctermbg=2
+highlight InsertMode   cterm=bold ctermfg=0 ctermbg=5
+highlight VisualMode   cterm=bold ctermfg=0 ctermbg=3
+highlight ReplaceMode  cterm=bold ctermfg=0 ctermbg=1
+highlight StatusLine   cterm=NONE ctermfg=7 ctermbg=NONE
+highlight StatusLineNC cterm=NONE ctermfg=8 ctermbg=NONE
 
 " simpler bottom
 set noshowmode    " no -- INSERT -- ...

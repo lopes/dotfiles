@@ -23,10 +23,11 @@ You are maintaining a minimalist, Linux-only dotfiles repository where `~/.confi
 2. **Untracked Local Escape Hatches**:
    - `~/.config/zsh/private.sh` (local env/secrets, `chmod 600`)
    - `~/.config/gemini/rules/` (local workstation rules)
+   - `~/.config/helix/runtime/` (compiled Tree-sitter `.so` grammars)
    - `~/.ssh/config.local` (local SSH host overrides)
    Never allowlist or stage these paths.
-3. **GitHub Dark Dimmed Everywhere**:
-   - Reuse the canonical hex palette defined in `.config/tmux/tmux.conf` and `.config/oh-my-posh/sable.toml`.
+3. **Theme & Transparency Consistency**:
+   - Always use terminal-native `default` / `base16` / `base16_transparent` ANSI colors and transparent backgrounds (`transparent` / `bg=default` / `NONE`) so every tool respects the terminal emulator's palette without hardcoded hex values.
 4. **Public Repo Sanitization**:
    - Never commit internal hostnames, corporate usernames/LDAPs, workstation paths, or internal tool names.
 

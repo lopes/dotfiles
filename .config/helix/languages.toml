@@ -1,0 +1,74 @@
+# helix language servers, tree-sitter grammars, and formatters
+
+# only fetch and compile tree-sitter grammars actually used in this stack
+use-grammars = { only = [
+  "bash",
+  "c",
+  "diff",
+  "dockerfile",
+  "git-commit",
+  "git-config",
+  "git-rebase",
+  "gitignore",
+  "go",
+  "gomod",
+  "gowork",
+  "json",
+  "ledger",
+  "make",
+  "markdown",
+  "markdown_inline",
+  "python",
+  "rust",
+  "sshclientconfig",
+  "toml",
+  "yaml",
+] }
+
+[language-server.pylsp.config.pylsp.plugins]
+flake8 = { enabled = false }
+pycodestyle = { enabled = false }
+pyflakes = { enabled = false }
+pylint = { enabled = false }
+mccabe = { enabled = false }
+autopep8 = { enabled = false }
+yapf = { enabled = false }
+pylsp_mypy = { enabled = true, live_mode = true }
+
+[language-server.ruff]
+command = "ruff"
+args = ["server"]
+
+[[language]]
+name = "python"
+language-servers = ["pylsp", "ruff"]
+formatter = { command = "ruff", args = ["format", "--quiet", "-"] }
+auto-format = true
+
+[[language]]
+name = "bash"
+indent = { tab-width = 2, unit = "  " }
+formatter = { command = "shfmt", args = ["-i", "2", "-ci"] }
+auto-format = true
+
+[[language]]
+name = "go"
+language-servers = ["gopls"]
+formatter = { command = "gofmt" }
+auto-format = true
+
+[[language]]
+name = "rust"
+language-servers = ["rust-analyzer"]
+formatter = { command = "rustfmt", args = ["--edition", "2021"] }
+auto-format = true
+
+[[language]]
+name = "c"
+language-servers = ["clangd"]
+formatter = { command = "clang-format" }
+auto-format = true
+
+[[language]]
+name = "yaml"
+indent = { tab-width = 2, unit = "  " }

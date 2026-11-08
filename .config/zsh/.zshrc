@@ -58,8 +58,8 @@ else
   zstyle ':vcs_info:*' check-for-changes true
   zstyle ':vcs_info:git:*' unstagedstr '*'
   zstyle ':vcs_info:git:*' stagedstr '+'
-  zstyle ':vcs_info:git:*' formats ' %F{#545d68}(%f%F{#57ab5a}%b%f%F{#c69026}%u%c%f%F{#545d68})%f'
-  zstyle ':vcs_info:git:*' actionformats ' %F{#545d68}(%f%F{#daaa3f}%b|%a%u%c%f%F{#545d68})%f'
+  zstyle ':vcs_info:git:*' formats ' %F{8}(%f%F{green}%b%f%F{yellow}%u%c%f%F{8})%f'
+  zstyle ':vcs_info:git:*' actionformats ' %F{8}(%f%F{yellow}%b|%a%u%c%f%F{8})%f'
 
   _prompt_short_pwd() {
     local p="${PWD/#$HOME/~}"
@@ -84,23 +84,23 @@ else
     _prompt_short_pwd
     _user_seg=""
     if (( EUID == 0 )); then
-      _user_seg="%F{#f47067}root%f%F{#545d68}@%f"
+      _user_seg="%F{red}root%f%F{8}@%f"
     elif [[ "$USER" != "$DEFAULT_USER" ]]; then
-      _user_seg="%F{#daaa3f}%n%f%F{#545d68}@%f"
+      _user_seg="%F{yellow}%n%f%F{8}@%f"
     fi
     _venv_seg=""
-    [[ -n "$VIRTUAL_ENV" ]] && _venv_seg=" %F{#545d68}[%f%F{#b083f0}${VIRTUAL_ENV:t}%f%F{#545d68}]%f"
+    [[ -n "$VIRTUAL_ENV" ]] && _venv_seg=" %F{8}[%f%F{magenta}${VIRTUAL_ENV:t}%f%F{8}]%f"
     RPROMPT=""
     if [[ -n "$_cmd_start" ]]; then
       local elapsed=$(( SECONDS - _cmd_start ))
       unset _cmd_start
-      (( elapsed >= 5 )) && RPROMPT="%F{#545d68}${elapsed}s%f"
+      (( elapsed >= 5 )) && RPROMPT="%F{8}${elapsed}s%f"
     fi
   }
   add-zsh-hook preexec _prompt_preexec
   add-zsh-hook precmd _prompt_precmd
 
-  export PROMPT='${_user_seg}%F{#768390}${${HOST%%.*}#lopes-}%f%F{#545d68}:%f%F{#539bf5}${_short_pwd}%f${vcs_info_msg_0_}${_venv_seg} %(1j.%F{#daaa3f}+%f.)%(!.%F{#f47067}#%f.%(?.%F{#adbac7}.%F{#f47067})❯%f) '
+  export PROMPT='${_user_seg}%F{8}${${HOST%%.*}#lopes-}:%f%F{blue}${_short_pwd}%f${vcs_info_msg_0_}${_venv_seg} %(1j.%F{yellow}+%f.)%(!.%F{red}#%f.%(?.%F{white}.%F{red})❯%f) '
 fi
 
 # key bindings
@@ -124,13 +124,7 @@ bindkey '^K' kill-line           # control-k
 # fzf — loaded after bindkey so fzf binds ctrl-r, ctrl-t, and alt-c when installed
 if command -v fzf >/dev/null 2>&1; then
   source <(fzf --zsh)
-  export FZF_DEFAULT_OPTS="
-    --color=fg:#adbac7,bg:#22272e,hl:#539bf5
-    --color=fg+:#adbac7,bg+:#2d333b,hl+:#539bf5
-    --color=info:#daaa3f,prompt:#57ab5a,pointer:#b083f0
-    --color=marker:#57ab5a,spinner:#b083f0,header:#539bf5
-    --color=border:#444c56,gutter:#22272e
-    --border=rounded --height=40% --layout=reverse"
+  export FZF_DEFAULT_OPTS="--color=base16 --border=rounded --height=40% --layout=reverse"
 fi
 
 # aliases

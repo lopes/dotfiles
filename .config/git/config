@@ -22,7 +22,7 @@
   diffFilter = delta --color-only
 
 [delta]
-  syntax-theme = Visual Studio Dark+
+  syntax-theme = base16
   navigate = true
   line-numbers = true
   side-by-side = false

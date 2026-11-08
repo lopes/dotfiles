@@ -1,0 +1,37 @@
+# helix configuration
+theme = "base16_transparent"
+
+[editor]
+line-number = "absolute"
+mouse = true
+scrolloff = 5
+color-modes = true
+true-color = true
+undercurl = true
+end-of-line-diagnostics = "hint"
+
+[editor.cursor-shape]
+normal = "block"
+insert = "bar"
+select = "underline"
+
+[editor.file-picker]
+hidden = false
+
+[editor.statusline]
+left = ["mode", "spinner", "file-name", "read-only-indicator", "file-modification-indicator"]
+center = []
+right = ["diagnostics", "selections", "register", "position", "file-encoding", "file-type"]
+
+[editor.lsp]
+display-messages = true
+display-inlay-hints = false
+
+[editor.inline-diagnostics]
+cursor-line = "warning"
+other-lines = "error"
+
+[editor.whitespace.render]
+space = "none"
+tab = "all"
+newline = "none"

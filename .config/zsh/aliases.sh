@@ -37,4 +37,4 @@ alias tmux0="tmux new -As0"
 
 [ -n "$ZSH_VERSION" ] && alias sudo="nocorrect sudo"
 
-alias update-system="sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y"
+alias update-system="sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y && uv tool upgrade --all"
