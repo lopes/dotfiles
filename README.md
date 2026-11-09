@@ -28,12 +28,12 @@ The development environment is terminal-native (`tmux` + `hx`) so it runs identi
 
 | Architectural Layer | Purpose | Tools in Stack |
 | :--- | :--- | :--- |
-| **Editor (`hx`)** | Modal project editor with built-in fuzzy/tree pickers and multi-cursor editing (`vim` remains `$EDITOR` for quick single-file edits and git commits). | `hx` (Helix), `ripgrep` (`rg`), `fd-find` (`fdfind`) |
+| **Editor (`hx`)** | Modal project editor with built-in fuzzy/tree pickers, multi-cursor editing, and focus-lost auto-save (`vim` remains `$EDITOR` for quick single-file edits and git commits). | `hx` (Helix), `ripgrep` (`rg`), `fd-find` (`fdfind`) |
 | **Tree-sitter** | Incremental AST parser compiled into Helix for syntax highlighting, structural indentation, and syntax-node selection (`alt-o`/`i`/`n`/`p`). | Bundled with Debian `hx` |
-| **Language Servers (LSP)** | Live code intelligence over stdio: autocompletion, go-to-definition (`gd`), references (`gr`), hover docs (`space k`), and workspace rename (`space r`). | `pylsp` + `ruff server` (Python), `gopls` (Go), `rust-analyzer` (Rust), `clangd` (C/C++) |
-| **Linters** | Static analysis for bugs, security rules, and style both inside the editor and from the CLI / agent workflows. | `ruff` (Python), `shellcheck` (Shell), `ansible-lint` (Ansible), `yamllint` (YAML) |
+| **Language Servers (LSP)** | Live code intelligence over stdio: autocompletion, go-to-definition (`gd`), references/backlinks (`gr`), hover docs (`space k`), and workspace rename (`space r`). | `pylsp` + `ruff server` (Python), `gopls` (Go), `rust-analyzer` (Rust), `clangd` (C/C++), `markdown-oxide` + `rumdl server` (Markdown), `tombi` (TOML) |
+| **Linters** | Static analysis for bugs, security rules, and style both inside the editor and from the CLI / agent workflows. | `ruff` (Python), `rumdl` (Markdown), `tombi` (TOML), `shellcheck` (Shell), `ansible-lint` (Ansible), `yamllint` (YAML) |
 | **Typecheckers** | Static type verification in editor diagnostics (`pylsp-mypy`) and CI/CLI gates. | `mypy` (Python), `gopls` / `rustc` / `clangd` |
-| **Formatters** | Deterministic code formatting triggered automatically on save in Helix. | `ruff format` (Python), `shfmt` (Shell), `gofmt` (Go), `rustfmt` (Rust), `clang-format` (C/C++) |
+| **Formatters** | Deterministic code formatting triggered automatically on save in Helix (or on demand for TOML). | `ruff format` (Python), `shfmt` (Shell), `gofmt` (Go), `rustfmt` (Rust), `clang-format` (C/C++), `tombi format` (TOML) |
 
 ```sh
 # 1. System packages: editor, compilers, language servers, and shell linters
@@ -46,15 +46,20 @@ sudo apt update && sudo apt install -y \
 # 2. Python package & tool manager (~/.local/bin/uv)
 curl -LsSf https://astral.sh/uv/install.sh | sh
 
-# 3. User-local Python/YAML/Ansible LSPs, linters, typechecker, and test runner (~/.local/bin/*)
+# 3. User-local Python/Markdown/TOML/YAML/Ansible LSPs, linters, typechecker, and test runner (~/.local/bin/*)
 uv tool install --with pylsp-mypy python-lsp-server
 uv tool install ruff
 uv tool install mypy
 uv tool install pytest
+uv tool install rumdl
+uv tool install tombi
 uv tool install ansible-lint
 uv tool install yamllint
 
-# 4. Fetch & compile the allowlisted Tree-sitter grammars (after 'make install')
+# 4. Markdown PKM language server for Helix (~/.local/bin/markdown-oxide)
+cargo install --root "$HOME/.local" --locked --git https://github.com/Feel-ix-343/markdown-oxide.git markdown-oxide && rm -rf "$HOME/.cargo" "$HOME/.local/.crates.toml" "$HOME/.local/.crates2.json"
+
+# 5. Fetch & compile the allowlisted Tree-sitter grammars (after 'make install')
 hx --grammar fetch && hx --grammar build && rm -rf "$HOME/.config/helix/runtime/grammars/sources"
 ```
 
@@ -75,7 +80,7 @@ exec zsh -l
 | `make install` | Create missing symlinks (skips existing links, warns on conflicts). |
 | `make uninstall` | Remove managed symlinks without deleting repo files. |
 | `make list` | Display all managed symlinks and their targets. |
-| `make check` | Validate shell/git/editor syntax, symlinks, SSH permissions, `.gitignore` parity, and sanitization. |
+| `make check` | Validate shell/git/editor syntax, symlinks, SSH permissions, `notes/` conventions, `.gitignore` parity, and sanitization. |
 
 > [!IMPORTANT]
 > `.gitignore` uses an **allowlist** (`*` ignores everything by default). When adding a new file, add a `!path` rule to `.gitignore`, stage it with `git add -f`, and run `make check`.
@@ -96,7 +101,8 @@ exec zsh -l
 | `alt-c` | Fuzzy find subdirectory and `cd` into it (`fzf`) |
 | `**<tab>` | Trigger fuzzy completion for paths (`vim **<tab>`, `cd **<tab>`) |
 | `ctrl-u` / `ctrl-k` | Kill line backward / forward |
-| `alt-left` / `alt-right` | Jump word backward / forward |
+| `ctrl-a` / `ctrl-e` | Jump to start (`Home`) / end (`End`) of line |
+| `ctrl-left` / `ctrl-right` | Jump word backward / forward (`alt-left` / `alt-right` also supported) |
 
 ### Tmux
 - **Prefix key**: **`ctrl-space`** (all `alt-*` chords are left unbound so terminal apps like Helix receive them directly).
@@ -127,6 +133,7 @@ exec zsh -l
 | **Fuzzy File Picker** | `space f` | Fuzzy find file in repo (`ctrl-v` open in vertical split, `ctrl-s` horizontal split) |
 | **Buffers & Splits** | `space b` / `gn` / `gp` | Fuzzy switch open buffers / next buffer / previous buffer (`:bc` close buffer, `ctrl-w w` cycle splits) |
 | **Vertical Cursors** | `C` (`shift-c`) / `alt-c` | Duplicate cursor/selection onto the next / previous line; press `,` to collapse back to a single cursor |
+| **Word & Line Jumps** | `ctrl-left`/`right`, `gh`/`gl` (`ctrl-a`/`e`) | Jump words in any mode; `gh`/`gl` jump to start/end of line in Normal mode (`ctrl-a`/`ctrl-e` in Insert mode) |
 | **Split Lines to Cursors** | `x` (repeat) → `alt-s` | Select multiple lines with `x`, then press `alt-s` to place an independent cursor on every line |
 | **Tree-sitter Selection** | `alt-o` / `alt-i` / `alt-n` / `alt-p` | Expand selection to parent AST node / shrink to child / jump to next or previous sibling node |
 | **Find in File** | `/` then `n` / `N` | Regex search in current buffer (`*` uses current selection as search pattern) |
@@ -136,6 +143,7 @@ exec zsh -l
 | **Block Indent** | `x` (repeat) → `>` or `<` | Select lines and indent/unindent (selection stays active, so press `>` or `<` repeatedly) |
 | **Git Hunks & Status** | `]g` / `[g` / `space g` | Jump to next / prev git diff hunk / open picker of modified files in repo |
 | **LSP Navigation** | `gd` / `gr` / `space k` / `space a` | Go to definition / find references / hover documentation / apply code action |
+| **Open File / Link & Jumplist** | `gf` / `ctrl-o` / `ctrl-i` | Open file path or Markdown relative link (`[text](slug.md)`) under cursor / jump backward or forward in jumplist |
 | **Diagnostics** | `]d` / `[d` / `space d` / `space D` | Next / prev diagnostic / buffer diagnostics picker / workspace diagnostics picker |
 | **Word Suggestion** | Automatic / `ctrl-x` | LSP & path completions pop up automatically as you type; `ctrl-x` triggers buffer/LSP completion manually (`ctrl-n`/`ctrl-p` or `tab` to cycle) |
 | **System Clipboard** | `space y` / `space p` | Yank / paste directly to/from the ChromeOS system clipboard over SSH (via OSC-52) |
@@ -166,10 +174,29 @@ exec zsh -l
 | `git amend` | `commit --amend --no-edit` | `git aka` / `conf` | List aliases / list config with origin |
 | `git ps` / `psf` / `pl` | `push` / `push --force-with-lease` / `pull` | | |
 
-### Web Terminal (`hterm` / ChromeOS Secure Shell)
+### Web Terminal (`hterm` / ChromeOS Secure Shell) & Remote Development Topology
+- **Local Workstation ↔ Remote Development Workstation**:
+  - **Terminal & Multiplexer**: Connect from the local workstation's web terminal over SSH into `tmux0` (`tmux` + `hx`) on the remote development workstation.
+  - **Clipboard Bridge (OSC-52)**: `set-clipboard on` in `tmux.conf` and `space y` in Helix copy selections directly from the remote development workstation to the local workstation clipboard over SSH.
+  - **Browser Preview & Transfer Bridge (`localhost:1313`)**: Forwarding local TCP port `1313` over SSH (`-L 1313:127.0.0.1:1313` in `~/.ssh/config.local` or ChromeOS Secure Shell SSH arguments) exposes `127.0.0.1:1313` on the remote development workstation to `http://localhost:1313` in the local workstation browser—used for local Hugo site previews (`make serve`) and rendered Markdown/JSON/YAML/CSV workspace previews and bidirectional file transfer (`make preview`).
+
 Web terminals cannot read local OS fonts. To load standard **JetBrains Mono** in ChromeOS Secure Shell, open DevTools (`ctrl-shift-j`) and run:
 
 ```javascript
 term_.prefs_.set('font-family', '"JetBrains Mono", monospace');
 term_.prefs_.set('user-css-text', '@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap"); x-row { font-family: "JetBrains Mono", monospace !important; text-rendering: optimizeLegibility; }');
 ```
+
+---
+
+## Reference Notes ([`notes/`](notes/))
+
+While `README.md` documents the daily CLI toolchain under `.config/`, [`notes/`](notes/) holds standalone workstation, OS, and hardware setup notes (such as peripheral firmware modes, ChromeOS key remappings, and device-specific procedures that live outside dotfile symlinks):
+
+- [`notes/logitech-keyboard-on-chromeos-configuration.md`](notes/logitech-keyboard-on-chromeos-configuration.md) — Logitech MX Keys Mini dual-mode firmware (`fn-O` Mac / `fn-P` Windows) and ChromeOS modifier remapping.
+
+### Note Conventions (`notes/<slug>.md`)
+- **Flat directory & slug:** Zero subdirectories inside `notes/`; multi-word lowercase kebab-case filenames (`^[a-z0-9]+(-[a-z0-9]+)+\.md$`, max `64` characters).
+- **YAML Frontmatter:** `title` (≤ `64` chars) and `tags` (inline array with 1–3 `<domain>:<subtopic>` tags, e.g., `tags: [hardware:keyboard, os:chromeos]`).
+- **Structure & Links:** Plain CommonMark with a `## Sources` section at the bottom and standard relative Markdown links `[text](slug.md)` (never `[[wikilinks]]`). No minimum word-count floor applies.
+- **Tracking:** Allowlist every new note in `.gitignore` (`!notes/<slug>.md`), stage with `git add -f`, and verify with `make check`.

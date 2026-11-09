@@ -39,6 +39,10 @@ pylsp_mypy = { enabled = true, live_mode = true }
 command = "ruff"
 args = ["server"]
 
+[language-server.rumdl]
+command = "rumdl"
+args = ["server", "--config", 'global.disable = ["MD013", "MD022", "MD031", "MD032", "MD033", "MD041"]']
+
 [[language]]
 name = "python"
 language-servers = ["pylsp", "ruff"]
@@ -47,6 +51,7 @@ auto-format = true
 
 [[language]]
 name = "bash"
+language-servers = []
 indent = { tab-width = 2, unit = "  " }
 formatter = { command = "shfmt", args = ["-i", "2", "-ci"] }
 auto-format = true
@@ -70,5 +75,27 @@ formatter = { command = "clang-format" }
 auto-format = true
 
 [[language]]
+name = "markdown"
+language-servers = ["markdown-oxide", "rumdl"]
+
+[[language]]
+name = "toml"
+language-servers = ["tombi"]
+formatter = { command = "tombi", args = ["format", "-"] }
+
+[[language]]
 name = "yaml"
+language-servers = []
 indent = { tab-width = 2, unit = "  " }
+
+[[language]]
+name = "json"
+language-servers = []
+
+[[language]]
+name = "dockerfile"
+language-servers = []
+
+[[language]]
+name = "git-commit"
+language-servers = []

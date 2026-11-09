@@ -30,6 +30,8 @@ You are maintaining a minimalist, Linux-only dotfiles repository where `~/.confi
    - Always use terminal-native `default` / `base16` / `base16_transparent` ANSI colors and transparent backgrounds (`transparent` / `bg=default` / `NONE`) so every tool respects the terminal emulator's palette without hardcoded hex values.
 4. **Public Repo Sanitization**:
    - Never commit internal hostnames, corporate usernames/LDAPs, workstation paths, or internal tool names.
+5. **Reference Notes (`notes/<slug>.md`)**:
+   - Standalone workstation, OS, and hardware setup notes live in `notes/<slug>.md` (flat directory, multi-word lowercase kebab-case ≤ `64` chars, YAML frontmatter with `title` ≤ `64` chars and inline `tags: [<domain>:<subtopic>]`, `## Sources` section, standard `[text](slug.md)` links, no word-count floor). Allowlist in `.gitignore` (`!notes/<slug>.md`) and stage with `git add -f`.
 
 ---
 

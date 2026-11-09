@@ -9,6 +9,11 @@ color-modes = true
 true-color = true
 undercurl = true
 end-of-line-diagnostics = "hint"
+insert-final-newline = true
+trim-final-newlines = true
+
+[editor.auto-save]
+focus-lost = true
 
 [editor.cursor-shape]
 normal = "block"
@@ -35,3 +40,28 @@ other-lines = "error"
 space = "none"
 tab = "all"
 newline = "none"
+
+[editor.soft-wrap]
+enable = true
+
+[keys.normal]
+C-left = "move_prev_word_start"
+C-right = "move_next_word_end"
+A-left = "move_prev_word_start"
+A-right = "move_next_word_end"
+
+[keys.select]
+C-left = "extend_prev_word_start"
+C-right = "extend_next_word_end"
+A-left = "extend_prev_word_start"
+A-right = "extend_next_word_end"
+
+[keys.insert]
+C-left = "move_prev_word_start"
+C-right = "move_next_word_end"
+A-left = "move_prev_word_start"
+A-right = "move_next_word_end"
+C-a = "goto_line_start"
+C-e = "goto_line_end_newline"
+
+

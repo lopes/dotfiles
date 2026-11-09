@@ -111,8 +111,10 @@ bindkey '^r'   history-incremental-search-backward  # control-r fallback when fz
 bindkey '^[[A' history-search-backward              # up
 bindkey '^[[B' history-search-forward               # down
 
-bindkey '^[^[[D' backward-word  # alt-left
-bindkey '^[^[[C' forward-word   # alt-right
+bindkey '^[[1;5D' backward-word  # ctrl-left
+bindkey '^[[1;5C' forward-word   # ctrl-right
+bindkey '^[^[[D'  backward-word  # alt-left
+bindkey '^[^[[C'  forward-word   # alt-right
 
 bindkey '^[[H'  beginning-of-line  # home
 bindkey '^[[F'  end-of-line        # end

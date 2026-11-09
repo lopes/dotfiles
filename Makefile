@@ -189,6 +189,28 @@ check:
 		echo "FAIL: untracked files in managed dirs (update .gitignore and git add -f):"; \
 		echo "$$untracked"; exit 1; \
 	fi
+	@if [ -d "$(DOTFILES)/notes" ]; then \
+		if [ -n "$$(find "$(DOTFILES)/notes" -mindepth 1 -type d)" ]; then \
+			echo "FAIL: notes/ must remain flat (zero subdirectories)"; exit 1; \
+		fi; \
+		for f in "$(DOTFILES)/notes"/*; do \
+			[ -e "$$f" ] || continue; \
+			base=$$(basename "$$f"); \
+			slug=$${base%.md}; \
+			if ! git -C "$(DOTFILES)" ls-files --error-unmatch "notes/$$base" >/dev/null 2>&1; then \
+				echo "FAIL: untracked note notes/$$base (update .gitignore and git add -f)"; exit 1; \
+			fi; \
+			if ! printf '%s\n' "$$base" | grep -Eq '^[a-z0-9]+(-[a-z0-9]+)+\.md$$' || [ "$${#slug}" -gt 64 ]; then \
+				echo "FAIL: notes/$$base must be multi-word lowercase kebab-case (<= 64 chars)"; exit 1; \
+			fi; \
+			if ! grep -Eq '^title: .+' "$$f" || ! grep -Eq '^tags: \[[a-z0-9-]+:[a-z0-9-]+' "$$f" || ! grep -Fxq '## Sources' "$$f"; then \
+				echo "FAIL: notes/$$base must include YAML title, tags: [<domain>:<subtopic>], and '## Sources'"; exit 1; \
+			fi; \
+			if grep -Eq '\[\[[^]]+\]\]' "$$f"; then \
+				echo "FAIL: notes/$$base contains [[wikilinks]]; use [text](slug.md)"; exit 1; \
+			fi; \
+		done; \
+	fi
 	@echo "4. public-repo sanitization..."
 	@if git -C "$(DOTFILES)" grep -I -E '([g]ooglers\.com|[g]oogle3|[g]linux|[r]odete|/usr/local/[g]oogle)' -- . >/dev/null 2>&1; then \
 		echo "FAIL: internal marker found in tracked files:"; \
