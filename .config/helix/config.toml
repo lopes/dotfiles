@@ -11,9 +11,15 @@ undercurl = true
 end-of-line-diagnostics = "hint"
 insert-final-newline = true
 trim-final-newlines = true
+trim-trailing-whitespace = true
+bufferline = "multiple"
 
 [editor.auto-save]
 focus-lost = true
+
+[editor.indent-guides]
+render = true
+character = "│"
 
 [editor.cursor-shape]
 normal = "block"
@@ -24,9 +30,34 @@ select = "underline"
 hidden = false
 
 [editor.statusline]
-left = ["mode", "spinner", "file-name", "read-only-indicator", "file-modification-indicator"]
+left = [
+  "mode",
+  "spinner",
+  "version-control",
+  "file-name",
+  "read-only-indicator",
+  "file-modification-indicator",
+]
 center = []
-right = ["diagnostics", "selections", "register", "position", "file-encoding", "file-type"]
+right = [
+  "diagnostics",
+  "workspace-diagnostics",
+  "register",
+  "selections",
+  "primary-selection-length",
+  "position",
+  "total-line-numbers",
+  "position-percentage",
+  "file-indent-style",
+  "file-encoding",
+  "file-line-ending",
+  "file-type",
+]
+
+[editor.statusline.mode]
+normal = "NORMAL"
+insert = "INSERT"
+select = "SELECT"
 
 [editor.lsp]
 display-messages = true
