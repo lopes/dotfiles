@@ -30,8 +30,8 @@ The development environment is terminal-native (`tmux` + `hx`) so it runs identi
 | :--- | :--- | :--- |
 | **Editor (`hx`)** | Modal project editor with built-in fuzzy/tree pickers, multi-cursor editing, and focus-lost auto-save (`vim` remains `$EDITOR` for quick single-file edits and git commits). | `hx` (Helix), `ripgrep` (`rg`), `fd-find` (`fdfind`) |
 | **Tree-sitter** | Incremental AST parser compiled into Helix for syntax highlighting, structural indentation, and syntax-node selection (`alt-o`/`i`/`n`/`p`). | Bundled with Debian `hx` |
-| **Language Servers (LSP)** | Live code intelligence over stdio: autocompletion, go-to-definition (`gd`), references/backlinks (`gr`), hover docs (`space k`), and workspace rename (`space r`). | `pylsp` + `ruff server` (Python), `gopls` (Go), `rust-analyzer` (Rust), `clangd` (C/C++), `markdown-oxide` + `rumdl server` (Markdown), `tombi` (TOML) |
-| **Linters** | Static analysis for bugs, security rules, and style both inside the editor and from the CLI / agent workflows. | `ruff` (Python), `rumdl` (Markdown), `tombi` (TOML), `shellcheck` (Shell), `ansible-lint` (Ansible), `yamllint` (YAML) |
+| **Language Servers (LSP)** | Live code intelligence over stdio: autocompletion, go-to-definition (`gd`), references/backlinks (`gr`), hover docs (`space k`), and workspace rename (`space r`). | `pylsp` + `ruff server` (Python), `gopls` (Go), `rust-analyzer` (Rust), `clangd` (C/C++), `markdown-oxide` (Markdown), `tombi` (TOML) |
+| **Linters** | Static analysis for bugs, security rules, and style both inside the editor and from the CLI / agent workflows. | `ruff` (Python), `tombi` (TOML), `shellcheck` (Shell), `ansible-lint` (Ansible), `yamllint` (YAML) |
 | **Typecheckers** | Static type verification in editor diagnostics (`pylsp-mypy`) and CI/CLI gates. | `mypy` (Python), `gopls` / `rustc` / `clangd` |
 | **Formatters** | Deterministic code formatting triggered automatically on save in Helix (or on demand for TOML). | `ruff format` (Python), `shfmt` (Shell), `gofmt` (Go), `rustfmt` (Rust), `clang-format` (C/C++), `tombi format` (TOML) |
 
@@ -46,12 +46,11 @@ sudo apt update && sudo apt install -y \
 # 2. Python package & tool manager (~/.local/bin/uv)
 curl -LsSf https://astral.sh/uv/install.sh | sh
 
-# 3. User-local Python/Markdown/TOML/YAML/Ansible LSPs, linters, typechecker, and test runner (~/.local/bin/*)
+# 3. User-local Python/TOML/YAML/Ansible LSPs, linters, typechecker, and test runner (~/.local/bin/*)
 uv tool install --with pylsp-mypy python-lsp-server
 uv tool install ruff
 uv tool install mypy
 uv tool install pytest
-uv tool install rumdl
 uv tool install tombi
 uv tool install ansible-lint
 uv tool install yamllint

@@ -39,10 +39,6 @@ pylsp_mypy = { enabled = true, live_mode = true }
 command = "ruff"
 args = ["server"]
 
-[language-server.rumdl]
-command = "rumdl"
-args = ["server", "--config", 'global.disable = ["MD013", "MD022", "MD031", "MD032", "MD033", "MD041"]']
-
 [[language]]
 name = "python"
 language-servers = ["pylsp", "ruff"]
@@ -76,7 +72,7 @@ auto-format = true
 
 [[language]]
 name = "markdown"
-language-servers = ["markdown-oxide", "rumdl"]
+language-servers = ["markdown-oxide"]
 
 [[language]]
 name = "toml"
