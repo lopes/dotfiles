@@ -41,7 +41,11 @@ args = ["server"]
 
 [[language]]
 name = "python"
-language-servers = ["pylsp", "ruff"]
+language-servers = [
+  { name = "pylsp", except-features = ["format"] },
+  "ruff",
+]
+indent = { tab-width = 4, unit = "    " }
 formatter = { command = "ruff", args = ["format", "--quiet", "-"] }
 auto-format = true
 
@@ -61,23 +65,28 @@ auto-format = true
 [[language]]
 name = "rust"
 language-servers = ["rust-analyzer"]
+indent = { tab-width = 4, unit = "    " }
 formatter = { command = "rustfmt", args = ["--edition", "2021"] }
 auto-format = true
 
 [[language]]
 name = "c"
 language-servers = ["clangd"]
+indent = { tab-width = 4, unit = "    " }
 formatter = { command = "clang-format" }
 auto-format = true
 
 [[language]]
 name = "markdown"
 language-servers = ["markdown-oxide"]
+indent = { tab-width = 4, unit = "    " }
 
 [[language]]
 name = "toml"
 language-servers = ["tombi"]
+indent = { tab-width = 4, unit = "    " }
 formatter = { command = "tombi", args = ["format", "-"] }
+auto-format = true
 
 [[language]]
 name = "yaml"
@@ -87,11 +96,14 @@ indent = { tab-width = 2, unit = "  " }
 [[language]]
 name = "json"
 language-servers = []
+indent = { tab-width = 4, unit = "    " }
 
 [[language]]
 name = "dockerfile"
 language-servers = []
+indent = { tab-width = 4, unit = "    " }
 
 [[language]]
 name = "git-commit"
 language-servers = []
+indent = { tab-width = 4, unit = "    " }

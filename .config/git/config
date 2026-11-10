@@ -12,7 +12,7 @@
   allowedSignersFile = ~/.ssh/allowed_signers
 
 [core]
-  editor = vim
+  editor = hx
   pager = delta
   autocrlf = input
   hooksPath = ~/.config/git/hooks
@@ -100,30 +100,31 @@
   updateRefs = true
 
 [alias]
-  # status & diff (status -> st, diff -> df/dc)
+  # status & diff (status -> st, diff -> df/dfs)
   st = status -sb
   df = diff
-  dc = diff --cached
+  dfs = diff --staged
 
-  # log (log -> lg/lo)
+  # log (log -> lg/lga)
   lg = log --oneline --graph --decorate
-  lo = log --oneline --decorate --graph --all
+  lga = log --oneline --graph --decorate --all
 
-  # branch & switch (switch -> sw/main/mk, branch -> br/del)
+  # branch & switch (switch -> sw/swc/main, branch -> br/del)
   sw = switch
+  swc = switch --create
   main = switch main
-  mk = switch --create
   br = branch
   del = branch --delete
 
-  # commit & stage (add -> a, commit -> cm/amend)
-  a = add --all
+  # commit & stage (add -> a/aa, commit -> cm/amend)
+  a = add
+  aa = add --all
   cm = commit -m
   amend = commit --amend --no-edit
 
   # push & pull (push -> ps/psf, pull -> pl)
   ps = push
-  psf = push --force-with-lease
+  psf = push --force-with-lease --force-if-includes
   pl = pull
 
   # undo & clean
