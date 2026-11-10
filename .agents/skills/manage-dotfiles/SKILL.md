@@ -5,7 +5,6 @@ description: >
   removing a tool configuration, running sanity checks (`make check`),
   reconciling the `.gitignore` allowlist and `Makefile` symlinks, or preparing
   a verified, sanitized Scoped Commit.
-disable-model-invocation: true
 ---
 
 # Manage Dotfiles
@@ -19,7 +18,7 @@ You are maintaining a minimalist, Linux-only dotfiles repository where `~/.confi
 1. **Three-Way Lockstep (`Makefile` + `.gitignore` + Git index)**:
    - `.gitignore` uses a strict allowlist (`*` ignores everything; `!path` re-includes tracked paths).
    - Every new file requires an explicit `!path` entry in `.gitignore` **and** `git add -f <path>`.
-   - Every managed directory under `.config/` (except `ssh`, which links specifically to `~/.ssh/config`) must be listed in `DIRS` in `Makefile`. `Makefile` also manages standalone symlinks for `~/.zshenv` and `~/.gemini/config/{rules,AGENTS.md}`.
+   - Every managed directory under `.config/` (except `ssh`, which links specifically to `~/.ssh/config`) must be listed in `DIRS` in `Makefile`. `Makefile` also manages standalone symlinks for `~/.zshenv` and `~/.gemini/config/{AGENTS.md,agents,rules,skills}`.
 2. **Untracked Local Escape Hatches**:
    - `~/.config/zsh/private.sh` (local env/secrets, `chmod 600`)
    - `~/.config/gemini/rules/` (local workstation rules)

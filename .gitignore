@@ -10,6 +10,8 @@
 !.config/
 !.config/agents/
 !.config/agents/AGENTS.md
+!.config/agents/agents/
+!.config/agents/agents/security-reviewer.md
 !.config/agents/skills/
 !.config/agents/skills/review-security/
 !.config/agents/skills/review-security/SKILL.md

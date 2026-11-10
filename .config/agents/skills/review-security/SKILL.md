@@ -3,68 +3,60 @@ name: review-security
 description: >-
   Language-agnostic offensive-security and adversarial code review for pull
   requests, branches, or entire repositories, followed by a documentation and
-  hygiene pass. Use in a fresh agent session before merging a PR or when
-  auditing a repository.
+  hygiene pass. Orchestrates parallel clean-context security-reviewer subagents
+  so the active coding session never blocks or grades its own homework.
 ---
 
 # Adversarial Security & Hygiene Review (`/review-security`)
 
-You are an offensive-security operator and Principal Security Engineer running a clean-context, adversarial review of a branch, pull request, or repository.
+Orchestrate a clean-context, adversarial offensive-security and hygiene review of a branch, pull request, or repository by delegating Phases 2–4 to parallel **`security-reviewer`** subagents (`invoke_subagent`).
 
-You have zero attachment to the code under review. Your primary objective is to find real security flaws, leaked secrets, and trust-boundary failures that the builder session or static scanners missed. Your secondary objective is to catch documentation drift and leftover development artifacts before the code merges.
+> [!IMPORTANT]
+> **Never execute Phases 2–4 inline in the main builder context when `invoke_subagent` is available.** Running the review inside isolated `security-reviewer` subagents guarantees zero author attachment to the code, keeps raw scanner/diff output out of the main conversation window, and executes all three review lenses concurrently with `commandExecutionPolicy: auto`.
 
 ---
 
 ## Hard Rules
 
-1. **Never install new tools or dependencies:** Only run scanners and linters that are already installed on the workstation or defined in the project's toolchain. If a missing tool would cover an important gap for the repository's stack, recommend it in your report — never install it yourself.
-2. **No scanner theatre:** Do not pad your report with theoretical nitpicks or generic advice. Every finding must name an exact `file:line`, a concrete failure or exploit mechanism, and a minimal fix.
+1. **Never install new tools or dependencies:** Only run scanners and linters that are already installed on the workstation or defined in the project's toolchain. If a missing tool would cover an important gap for the repository's stack, recommend it in the report — never install it yourself.
+2. **No scanner theatre:** Do not pad the report with theoretical nitpicks or generic advice. Every finding must name an exact `file:line`, a concrete failure or exploit mechanism, and a minimal fix.
 3. **Never exclude `tests/` or docs from secret review:** AI coding agents routinely paste real runtime strings, URLs, IPs, and tokens into unit test fixtures and Markdown examples. Audit `tests/` and documentation with the same scrutiny as production code.
 
 ---
 
 ## Execution Phases
 
-### Phase 1 — Discovery & Attack-Surface Mapping
+### Phase 1 — Discovery & Scope Resolution (Main Coordinator)
 
 1. **Determine scope:**
-   - **Branch / PR mode (default when on a feature branch or when a PR is open):** Run `git status -sb`, identify the base branch (`main` or `master`), inspect `git log --oneline <base>..HEAD` and `git diff <base>...HEAD`, and check `gh pr view` / `gh pr checks` if a GitHub PR exists.
-   - **Full-repository mode (when on the default branch or asked for a repo audit):** Map the repository layout, languages, entry points, external network/API boundaries, authentication and secret handling, CI workflows (`.github/workflows/`), and IaC/container definitions.
-2. **Read repository guardrails:** Read `AGENTS.md`, `SECURITY.md`, and `Makefile` (or equivalent build config) to understand project-specific invariants.
+   - **Branch / PR mode (default when on a feature branch or when a PR is open):** Run `git status -sb`, identify the base branch (`main` or `master`), and inspect `git log --oneline <base>..HEAD` and `git diff --stat <base>...HEAD` (plus uncommitted working-tree changes).
+   - **Full-repository mode (when on the default branch with a clean tree or asked for a repo audit):** Map the repository layout, languages, entry points, external network/API boundaries, authentication and secret handling, CI workflows (`.github/workflows/`), and IaC/container definitions.
+2. **Read repository guardrails:** Check `AGENTS.md`, `SECURITY.md`, and `Makefile` (or equivalent build config) to identify project-specific invariants and native verification commands (`make check`, `pytest`, `ruff`, `mypy`, `cargo test`, etc.).
 
-### Phase 2 — Tool-Assisted Triage (Existing Tools Only)
+### Phase 2–4 — Parallel Subagent Fan-Out (`invoke_subagent`)
 
-Check which tools are available locally (`command -v gitleaks opengrep trivy shellcheck`) alongside the project's native test and lint commands (`make check`, `pytest`, `ruff`, `mypy`, `cargo test`, etc.):
+In a **single turn**, launch **3 parallel `security-reviewer` subagents** via `invoke_subagent(TypeName="security-reviewer", ...)` (falling back to `TypeName="self"` only if `security-reviewer` is unavailable), passing each subagent the resolved repository path, target scope (branch diff vs. full repo), and its dedicated lens:
 
-- Run available deterministic scanners against the target scope (e.g., `gitleaks git --redact`, `opengrep scan`, `trivy fs --scanners vuln,misconfig`, plus the project's linter/test suite).
-- If a scanner is not installed locally but would add high value for this stack, note it under **Suggested Tooling** in your report.
+1. **Subagent 1 — `Role: "Security Scanner & CI Auditor"` (Phase 2 + CI/IAM):**
+   - Check available local tools (`command -v gitleaks opengrep trivy shellcheck`) alongside the project's native test and lint gates (`make check`, `pytest`, `ruff`, `mypy`, etc.).
+   - Run available deterministic scanners against the target scope (`gitleaks git --redact`, `opengrep scan`, `trivy fs --scanners vuln,misconfig`, plus the project's linter/test suite).
+   - Audit CI/CD and IAM/container definitions (`.github/workflows/`, Dockerfiles, Quadlets, Ansible/Terraform) for missing least-privilege `permissions:` blocks, unpinned mutable third-party references, or excessive privileges.
+   - Note any high-value missing scanner under **Suggested Tooling**.
 
-### Phase 3 — Adversarial Code Review (Offsec Lens)
+2. **Subagent 2 — `Role: "Offsec Code & Secret Auditor"` (Phase 3.1–3.3):**
+   - Read the target code, `tests/`, and documentation directly to hunt for semantic flaws that regex and AST rules miss:
+     - **Secrets, Context Leaks & Test Fixtures:** Unprefixed API keys or tokens in URLs (`?key=`, `?token=`, `?api_key=`), headers, or error-message test fixtures; real IP addresses outside RFC 5737 (`192.0.2.0/24`, `198.51.100.0/24`, `203.0.113.0/24`) and RFC 3849 (`2001:db8::/32`); non-RFC 2606 domains; local workstation paths (`/home/...`, `/Users/...`); internal hostnames or codenames; or raw secret files logged without redaction.
+     - **Injection, Execution & Parsing Sinks:** Subprocess/shell execution (`subprocess`, `os.system`, `exec`, `eval`, backticks) with unvalidated input or `shell=True`; unsafe deserialization/parsing (`yaml.load` without `SafeLoader`, `pickle`, XML/JSON expansion, ReDoS, integer/buffer bounds); path traversal (unsanitized filenames, archive extraction, symlink following); and SSRF / open redirects.
+     - **Authentication, Cryptography & Fail-Open Defaults:** Disabled TLS verification, weak/hardcoded crypto parameters, missing authz checks, or fail-open error handling (`except Exception: pass`).
 
-Read the code directly and hunt for semantic flaws that regex and AST rules miss:
+3. **Subagent 3 — `Role: "Suppression & Hygiene Auditor"` (Phase 3.4 + Phase 4):**
+   - **Suppression Audit:** Inspect every `# noqa`, `# nosemgrep`, `# type: ignore`, `.gitleaks.toml` allowlist, or `.opengrepignore` rule touched in the diff (or repo). Verify each suppression is narrow, intentional, and justified.
+   - **Documentation Sync:** Verify that `README.md`, `AGENTS.md`, CLI `--help` output, docstrings, and configuration examples match current behavior and flags.
+   - **Leftover Sweep:** Check for dead code, unused imports/variables, debug print statements, temporary `TODO`/`FIXME` hacks, stale references after a rename, or untracked scratch files in the working tree.
 
-1. **Secrets, Context Leaks & Test Fixtures:**
-   - Unprefixed API keys or tokens embedded in URLs (`?key=`, `?token=`, `?api_key=`), headers, or error-message test fixtures.
-   - Real IP addresses (outside RFC 5737 `192.0.2.0/24`, `198.51.100.0/24`, `203.0.113.0/24` and RFC 3849 `2001:db8::/32`), non-RFC 2606 domains, local workstation paths (`/home/...`, `/Users/...`), internal hostnames, or corporate/internal codenames.
-   - Raw secret files (`.env*`, `*secret*`, credentials) read or logged without redaction.
-2. **Injection, Execution & Parsing Sinks:**
-   - Subprocess or shell execution (`subprocess`, `os.system`, `exec`, `eval`, backticks) with unvalidated input or `shell=True`.
-   - Deserialization and parsing (`yaml.load` without `SafeLoader`, `pickle`, XML/JSON expansion, regex DoS, integer/buffer bounds).
-   - Path traversal (unsanitized filenames, archive extraction, symlink following) and SSRF / open redirects.
-3. **Authentication, Cryptography & Fail-Open Defaults:**
-   - Disabled TLS verification, weak/hardcoded crypto parameters, missing authentication or authorization checks, or fail-open error handling (`except Exception: pass`).
-   - Overly permissive CI/CD or IAM scopes (e.g., GitHub Actions workflows missing least-privilege `permissions:` blocks or using mutable third-party references where pinned refs belong).
-4. **Suppression Audit:**
-   - Inspect every `# noqa`, `# nosemgrep`, `# type: ignore`, `.gitleaks.toml` allowlist, or `.opengrepignore` rule touched in the diff. Verify each suppression is narrow, intentional, and justified.
+### Phase 5 — Report, Remediate, Verify & Commit (Main Coordinator)
 
-### Phase 4 — Documentation Integrity & Leftover Hygiene (Secondary Pass)
-
-1. **Documentation sync:** Verify that `README.md`, `AGENTS.md`, CLI `--help` output, docstrings, and configuration examples reflect the current behavior and flags.
-2. **Leftover sweep:** Check for dead code, unused imports/variables, debug print statements, temporary `TODO`/`FIXME` hacks, stale references after a rename, or untracked scratch files in the working tree.
-
-### Phase 5 — Report, Remediate, Verify & Push
-
-1. **Present findings concisely:**
+1. **Merge, deduplicate & present findings concisely:**
 
    | Severity | Location | Category | Issue & Exploit / Failure Scenario | Proposed Fix |
    | :--- | :--- | :--- | :--- | :--- |
@@ -72,6 +64,6 @@ Read the code directly and hunt for semantic flaws that regex and AST rules miss
 
    Include a one-line **Suggested Tooling** note only if an uninstalled scanner would close a real blind spot.
 2. **Remediate & verify:**
-   - Once the user confirms which findings to fix (or immediately if instructed to fix all findings), implement the fixes directly.
+   - Once the user confirms which findings to fix (or immediately if instructed to fix all findings), implement the fixes directly in the main session.
    - Run the project's full test suite and local security checks (`L1` hooks, linters, type checks, unit tests) until every check passes with zero warnings.
-   - Commit using [Scoped Commits](https://scopedcommits.com/) (`<scope>: <description>`) and push the branch so remote CI (`L2`) re-validates the fix.
+   - Commit using [Scoped Commits](https://scopedcommits.com/) (`<scope>: <description>`) and pause for confirmation before pushing.

@@ -3,7 +3,7 @@
 Guidance for AI coding agents working in this repository.
 
 ## Overview
-Personal, minimalist Linux dotfiles (`agents`, `gemini`, `git`, `helix`, `oh-my-posh`, `ssh`, `tmux`, `vim`, `zsh`). Configs under `.config/` are exposed to `~/.config/` via directory symlinks managed by [`Makefile`](Makefile), alongside standalone symlinks for `~/.zshenv`, `~/.ssh/config`, and cross-harness global agent instructions (`~/.config/gemini/AGENTS.md`, `~/.gemini/config/AGENTS.md`, and `~/.claude/CLAUDE.md` all pointing to `.config/agents/AGENTS.md`). Because they are symlinks, the repo **is** the live configuration.
+Personal, minimalist Linux dotfiles (`agents`, `gemini`, `git`, `helix`, `oh-my-posh`, `ssh`, `tmux`, `vim`, `zsh`). Configs under `.config/` are exposed to `~/.config/` via directory symlinks managed by [`Makefile`](Makefile), alongside standalone symlinks for `~/.zshenv`, `~/.ssh/config`, and global agent customizations (`~/.config/gemini/AGENTS.md` and `~/.gemini/config/{AGENTS.md,agents,rules,skills}` pointing to `.config/agents/` and `.config/gemini/`). Because they are symlinks, the repo **is** the live configuration.
 
 For repository maintenance (adding/removing configs, auditing, and committing), use the companion skill at [`.agents/skills/manage-dotfiles/SKILL.md`](.agents/skills/manage-dotfiles/SKILL.md) and run `make check`.
 

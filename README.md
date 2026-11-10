@@ -72,7 +72,7 @@ exec zsh -l
 ```
 
 ### 4. Managing the Repo
-`make install` creates symlinks from `~/.config/<tool>` (plus `~/.zshenv`, `~/.ssh/config`, `~/.gemini/config/`, and `~/.claude/`) directly into this repo. Editing either path edits the same file.
+`make install` creates symlinks from `~/.config/<tool>` (plus `~/.zshenv`, `~/.ssh/config`, and `~/.gemini/config/`) directly into this repo. Editing either path edits the same file.
 
 | Command | Action |
 | :--- | :--- |

@@ -29,4 +29,9 @@
 - Never commit local workstation paths, internal hostnames, corporate identifiers/usernames, internal tool codenames, customer names, or credentials to any repository.
 - **Synthetic-only fixtures in code, `tests/`, and docs:** Never copy verbatim strings, URLs, query parameters, headers, IPs, or tokens from runtime logs, terminal output, environment variables, or databases into source files, test fixtures, or documentation. Always construct synthetic values using reserved documentation ranges (RFC 5737: `192.0.2.0/24`, `198.51.100.0/24`, `203.0.113.0/24`; RFC 3849: `2001:db8::/32`; RFC 2606: `example.com`) and unmistakable dummy literals (`SYNTHETIC_TEST_<NAME>_000000`).
 - **Zero raw secret reads into context:** Never read, print, or dump raw secret stores (`.env*`, `*secret*`, `*vault*`, `~/.config/zsh/private.sh`, SSH private keys, cloud credential files) into stdout or conversation context.
-- Keep `~/.config/agents/`, `~/.config/gemini/`, and `~/.claude/` strictly for static user instructions; store persistent runtime state in `~/.local/state/`.
+- Keep `~/.config/agents/` and `~/.config/gemini/` strictly for static user instructions; store persistent runtime state in `~/.local/state/`.
+
+## 6. Execution Autonomy & Subagent Delegation
+- **Drive to green without hand-holding:** Never pause mid-task to ask permission to run tests, linters, typecheckers, or fix errors introduced during the turn. Execute the full `Red -> Green -> Refactor -> Verification Gates (0 errors)` loop before returning control.
+- **Automatic subagent offloading (`invoke_subagent` / `run_workflow`):** Keep the main conversation context lean and free of author bias. Automatically delegate broad codebase exploration (`>5` files), noisy scanner or test triage, and adversarial code/security/content reviews to isolated background subagents (fanning out in parallel when tasks are independent) rather than running them inline.
+- **Hard-stop boundaries only:** Pause for confirmation only before adding new dependencies/tools, running `git push` or rewriting shared history, executing live external/production mutations, or resolving genuine requirement ambiguity.
