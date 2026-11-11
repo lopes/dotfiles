@@ -33,6 +33,13 @@ install:
 	else \
 		ln -sv "$(DOTFILES)/.zshenv" "$(HOME)/.zshenv"; \
 	fi
+	@if [ -L "$(CONFIG)/zsh/.zshenv" ]; then \
+		echo "skip  $(CONFIG)/zsh/.zshenv (already linked)"; \
+	elif [ -e "$(CONFIG)/zsh/.zshenv" ]; then \
+		echo "WARN  $(CONFIG)/zsh/.zshenv exists and is not a symlink — skipping"; \
+	else \
+		ln -sv "$(DOTFILES)/.zshenv" "$(CONFIG)/zsh/.zshenv"; \
+	fi
 	@mkdir -p "$(HOME)/.ssh" && chmod 700 "$(HOME)/.ssh"
 	@chmod 600 "$(DOTFILES)/.config/ssh/config"
 	@if [ -L "$(HOME)/.ssh/config" ]; then \
@@ -88,6 +95,7 @@ uninstall:
 		[ -L "$(CONFIG)/$$d" ] && rm -v "$(CONFIG)/$$d" || true; \
 	done
 	@[ -L "$(HOME)/.zshenv" ] && rm -v "$(HOME)/.zshenv" || true
+	@[ -L "$(CONFIG)/zsh/.zshenv" ] && rm -v "$(CONFIG)/zsh/.zshenv" || true
 	@[ -L "$(HOME)/.ssh/config" ] && rm -v "$(HOME)/.ssh/config" || true
 	@[ -L "$(CONFIG)/gemini/AGENTS.md" ] && rm -v "$(CONFIG)/gemini/AGENTS.md" || true
 	@for item in rules skills agents AGENTS.md; do \
@@ -121,6 +129,7 @@ list:
 		printf "  %-28s -> %s\n" "$(CONFIG)/$$d" "$$(readlink "$(CONFIG)/$$d" 2>/dev/null || echo 'NOT LINKED')"; \
 	done
 	@printf "  %-28s -> %s\n" "$(HOME)/.zshenv" "$$(readlink "$(HOME)/.zshenv" 2>/dev/null || echo 'NOT LINKED')"
+	@printf "  %-28s -> %s\n" "$(CONFIG)/zsh/.zshenv" "$$(readlink "$(CONFIG)/zsh/.zshenv" 2>/dev/null || echo 'NOT LINKED')"
 	@printf "  %-28s -> %s\n" "$(HOME)/.ssh/config" "$$(readlink "$(HOME)/.ssh/config" 2>/dev/null || echo 'NOT LINKED')"
 	@printf "  %-28s -> %s\n" "$(CONFIG)/gemini/AGENTS.md" "$$(readlink "$(CONFIG)/gemini/AGENTS.md" 2>/dev/null || echo 'NOT LINKED')"
 	@for item in rules skills agents AGENTS.md; do \
@@ -146,6 +155,9 @@ check:
 	done
 	@if [ "$$(readlink "$(HOME)/.zshenv" 2>/dev/null)" != "$(DOTFILES)/.zshenv" ]; then \
 		echo "FAIL: $(HOME)/.zshenv is not linked"; exit 1; \
+	fi
+	@if [ "$$(readlink "$(CONFIG)/zsh/.zshenv" 2>/dev/null)" != "$(DOTFILES)/.zshenv" ]; then \
+		echo "FAIL: $(CONFIG)/zsh/.zshenv is not linked to $(DOTFILES)/.zshenv"; exit 1; \
 	fi
 	@if [ "$$(readlink "$(HOME)/.ssh/config" 2>/dev/null)" != "$(DOTFILES)/.config/ssh/config" ]; then \
 		echo "FAIL: $(HOME)/.ssh/config is not linked"; exit 1; \
