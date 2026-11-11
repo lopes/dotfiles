@@ -40,6 +40,7 @@
 !.config/zsh/aliases.sh
 !.gitignore
 !.zshenv
+.config/zsh/.zshenv
 !AGENTS.md
 !LICENSE
 !Makefile
