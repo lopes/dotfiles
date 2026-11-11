@@ -9,6 +9,15 @@ Minimalist Linux configuration files built around standard Unix tools, terminal-
 4. **Controls**: Intentional keyboard shortcuts with modal navigation where it fits.
 5. **Relevancy**: Only track tools and settings used daily.
 
+## Workstation Scope & Recovery Model
+
+| Pillar | What Lives There | How It Is Managed |
+| :--- | :--- | :--- |
+| **1. Configurations** (~90% tracked, ~10% local overrides) | Shell (`.zshenv`, `zsh`), multiplexer (`tmux`), editors (`helix`, `vim`), prompt (`oh-my-posh`), VCS/SSH (`git`, `ssh`), and global AI rules (`agents`, `gemini`). | Tracked in git and live-symlinked via `make install`. Machine-specific ~10% lives in untracked local hooks (`~/.config/zsh/private.sh`, `~/.ssh/config.local`, `~/.config/gemini/rules/`). |
+| **2. Tools & Binaries** | System packages (`apt`), prompt (`oh-my-posh`), Python/LSP/linter stack (`uv` + `uv tool`), `markdown-oxide`, and compiled Helix Tree-sitter grammars (`.so`). | Never committed to git. Documented in `README.md` and installed/reconciled idempotently via `make deps` (and updated via `update-system`). |
+| **3. Secrets & Credentials** | SSH auth & signing keys (`~/.ssh/github_ed25519*`, `~/.ssh/github_signing_ed25519*`, `~/.ssh/allowed_signers`), `gh` session (`~/.config/gh/hosts.yml`), and tokens/vars in `~/.config/zsh/private.sh` (`chmod 600`). | Never tracked (enforced by `.gitignore` `*` allowlist and global `gitleaks` hooks). Backed up in an out-of-band vault and restored manually on new machines. |
+| **4. Notes & Lessons Learned** | Hardware firmware modes, OS modifier remappings, and non-config troubleshooting tips. | Tracked as flat CommonMark files under [`notes/<slug>.md`](notes/) and verified by `make check`. |
+
 ---
 
 ## Install & Update

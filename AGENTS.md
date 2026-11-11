@@ -3,7 +3,13 @@
 Guidance for AI coding agents working in this repository.
 
 ## Overview
-Personal, minimalist Linux dotfiles (`agents`, `gemini`, `git`, `helix`, `oh-my-posh`, `ssh`, `tmux`, `vim`, `zsh`). Configs under `.config/` are exposed to `~/.config/` via directory symlinks managed by [`Makefile`](Makefile), alongside standalone symlinks for `~/.zshenv`, `~/.ssh/config`, and global agent customizations (`~/.config/gemini/AGENTS.md` and `~/.gemini/config/{AGENTS.md,agents,rules,skills}` pointing to `.config/agents/` and `.config/gemini/`). Because they are symlinks, the repo **is** the live configuration.
+Personal, minimalist Linux dotfiles (`agents`, `gemini`, `git`, `helix`, `oh-my-posh`, `ssh`, `tmux`, `vim`, `zsh`). Configs under `.config/` are exposed to `~/.config/` via directory symlinks managed by [`Makefile`](Makefile), alongside standalone symlinks for `~/.zshenv`, `~/.config/zsh/.zshenv`, `~/.ssh/config`, `~/.local/bin/fd`, and global agent customizations (`~/.config/gemini/AGENTS.md` and `~/.gemini/config/{AGENTS.md,agents,rules,skills}` pointing to `.config/agents/` and `.config/gemini/`). Because they are symlinks, the repo **is** the live configuration.
+
+Workstation state is partitioned into four pillars:
+1. **Configurations** (~90% tracked in `.config/` + `.zshenv` and linked via `make install`; ~10% machine-specific overrides in untracked `~/.config/zsh/private.sh`, `~/.ssh/config.local`, and `~/.config/gemini/rules/`).
+2. **Tools & Binaries** (never committed; documented in [`README.md`](README.md) and installed idempotently via `make deps`).
+3. **Secrets & Credentials** (never tracked; SSH keys `~/.ssh/github_*`, `~/.ssh/allowed_signers`, `gh` auth, and `~/.config/zsh/private.sh` secrets live in an out-of-band vault).
+4. **Notes & Lessons Learned** (standalone hardware, OS, and troubleshooting notes under [`notes/<slug>.md`](notes/)).
 
 For repository maintenance (adding/removing configs, auditing, and committing), use the companion skill at [`.agents/skills/manage-dotfiles/SKILL.md`](.agents/skills/manage-dotfiles/SKILL.md) and run `make check`.
 
