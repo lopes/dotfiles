@@ -100,7 +100,7 @@ else
   add-zsh-hook preexec _prompt_preexec
   add-zsh-hook precmd _prompt_precmd
 
-  export PROMPT='${_user_seg}%F{8}${${HOST%%.*}#lopes-}:%f%F{blue}${_short_pwd}%f${vcs_info_msg_0_}${_venv_seg} %(1j.%F{yellow}+%f.)%(!.%F{red}#%f.%(?.%F{white}.%F{red})❯%f) '
+  export PROMPT='${_user_seg}%F{8}${${HOST%%.*}#${HOST_PREFIX:-}}:%f%F{blue}${_short_pwd}%f${vcs_info_msg_0_}${_venv_seg} %(1j.%F{yellow}+%f.)%(!.%F{red}#%f.%(?.%F{white}.%F{red})❯%f) '
 fi
 
 # key bindings

@@ -21,7 +21,7 @@ alias la="ls --color=auto -A"
 
 alias path='echo $PATH | tr ":" "\n"'
 alias ports="lsof -iTCP -sTCP:LISTEN -n -P"
-alias reload="exec $SHELL -l"
+alias reload='exec "$SHELL" -l'
 
 alias grep="grep --color=auto"
 alias diff="diff --color"
@@ -37,4 +37,4 @@ alias tmux0="tmux new -As0"
 
 [ -n "$ZSH_VERSION" ] && alias sudo="nocorrect sudo"
 
-alias update-system="sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y && uv tool upgrade --all"
+alias update-system='make -C "$HOME/Projects/dotfiles" update'

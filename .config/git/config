@@ -142,3 +142,8 @@
   # config inspection
   aka = config --get-regexp ^alias
   conf = config --list --show-origin --show-scope
+
+# machine-specific overrides go in ~/.config/git/config.local (untracked)
+# placed last so local rules win under Git last-match-wins semantics
+[include]
+  path = ~/.config/git/config.local

@@ -13,88 +13,53 @@ Minimalist Linux configuration files built around standard Unix tools, terminal-
 
 | Pillar | What Lives There | How It Is Managed |
 | :--- | :--- | :--- |
-| **1. Configurations** (~90% tracked, ~10% local overrides) | Shell (`.zshenv`, `zsh`), multiplexer (`tmux`), editors (`helix`, `vim`), prompt (`oh-my-posh`), VCS/SSH (`git`, `ssh`), and global AI rules (`agents`, `gemini`). | Tracked in git and live-symlinked via `make install`. Machine-specific ~10% lives in untracked local hooks (`~/.config/zsh/private.sh`, `~/.ssh/config.local`, `~/.config/gemini/rules/`). |
-| **2. Tools & Binaries** | System packages (`apt`), prompt (`oh-my-posh`), Python/LSP/linter stack (`uv` + `uv tool`), `markdown-oxide`, and compiled Helix Tree-sitter grammars (`.so`). | Never committed to git. Documented in `README.md` and installed/reconciled idempotently via `make deps` (and updated via `update-system`). |
-| **3. Secrets & Credentials** | SSH auth & signing keys (`~/.ssh/github_ed25519*`, `~/.ssh/github_signing_ed25519*`, `~/.ssh/allowed_signers`), `gh` session (`~/.config/gh/hosts.yml`), and tokens/vars in `~/.config/zsh/private.sh` (`chmod 600`). | Never tracked (enforced by `.gitignore` `*` allowlist and global `gitleaks` hooks). Backed up in an out-of-band vault and restored manually on new machines. |
-| **4. Notes & Lessons Learned** | Hardware firmware modes, OS modifier remappings, and non-config troubleshooting tips. | Tracked as flat CommonMark files under [`notes/<slug>.md`](notes/) and verified by `make check`. |
+| **1. Configurations** (~90% tracked, ~10% local overrides) | Shell (`.zshenv`, `zsh`), multiplexer (`tmux`), editors (`helix`, `vim`), prompt (`oh-my-posh`), VCS/SSH (`git`, `ssh`), and global AI rules (`agents`, `gemini`). | Tracked in git and live-symlinked via `make install` (pre-existing conflicting files are backed up to `~/.local/state/dotfiles/backups/<timestamp>/`). Machine-specific ~10% lives in untracked local hooks (`~/.config/zsh/private.sh`, `~/.ssh/config.local`, `~/.config/git/config.local`, `~/.config/gemini/rules/`). |
+| **2. Tools & Binaries** | System packages (`apt`), prompt (`oh-my-posh`), Python/LSP/linter stack (`uv` + `uv tool`), `markdown-oxide` (prebuilt GitHub release binary with `cargo` fallback), and compiled Helix Tree-sitter grammars (`.so`). | Never committed to git. Installed idempotently via `make deps` and upgraded across all layers via `make update` (`update-system`). |
+| **3. Secrets & Credentials** | SSH auth & signing keys (`~/.ssh/github_ed25519*`, `~/.ssh/github_signing_ed25519*`, `~/.ssh/allowed_signers`), `gh` session (`~/.config/gh/hosts.yml`), and tokens/vars in `~/.config/zsh/private.sh` (`chmod 600`). | Never tracked (enforced by `.gitignore` `*` allowlist and global `gitleaks` hooks). Restored from an out-of-band vault; `make install` scaffolds `private.sh` and auto-derives `~/.ssh/allowed_signers` from `github_signing_ed25519.pub`, and `make doctor` audits readiness. |
+| **4. Notes & Lessons Learned** | Hardware firmware modes, OS modifier remappings, and non-config troubleshooting tips. | Tracked as flat CommonMark files under [`notes/<slug>.md`](notes/), allowlisted via `make track FILE=notes/<slug>.md`, and verified by `make check`. |
 
 ---
 
 ## Install & Update
 
-### 1. Link Configurations & Bootstrap Toolchain
+### 1. Bootstrap a New Machine
 ```sh
 git clone https://github.com/lopes/dotfiles "$HOME/Projects/dotfiles"
 cd "$HOME/Projects/dotfiles"
-make install
-make deps
-make check
+make bootstrap
 exec zsh -l
 ```
 
-### 2. Core Prerequisites (Debian / Linux)
-```sh
-sudo apt update && sudo apt install -y \
-  zsh tmux vim git gh git-delta gitleaks fzf ripgrep fd-find jq lsof curl \
-  zsh-autosuggestions zsh-syntax-highlighting fonts-jetbrains-mono hledger
-
-# prompt binary (~/.local/bin/oh-my-posh)
-mkdir -p "$HOME/.local/bin"
-curl -s https://ohmyposh.dev/install.sh | bash -s -- -d "$HOME/.local/bin"
-```
-
-### 3. Development Stack (Helix, LSPs, Linters & Formatters)
-The development environment is terminal-native (`tmux` + `hx`) so it runs identically on local Debian and remote SSH hosts without port forwarding or web IDE servers.
+### 2. Development Stack (Helix, LSPs, Linters & Formatters)
+The development environment is terminal-native (`tmux` + `hx`) so it runs identically on local Debian and remote SSH hosts without port forwarding or web IDE servers. All packages, binaries, language servers, and Tree-sitter grammars below are installed automatically by `make deps` and upgraded by `make update` (`update-system`).
 
 | Architectural Layer | Purpose | Tools in Stack |
 | :--- | :--- | :--- |
-| **Editor (`hx`)** | Modal project editor with built-in fuzzy/tree pickers, multi-cursor editing, and focus-lost auto-save (`vim` remains `$EDITOR` for quick single-file edits). | `hx` (Helix), `ripgrep` (`rg`), `fd-find` (`fdfind` → `~/.local/bin/fd`) |
-| **Tree-sitter** | Incremental AST parser compiled into Helix for syntax highlighting, structural indentation, and syntax-node selection (`alt-o`/`i`/`n`/`p`). | Bundled with Debian `hx` |
+| **Editor (`hx`)** | Modal project editor with built-in fuzzy/tree pickers, multi-cursor editing, focus-lost auto-save, and Git commit/rebase editing (`vim` remains `$EDITOR` for quick single-file shell edits). | `hx` (Helix), `ripgrep` (`rg`), `fd-find` (`fdfind` → `~/.local/bin/fd`) |
+| **Tree-sitter** | Incremental AST parser compiled into Helix for syntax highlighting, structural indentation, and syntax-node selection (`alt-o`/`i`/`n`/`p`). | Bundled with Debian `hx` (`hx --grammar fetch && hx --grammar build`) |
 | **Language Servers (LSP)** | Live code intelligence over stdio: autocompletion, go-to-definition (`gd`), references/backlinks (`gr`), hover docs (`space k`), and workspace rename (`space r`). | `pylsp` + `ruff server` (Python), `gopls` (Go), `rust-analyzer` (Rust), `clangd` (C/C++), `markdown-oxide` (Markdown), `tombi` (TOML) |
 | **Linters** | Static analysis for bugs, security rules, and style both inside the editor and from the CLI / agent workflows. | `ruff` (Python), `tombi` (TOML), `shellcheck` (Shell), `ansible-lint` (Ansible), `yamllint` (YAML) |
 | **Typecheckers** | Static type verification in editor diagnostics (`pylsp-mypy`) and CI/CLI gates. | `mypy` (Python), `gopls` / `rustc` / `clangd` |
 | **Formatters** | Deterministic code formatting triggered automatically on save in Helix. | `ruff format` (Python), `shfmt` (Shell), `gofmt` (Go), `rustfmt` (Rust), `clang-format` (C/C++), `tombi format` (TOML) |
 
-```sh
-# 1. System packages: editor, compilers, language servers, and shell linters
-sudo apt update && sudo apt install -y \
-  hx python3 ansible shellcheck shfmt \
-  golang-go gopls \
-  rustc cargo rust-analyzer rustfmt \
-  build-essential clangd clang-format
-
-# 2. Python package & tool manager (~/.local/bin/uv)
-curl -LsSf https://astral.sh/uv/install.sh | sh
-
-# 3. User-local Python/TOML/YAML/Ansible LSPs, linters, typechecker, and test runner (~/.local/bin/*)
-uv tool install --with pylsp-mypy python-lsp-server
-uv tool install ruff
-uv tool install mypy
-uv tool install pytest
-uv tool install tombi
-uv tool install ansible-lint
-uv tool install yamllint
-
-# 4. Markdown PKM language server for Helix (~/.local/bin/markdown-oxide)
-CARGO_HOME="$HOME/.local/share/cargo" cargo install --root "$HOME/.local" --locked --git https://github.com/Feel-ix-343/markdown-oxide.git markdown-oxide && rm -rf "$HOME/.local/share/cargo" "$HOME/.cargo" "$HOME/.local/.crates.toml" "$HOME/.local/.crates2.json"
-
-# 5. Fetch & compile the allowlisted Tree-sitter grammars (after 'make install')
-hx --grammar fetch && hx --grammar build && rm -rf "$HOME/.config/helix/runtime/grammars/sources"
-```
-
-### 4. Managing the Repo
+### 3. Managing the Repo
 `make install` creates symlinks from `~/.config/<tool>` (plus `~/.zshenv`, `~/.ssh/config`, `~/.gemini/config/`, and `~/.local/bin/fd`) directly into this repo. Editing either path edits the same file.
 
 | Command | Action |
 | :--- | :--- |
-| `make install` | Create missing symlinks (skips existing links, warns on conflicts). |
-| `make deps` | Install missing `apt` packages, `oh-my-posh`, `uv` tools, `markdown-oxide`, and Helix grammars idempotently. |
-| `make uninstall` | Remove managed symlinks without deleting repo files. |
+| `make bootstrap` | Full fresh-machine convergence (`install` → `deps` → `check` → `doctor`). |
+| `make install` | Create symlinks (auto-backing up conflicts to `~/.local/state/dotfiles/backups/`), scaffold `private.sh`, and derive `~/.ssh/allowed_signers`. |
+| `make deps` | Install missing `apt` packages, `oh-my-posh`, `uv` tools, prebuilt `markdown-oxide`, and Helix grammars idempotently. |
+| `make update` | Upgrade `apt` packages, `uv` + `uv` tools, `oh-my-posh`, `markdown-oxide`, and Helix grammars (`update-system` alias). |
+| `make doctor` | Audit readiness of the 10% local layer (`private.sh`, `config.local`, SSH/signing keys, `allowed_signers`, `gh` auth, and login shell). |
+| `make check` | Validate shell/TOML/git/editor syntax and linters, symlinks, SSH permissions, `notes/` conventions, `.gitignore` parity, and `gitleaks` sanitization. |
+| `make track FILE=<path>` | Allowlist `<path>` (and parent dirs) in `.gitignore` and stage it with `git add -f`. |
+| `make untrack FILE=<path>` | Remove `<path>` from `.gitignore` allowlist and untrack it from the git index. |
 | `make list` | Display all managed symlinks and their targets. |
-| `make check` | Validate shell/git/editor syntax, symlinks, SSH permissions, `notes/` conventions, `.gitignore` parity, and sanitization. |
+| `make uninstall` | Remove managed symlinks without deleting repo files. |
 
 > [!IMPORTANT]
-> `.gitignore` uses an **allowlist** (`*` ignores everything by default). When adding a new file, add a `!path` rule to `.gitignore`, stage it with `git add -f`, and run `make check`.
+> `.gitignore` uses a strict 1:1 file **allowlist** (`*` ignores everything by default). When adding a new tracked file, run `make track FILE=<relative-path>` and verify with `make check`.
 
 ---
 
@@ -102,8 +67,8 @@ hx --grammar fetch && hx --grammar build && rm -rf "$HOME/.config/helix/runtime/
 
 ### Zsh & `fzf`
 - **Startup split**: `.zshenv` sets environment variables for all processes (`XDG_*`, `PATH`, `EDITOR`, `ZDOTDIR`, `umask 027`, `LEDGER_FILE`, and `~/.config/zsh/private.sh`). `.zshrc` runs only in interactive terminals.
-- **Local secrets**: Untracked machine-specific overrides (such as `DEFAULT_USER` to hide the normal login prefix in the prompt) live in `~/.config/zsh/private.sh` (`chmod 600` enforced automatically in `.zshenv`).
-- **Notable aliases**: `tmux0` (`tmux new -As0`), `psa` (`ps auxf` — avoids aliasing `ps` directly so system pre-exec hooks don't break), `ports` (listening TCP sockets), `reload` (`exec $SHELL -l`), `aka` (`alias | grep`).
+- **Local overrides (`private.sh`)**: Untracked machine-specific overrides live in `~/.config/zsh/private.sh` (`chmod 600` enforced automatically in `.zshenv` and scaffolded by `make install`), including `DEFAULT_USER` (to hide the normal login prefix in the prompt) and `HOST_PREFIX` (to strip a common hostname prefix in `oh-my-posh`, `zsh`, and `tmux`).
+- **Notable aliases**: `tmux0` (`tmux new -As0`), `psa` (`ps auxf` — avoids aliasing `ps` directly so system pre-exec hooks don't break), `ports` (listening TCP sockets), `reload` (`exec "$SHELL" -l`), `update-system` (`make -C "$HOME/Projects/dotfiles" update`), `aka` (`alias | grep`).
 
 | Shortcut | Action |
 | :--- | :--- |
@@ -160,7 +125,7 @@ hx --grammar fetch && hx --grammar build && rm -rf "$HOME/.config/helix/runtime/
 | **System Clipboard** | `space y` / `space p` | Yank / paste directly to/from the ChromeOS system clipboard over SSH (via OSC-52) |
 
 ### Vim
-- **Role**: Standard `$EDITOR` / `$VISUAL` for quick single-file edits, `vi`, and `git commit`.
+- **Role**: Standard `$EDITOR` / `$VISUAL` for quick single-file shell edits and `vi` (`git commit` and interactive rebases use Helix via `core.editor = hx`).
 - **State & Undo**: Persistent undo in `$XDG_CACHE_HOME/vim/undodir`; `viminfo` in `$XDG_STATE_HOME/vim/viminfo` (no swap/backup files).
 - **Ledger completion**: In `*.journal` files, `:` is part of `iskeyword` so `ctrl-n` / `ctrl-p` autocompletes full `hledger` account paths (`expenses:food:groceries`).
 
@@ -173,8 +138,9 @@ hx --grammar fetch && hx --grammar build && rm -rf "$HOME/.config/helix/runtime/
 ### Git & SSH
 - **Dual Ed25519 SSH keys**:
   - `~/.ssh/github_ed25519` (*passphrase-protected*): Authentication key for `github.com`.
-  - `~/.ssh/github_signing_ed25519` (*passphrase-free*): Dedicated commit and tag signing key (`gpg.format = ssh`, `commit.gpgsign = true`, `tag.gpgsign = true`).
-- **Configured defaults**: `git push` automatically pushes the current branch and sets upstream (`push.autoSetupRemote = true`), `git pull` rebases by default (`pull.rebase = true`), and `git commit` signs and shows the verbose diff (`commit.verbose = true`).
+  - `~/.ssh/github_signing_ed25519` (*passphrase-free*): Dedicated commit and tag signing key (`gpg.format = ssh`, `commit.gpgsign = true`, `tag.gpgsign = true`; `make install` derives `~/.ssh/allowed_signers` automatically when `github_signing_ed25519.pub` is present).
+- **Local escape hatches**: `~/.ssh/config.local` is included at the top of `.config/ssh/config` (OpenSSH first-match-wins), and `~/.config/git/config.local` is included at the bottom of `.config/git/config` (Git last-match-wins).
+- **Configured defaults**: `git push` automatically pushes the current branch and sets upstream (`push.autoSetupRemote = true`), `git pull` rebases by default (`pull.rebase = true`), and `git commit` opens `hx`, signs, and shows the verbose diff (`commit.verbose = true`).
 
 | Alias | Expands to | Alias | Expands to |
 | :--- | :--- | :--- | :--- |
@@ -210,4 +176,4 @@ While `README.md` documents the daily CLI toolchain under `.config/`, [`notes/`]
 - **Flat directory & slug:** Zero subdirectories inside `notes/`; multi-word lowercase kebab-case filenames (`^[a-z0-9]+(-[a-z0-9]+)+\.md$`, max `64` characters).
 - **YAML Frontmatter:** `title` (≤ `64` chars) and `tags` (inline array with 1–3 `<domain>:<subtopic>` tags, e.g., `tags: [hardware:keyboard, os:chromeos]`).
 - **Structure & Links:** Plain CommonMark with a `## Sources` section at the bottom and standard relative Markdown links `[text](slug.md)` (never `[[wikilinks]]`). No minimum word-count floor applies.
-- **Tracking:** Allowlist every new note in `.gitignore` (`!notes/<slug>.md`), stage with `git add -f`, and verify with `make check`.
+- **Tracking:** Track every new note with `make track FILE=notes/<slug>.md` and verify with `make check`.

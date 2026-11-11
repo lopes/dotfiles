@@ -33,7 +33,7 @@ type = 'session'
 style = 'plain'
 foreground = 'darkGray'
 background = 'transparent'
-template = '{{ if .Root }}<red>root</><darkGray>@</>{{ else if ne .UserName .Env.DEFAULT_USER }}<yellow>{{ (.UserName | splitList ".") | first }}</><darkGray>@</>{{ end }}{{ (.HostName | splitList "." | first | replace "lopes-" "") }}<darkGray>:</>'
+template = '{{ if .Root }}<red>root</><darkGray>@</>{{ else if ne .UserName .Env.DEFAULT_USER }}<yellow>{{ (.UserName | splitList ".") | first }}</><darkGray>@</>{{ end }}{{ (.HostName | splitList "." | first | trimPrefix .Env.HOST_PREFIX) }}<darkGray>:</>'
 
 [[blocks.segments]]
 type = 'path'
