@@ -12,7 +12,13 @@ umask 027
 
 # keep PATH unique across nested shells and prepend user-local binaries
 typeset -U path PATH
-[ -d "$HOME/.local/bin" ] && PATH="$HOME/.local/bin:$PATH"
+path=("$HOME/.local/bin" $path)
+export PATH
+
+# language toolchain paths (XDG-compliant, route user binaries to ~/.local/bin)
+export GOPATH="$XDG_DATA_HOME/go"
+export GOBIN="$HOME/.local/bin"
+export CARGO_HOME="$XDG_DATA_HOME/cargo"
 
 # local environment overrides (untracked)
 if [ -f "$HOME/.config/zsh/private.sh" ]; then

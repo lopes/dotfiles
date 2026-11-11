@@ -1,10 +1,18 @@
 DOTFILES := $(HOME)/Projects/dotfiles
 CONFIG   := $(HOME)/.config
+export PATH := $(HOME)/.local/bin:$(PATH)
 
 # directories symlinked entirely into ~/.config/
 DIRS := agents gemini git helix oh-my-posh tmux vim zsh
 
-.PHONY: install uninstall list check
+APT_PKGS := zsh tmux vim hx git gh git-delta gitleaks fzf ripgrep fd-find jq lsof curl \
+            zsh-autosuggestions zsh-syntax-highlighting fonts-jetbrains-mono \
+            python3 ansible shellcheck shfmt golang-go gopls \
+            rustc cargo rust-analyzer rustfmt build-essential clangd clang-format hledger
+
+UV_TOOLS := ruff mypy pytest tombi ansible-lint yamllint
+
+.PHONY: install uninstall deps list check
 
 install:
 	@mkdir -p "$(HOME)/.cache/zsh" "$(HOME)/.local/state/zsh" "$(HOME)/.local/bin" "$(HOME)/.local/state/gemini"
@@ -70,6 +78,9 @@ install:
 	else \
 		ln -sv "$(CONFIG)/agents/agents" "$(HOME)/.gemini/config/agents"; \
 	fi
+	@if [ -x /usr/bin/fdfind ] && [ ! -e "$(HOME)/.local/bin/fd" ]; then \
+		ln -sv /usr/bin/fdfind "$(HOME)/.local/bin/fd"; \
+	fi
 	@printf "\ndone. restart your shell to apply changes.\n"
 
 uninstall:
@@ -82,7 +93,27 @@ uninstall:
 	@for item in rules skills agents AGENTS.md; do \
 		[ -L "$(HOME)/.gemini/config/$$item" ] && rm -v "$(HOME)/.gemini/config/$$item" || true; \
 	done
+	@[ -L "$(HOME)/.local/bin/fd" ] && rm -v "$(HOME)/.local/bin/fd" || true
 	@printf "\ndone. all symlinks removed.\n"
+
+deps:
+	@mkdir -p "$(HOME)/.local/bin"
+	sudo apt update && sudo apt install -y $(APT_PKGS)
+	@if [ -x /usr/bin/fdfind ] && [ ! -e "$(HOME)/.local/bin/fd" ]; then \
+		ln -sv /usr/bin/fdfind "$(HOME)/.local/bin/fd"; \
+	fi
+	@command -v oh-my-posh >/dev/null 2>&1 || \
+		(curl -s https://ohmyposh.dev/install.sh | bash -s -- -d "$(HOME)/.local/bin")
+	@command -v uv >/dev/null 2>&1 || \
+		(curl -LsSf https://astral.sh/uv/install.sh | sh)
+	@command -v pylsp >/dev/null 2>&1 || uv tool install --with pylsp-mypy python-lsp-server
+	@for tool in $(UV_TOOLS); do \
+		command -v "$$tool" >/dev/null 2>&1 || uv tool install "$$tool"; \
+	done
+	@command -v markdown-oxide >/dev/null 2>&1 || \
+		(CARGO_HOME="$(HOME)/.local/share/cargo" cargo install --root "$(HOME)/.local" --locked --git https://github.com/Feel-ix-343/markdown-oxide.git markdown-oxide && \
+		rm -rf "$(HOME)/.local/share/cargo" "$(HOME)/.cargo" "$(HOME)/.local/.crates.toml" "$(HOME)/.local/.crates2.json")
+	@hx --grammar fetch && hx --grammar build && rm -rf "$(HOME)/.config/helix/runtime/grammars/sources"
 
 list:
 	@echo "managed symlinks:"
@@ -95,6 +126,7 @@ list:
 	@for item in rules skills agents AGENTS.md; do \
 		printf "  %-28s -> %s\n" "$(HOME)/.gemini/config/$$item" "$$(readlink "$(HOME)/.gemini/config/$$item" 2>/dev/null || echo 'NOT LINKED')"; \
 	done
+	@printf "  %-28s -> %s\n" "$(HOME)/.local/bin/fd" "$$(readlink "$(HOME)/.local/bin/fd" 2>/dev/null || echo 'NOT LINKED')"
 
 check:
 	@echo "1. syntax check..."
@@ -133,7 +165,7 @@ check:
 	@if [ -e "$(CONFIG)/gemini/rules" ] && [ "$$(readlink "$(HOME)/.gemini/config/rules" 2>/dev/null)" != "$(CONFIG)/gemini/rules" ]; then \
 		echo "FAIL: $(HOME)/.gemini/config/rules is not linked to $(CONFIG)/gemini/rules"; exit 1; \
 	fi
-	@for link in "$(CONFIG)"/* "$(HOME)/.gemini/config"/*; do \
+	@for link in "$(CONFIG)"/* "$(HOME)/.gemini/config"/* "$(HOME)/.local/bin/fd"; do \
 		if [ -L "$$link" ] && [ ! -e "$$link" ]; then \
 			echo "FAIL: dangling symlink $$link -> $$(readlink "$$link")"; exit 1; \
 		fi; \

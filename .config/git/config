@@ -11,6 +11,14 @@
 [gpg "ssh"]
   allowedSignersFile = ~/.ssh/allowed_signers
 
+[credential "https://github.com"]
+  helper =
+  helper = !gh auth git-credential
+
+[credential "https://gist.github.com"]
+  helper =
+  helper = !gh auth git-credential
+
 [core]
   editor = hx
   pager = delta

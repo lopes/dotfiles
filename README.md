@@ -13,27 +13,38 @@ Minimalist Linux configuration files built around standard Unix tools, terminal-
 
 ## Install & Update
 
-### 1. Core Prerequisites (Debian / Linux)
+### 1. Link Configurations & Bootstrap Toolchain
+```sh
+git clone https://github.com/lopes/dotfiles "$HOME/Projects/dotfiles"
+cd "$HOME/Projects/dotfiles"
+make install
+make deps
+make check
+exec zsh -l
+```
+
+### 2. Core Prerequisites (Debian / Linux)
 ```sh
 sudo apt update && sudo apt install -y \
   zsh tmux vim git gh git-delta gitleaks fzf ripgrep fd-find jq lsof curl \
-  zsh-autosuggestions zsh-syntax-highlighting fonts-jetbrains-mono
+  zsh-autosuggestions zsh-syntax-highlighting fonts-jetbrains-mono hledger
 
 # prompt binary (~/.local/bin/oh-my-posh)
+mkdir -p "$HOME/.local/bin"
 curl -s https://ohmyposh.dev/install.sh | bash -s -- -d "$HOME/.local/bin"
 ```
 
-### 2. Development Stack (Helix, LSPs, Linters & Formatters)
+### 3. Development Stack (Helix, LSPs, Linters & Formatters)
 The development environment is terminal-native (`tmux` + `hx`) so it runs identically on local Debian and remote SSH hosts without port forwarding or web IDE servers.
 
 | Architectural Layer | Purpose | Tools in Stack |
 | :--- | :--- | :--- |
-| **Editor (`hx`)** | Modal project editor with built-in fuzzy/tree pickers, multi-cursor editing, and focus-lost auto-save (`vim` remains `$EDITOR` for quick single-file edits and git commits). | `hx` (Helix), `ripgrep` (`rg`), `fd-find` (`fdfind`) |
+| **Editor (`hx`)** | Modal project editor with built-in fuzzy/tree pickers, multi-cursor editing, and focus-lost auto-save (`vim` remains `$EDITOR` for quick single-file edits). | `hx` (Helix), `ripgrep` (`rg`), `fd-find` (`fdfind` → `~/.local/bin/fd`) |
 | **Tree-sitter** | Incremental AST parser compiled into Helix for syntax highlighting, structural indentation, and syntax-node selection (`alt-o`/`i`/`n`/`p`). | Bundled with Debian `hx` |
 | **Language Servers (LSP)** | Live code intelligence over stdio: autocompletion, go-to-definition (`gd`), references/backlinks (`gr`), hover docs (`space k`), and workspace rename (`space r`). | `pylsp` + `ruff server` (Python), `gopls` (Go), `rust-analyzer` (Rust), `clangd` (C/C++), `markdown-oxide` (Markdown), `tombi` (TOML) |
 | **Linters** | Static analysis for bugs, security rules, and style both inside the editor and from the CLI / agent workflows. | `ruff` (Python), `tombi` (TOML), `shellcheck` (Shell), `ansible-lint` (Ansible), `yamllint` (YAML) |
 | **Typecheckers** | Static type verification in editor diagnostics (`pylsp-mypy`) and CI/CLI gates. | `mypy` (Python), `gopls` / `rustc` / `clangd` |
-| **Formatters** | Deterministic code formatting triggered automatically on save in Helix (or on demand for TOML). | `ruff format` (Python), `shfmt` (Shell), `gofmt` (Go), `rustfmt` (Rust), `clang-format` (C/C++), `tombi format` (TOML) |
+| **Formatters** | Deterministic code formatting triggered automatically on save in Helix. | `ruff format` (Python), `shfmt` (Shell), `gofmt` (Go), `rustfmt` (Rust), `clang-format` (C/C++), `tombi format` (TOML) |
 
 ```sh
 # 1. System packages: editor, compilers, language servers, and shell linters
@@ -56,27 +67,19 @@ uv tool install ansible-lint
 uv tool install yamllint
 
 # 4. Markdown PKM language server for Helix (~/.local/bin/markdown-oxide)
-cargo install --root "$HOME/.local" --locked --git https://github.com/Feel-ix-343/markdown-oxide.git markdown-oxide && rm -rf "$HOME/.cargo" "$HOME/.local/.crates.toml" "$HOME/.local/.crates2.json"
+CARGO_HOME="$HOME/.local/share/cargo" cargo install --root "$HOME/.local" --locked --git https://github.com/Feel-ix-343/markdown-oxide.git markdown-oxide && rm -rf "$HOME/.local/share/cargo" "$HOME/.cargo" "$HOME/.local/.crates.toml" "$HOME/.local/.crates2.json"
 
 # 5. Fetch & compile the allowlisted Tree-sitter grammars (after 'make install')
 hx --grammar fetch && hx --grammar build && rm -rf "$HOME/.config/helix/runtime/grammars/sources"
 ```
 
-### 3. Link Configurations
-```sh
-git clone https://github.com/lopes/dotfiles "$HOME/Projects/dotfiles"
-cd "$HOME/Projects/dotfiles"
-make install
-make check
-exec zsh -l
-```
-
 ### 4. Managing the Repo
-`make install` creates symlinks from `~/.config/<tool>` (plus `~/.zshenv`, `~/.ssh/config`, and `~/.gemini/config/`) directly into this repo. Editing either path edits the same file.
+`make install` creates symlinks from `~/.config/<tool>` (plus `~/.zshenv`, `~/.ssh/config`, `~/.gemini/config/`, and `~/.local/bin/fd`) directly into this repo. Editing either path edits the same file.
 
 | Command | Action |
 | :--- | :--- |
 | `make install` | Create missing symlinks (skips existing links, warns on conflicts). |
+| `make deps` | Install missing `apt` packages, `oh-my-posh`, `uv` tools, `markdown-oxide`, and Helix grammars idempotently. |
 | `make uninstall` | Remove managed symlinks without deleting repo files. |
 | `make list` | Display all managed symlinks and their targets. |
 | `make check` | Validate shell/git/editor syntax, symlinks, SSH permissions, `notes/` conventions, `.gitignore` parity, and sanitization. |
@@ -166,12 +169,12 @@ exec zsh -l
 
 | Alias | Expands to | Alias | Expands to |
 | :--- | :--- | :--- | :--- |
-| `git st` | `status -sb` | `git sw` / `mk` / `main` | `switch` / `switch -c` / `switch main` |
-| `git df` / `dc` | `diff` / `diff --cached` | `git br` / `del` | `branch` / `branch --delete` |
-| `git lg` / `lo` | `log --oneline --graph` (current / `--all`) | `git undo` | `reset HEAD~1 --mixed` |
-| `git a` / `cm` | `add --all` / `commit -m` | `git cleanall` | `clean --force --directory` |
+| `git st` | `status -sb` | `git sw` / `swc` / `main` | `switch` / `switch --create` / `switch main` |
+| `git df` / `dfs` | `diff` / `diff --staged` | `git br` / `del` | `branch` / `branch --delete` |
+| `git lg` / `lga` | `log --oneline --graph --decorate` (current / `--all`) | `git undo` | `reset HEAD~1 --mixed` |
+| `git a` / `aa` / `cm` | `add` / `add --all` / `commit -m` | `git cleanall` | `clean --force --directory` |
 | `git amend` | `commit --amend --no-edit` | `git aka` / `conf` | List aliases / list config with origin |
-| `git ps` / `psf` / `pl` | `push` / `push --force-with-lease` / `pull` | | |
+| `git ps` / `psf` / `pl` | `push` / `push --force-with-lease --force-if-includes` / `pull` | | |
 
 ### Web Terminal (`hterm` / ChromeOS Secure Shell) & Remote Development Topology
 - **Local Workstation ↔ Remote Development Workstation**:
