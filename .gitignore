@@ -25,6 +25,12 @@
 !.config/helix/config.toml
 !.config/helix/languages.toml
 !.github/
+!.github/CODEOWNERS
+!.github/ISSUE_TEMPLATE/
+!.github/ISSUE_TEMPLATE/bug_report.yml
+!.github/ISSUE_TEMPLATE/feature_request.yml
+!.github/dependabot.yml
+!.github/pull_request_template.md
 !.github/workflows/
 !.github/workflows/security.yml
 !.config/oh-my-posh/

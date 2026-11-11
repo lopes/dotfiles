@@ -18,7 +18,7 @@ You are maintaining a minimalist, Linux-only dotfiles repository where `~/.confi
 1. **Three-Way Lockstep (`Makefile` + `.gitignore` + Git index)**:
    - `.gitignore` uses a strict allowlist (`*` ignores everything; `!path` re-includes tracked paths).
    - Every new file requires an explicit `!path` entry in `.gitignore` **and** `git add -f <path>`.
-   - Every managed directory under `.config/` (except `ssh`, which links specifically to `~/.ssh/config`) must be listed in `DIRS` in `Makefile`. `Makefile` also manages standalone symlinks for `~/.zshenv` and `~/.gemini/config/{AGENTS.md,agents,rules,skills}`.
+   - Every managed directory under `.config/` (except `ssh`, which links specifically to `~/.ssh/config`) must be listed in `DIRS` in `Makefile`. `Makefile` also manages standalone symlinks for `~/.zshenv`, `~/.config/zsh/.zshenv`, `~/.local/bin/fd`, and `~/.gemini/config/{AGENTS.md,agents,rules,skills}`, plus idempotent tool installation via `make deps`.
 2. **Untracked Local Escape Hatches**:
    - `~/.config/zsh/private.sh` (local env/secrets, `chmod 600`)
    - `~/.config/gemini/rules/` (local workstation rules)
@@ -50,7 +50,7 @@ Also verify that `README.md` accurately reflects any non-elementary shortcuts or
 2. Add `<tool>` alphabetically to `DIRS` in `Makefile`.
 3. Add `!.config/<tool>/` and `!.config/<tool>/<file>` to `.gitignore`, then stage with `git add -f`.
 4. Run `make install` and `make check`.
-5. If the config introduces non-elementary shortcuts or opinionated behavior, add a concise section to `README.md`.
+5. If the config introduces non-elementary shortcuts, opinionated behavior, or a new tool binary, update `Makefile` (`APT_PKGS` / `UV_TOOLS` in `make deps`) and `README.md`.
 
 ### 3. Remove a Tool Config (`remove <tool>`)
 1. Remove the symlink first (`rm -v ~/.config/<tool>`).

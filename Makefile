@@ -196,6 +196,11 @@ check:
 			echo "FAIL: .gitignore allowlists missing path: $$p"; exit 1; \
 		fi; \
 	done
+	@for f in $$(git -C "$(DOTFILES)" ls-files); do \
+		if ! grep -qxF "!$$f" "$(DOTFILES)/.gitignore"; then \
+			echo "FAIL: tracked file missing from .gitignore allowlist: $$f"; exit 1; \
+		fi; \
+	done
 	@for d in "$(DOTFILES)/.config"/*; do \
 		[ -d "$$d" ] || continue; \
 		name=$$(basename "$$d"); \
