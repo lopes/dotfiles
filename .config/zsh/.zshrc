@@ -89,7 +89,7 @@ else
       _user_seg="%F{yellow}%n%f%F{8}@%f"
     fi
     _venv_seg=""
-    [[ -n "$VIRTUAL_ENV" ]] && _venv_seg=" %F{8}[%f%F{magenta}${VIRTUAL_ENV:t}%f%F{8}]%f"
+    [[ -n "$VIRTUAL_ENV" ]] && _venv_seg=" %F{8}[%f%F{magenta}${${VIRTUAL_ENV:t}//\%/%%}%f%F{8}]%f"
     RPROMPT=""
     if [[ -n "$_cmd_start" ]]; then
       local elapsed=$(( SECONDS - _cmd_start ))
@@ -100,7 +100,7 @@ else
   add-zsh-hook preexec _prompt_preexec
   add-zsh-hook precmd _prompt_precmd
 
-  export PROMPT='${_user_seg}%F{8}${${HOST%%.*}#${HOST_PREFIX:-}}:%f%F{blue}${_short_pwd}%f${vcs_info_msg_0_}${_venv_seg} %(1j.%F{yellow}+%f.)%(!.%F{red}#%f.%(?.%F{white}.%F{red})❯%f) '
+  PROMPT='${_user_seg}%F{8}${${HOST%%.*}#${HOST_PREFIX:-}}:%f%F{blue}${_short_pwd}%f${vcs_info_msg_0_}${_venv_seg} %(1j.%F{yellow}+%f.)%(!.%F{red}#%f.%(?.%F{white}.%F{red})❯%f) '
 fi
 
 # key bindings

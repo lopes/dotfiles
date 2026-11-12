@@ -6,13 +6,13 @@
 
 ## Type of Change
 - [ ] Shell & Terminal Config (`.config/zsh/`, `.config/tmux/`, `.config/oh-my-posh/`, `.zshenv`)
-- [ ] Editor Config (`.config/vim/`)
-- [ ] Git Config & Global Hooks (`.config/git/`)
+- [ ] Editor Config (`.config/helix/`, `.config/vim/`)
+- [ ] Git & SSH Config / Global Hooks (`.config/git/`, `.config/ssh/`)
 - [ ] Global Agent Rules & Skills (`.config/agents/`, `.config/gemini/`, `.agents/`, `AGENTS.md`)
-- [ ] Makefile & Symlink Installer (`Makefile`, `README.md`, `.github/`)
+- [ ] Lifecycle, Installer & Notes (`Makefile`, `README.md`, `notes/`, `.github/`)
 
 ## Quality Checklist
-- [ ] `make check` validates symlink targets and permissions cleanly.
+- [ ] `make check` and `make doctor` validate symlink targets, permissions, and readiness cleanly.
 - [ ] Zero private hostnames, corporate identifiers, or secrets committed (`private.sh` remains local-only).
 - [ ] Static instructions only in `.config/agents/` and `.config/gemini/` (runtime state stays in `~/.local/state/`).
 - [ ] Commit follows [Scoped Commits](https://scopedcommits.com/) convention (`<scope>: <description>`).

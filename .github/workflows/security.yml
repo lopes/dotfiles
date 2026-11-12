@@ -14,4 +14,4 @@ permissions:
 
 jobs:
   security:
-    uses: lopes/.github/.github/workflows/security.yml@main
+    uses: lopes/.github/.github/workflows/security.yml@d3f190a972a78cf6fec80af7f176e8445d461b85 # main

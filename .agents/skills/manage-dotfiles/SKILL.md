@@ -18,7 +18,7 @@ You are maintaining a minimalist, Linux-only dotfiles repository where `~/.confi
 1. **Three-Way Lockstep (`Makefile` + `.gitignore` + Git index)**:
    - `.gitignore` uses a strict allowlist (`*` ignores everything; `!path` re-includes tracked paths).
    - Every new file requires an explicit `!path` entry in `.gitignore` **and** `git add -f <path>` (automated via `make track FILE=<relative-path>` and `make untrack FILE=<relative-path>`).
-   - Every managed directory under `.config/` (except `ssh`, which links specifically to `~/.ssh/config`) must be listed in `DIRS` in `Makefile`. `Makefile` also manages standalone symlinks for `~/.zshenv`, `~/.config/zsh/.zshenv`, `~/.local/bin/fd`, and `~/.gemini/config/{AGENTS.md,agents,rules,skills}`, plus full bootstrap/lifecycle targets (`make bootstrap`, `make deps`, `make update`, `make doctor`, `make check`).
+   - Every managed directory under `.config/` (except `ssh`, which links specifically to `~/.ssh/config`) must be listed in `DIRS` in `Makefile`. `Makefile` also manages standalone symlinks for `~/.zshenv`, `~/.config/zsh/.zshenv`, `~/.local/bin/fd`, `~/.config/gemini/AGENTS.md`, and `~/.gemini/config/{AGENTS.md,agents,rules,skills}`, plus full bootstrap/lifecycle targets (`make bootstrap`, `make deps`, `make update`, `make doctor`, `make check`).
 2. **Untracked Local Escape Hatches**:
    - `~/.config/zsh/private.sh` (local env/secrets including `DEFAULT_USER` and `HOST_PREFIX`, `chmod 600`)
    - `~/.config/git/config.local` (local Git overrides, included last in `.config/git/config`)

@@ -3,6 +3,7 @@ CONFIG   := $(HOME)/.config
 STATE    := $(HOME)/.local/state/dotfiles
 BACKUP   := $(STATE)/backups/$(shell date +%Y%m%d-%H%M%S)
 export PATH := $(HOME)/.local/bin:$(PATH)
+export FILE
 
 # directories symlinked entirely into ~/.config/
 DIRS := agents gemini git helix oh-my-posh tmux vim zsh
@@ -23,10 +24,11 @@ bootstrap:
 	@$(MAKE) doctor
 
 install:
-	@mkdir -p "$(HOME)/.cache/zsh" "$(HOME)/.local/state/zsh" "$(HOME)/.local/bin" \
+	@umask 077; mkdir -p "$(HOME)/.cache/zsh" "$(HOME)/.local/state/zsh" "$(HOME)/.local/bin" \
 		"$(HOME)/.local/state/gemini" "$(DOTFILES)/.config/gemini/rules" \
 		"$(HOME)/.gemini/config" "$(HOME)/.ssh"
-	@chmod 700 "$(HOME)/.ssh"
+	@chmod 700 "$(HOME)/.cache/zsh" "$(HOME)/.local/state/zsh" "$(HOME)/.local/state/gemini" \
+		"$(HOME)/.gemini/config" "$(HOME)/.ssh"
 	@chmod 600 "$(DOTFILES)/.config/ssh/config"
 	@chmod +x "$(DOTFILES)/.config/git/hooks/pre-commit" "$(DOTFILES)/.config/git/hooks/pre-push"
 	@link_item() { \
@@ -36,7 +38,8 @@ install:
 		else \
 			if [ -e "$$dst" ] || [ -L "$$dst" ]; then \
 				rel="$${dst#$(HOME)/}"; \
-				mkdir -p "$$(dirname "$(BACKUP)/$$rel")"; \
+				umask 077; mkdir -p "$$(dirname "$(BACKUP)/$$rel")"; \
+				chmod 700 "$(STATE)" "$(BACKUP)" 2>/dev/null || true; \
 				mv -v "$$dst" "$(BACKUP)/$$rel"; \
 			fi; \
 			ln -sv "$$src" "$$dst"; \
@@ -67,7 +70,7 @@ install:
 		echo "init  $(CONFIG)/zsh/private.sh (created chmod 600 skeleton)"; \
 	fi
 	@if [ -f "$(HOME)/.ssh/github_signing_ed25519.pub" ] && [ ! -s "$(HOME)/.ssh/allowed_signers" ]; then \
-		email="$$(git config --file "$(DOTFILES)/.config/git/config" user.email)"; \
+		email="$$(git config --includes --file "$(DOTFILES)/.config/git/config" user.email)"; \
 		pubkey="$$(cat "$(HOME)/.ssh/github_signing_ed25519.pub")"; \
 		printf '%s namespaces="git" %s\n' "$$email" "$$pubkey" > "$(HOME)/.ssh/allowed_signers"; \
 		chmod 644 "$(HOME)/.ssh/allowed_signers"; \
@@ -76,13 +79,15 @@ install:
 	@printf "\ndone. restart your shell to apply changes.\n"
 
 uninstall:
+	@[ -L "$(CONFIG)/zsh/.zshenv" ] && rm -v "$(CONFIG)/zsh/.zshenv" || true
+	@[ -L "$(DOTFILES)/.config/zsh/.zshenv" ] && rm -v "$(DOTFILES)/.config/zsh/.zshenv" || true
+	@[ -L "$(CONFIG)/gemini/AGENTS.md" ] && rm -v "$(CONFIG)/gemini/AGENTS.md" || true
+	@[ -L "$(DOTFILES)/.config/gemini/AGENTS.md" ] && rm -v "$(DOTFILES)/.config/gemini/AGENTS.md" || true
 	@for d in $(DIRS); do \
 		[ -L "$(CONFIG)/$$d" ] && rm -v "$(CONFIG)/$$d" || true; \
 	done
 	@[ -L "$(HOME)/.zshenv" ] && rm -v "$(HOME)/.zshenv" || true
-	@[ -L "$(CONFIG)/zsh/.zshenv" ] && rm -v "$(CONFIG)/zsh/.zshenv" || true
 	@[ -L "$(HOME)/.ssh/config" ] && rm -v "$(HOME)/.ssh/config" || true
-	@[ -L "$(CONFIG)/gemini/AGENTS.md" ] && rm -v "$(CONFIG)/gemini/AGENTS.md" || true
 	@for item in rules skills agents AGENTS.md; do \
 		[ -L "$(HOME)/.gemini/config/$$item" ] && rm -v "$(HOME)/.gemini/config/$$item" || true; \
 	done
@@ -95,20 +100,42 @@ deps:
 	@if [ -x /usr/bin/fdfind ] && [ ! -e "$(HOME)/.local/bin/fd" ]; then \
 		ln -sv /usr/bin/fdfind "$(HOME)/.local/bin/fd"; \
 	fi
-	@command -v oh-my-posh >/dev/null 2>&1 || \
-		(curl -fsSL https://ohmyposh.dev/install.sh | bash -s -- -d "$(HOME)/.local/bin")
-	@command -v uv >/dev/null 2>&1 || \
-		(curl -LsSf https://astral.sh/uv/install.sh | sh)
+	@if ! command -v oh-my-posh >/dev/null 2>&1; then \
+		case "$$(uname -m)" in x86_64) goarch=amd64 ;; aarch64|arm64) goarch=arm64 ;; *) echo "FAIL: unsupported arch"; exit 1 ;; esac; \
+		meta="$$(curl -fsSL https://api.github.com/repos/JanDeDobbeleer/oh-my-posh/releases/latest | jq -r --arg a "^posh-linux-$${goarch}$$" '.assets[] | select(.name | test($$a)) | "\(.browser_download_url) \((.digest // "") | sub("^sha256:"; ""))"' | head -n1)"; \
+		url="$${meta%% *}"; sha="$${meta#* }"; \
+		if [ -z "$$url" ] || ! printf '%s\n' "$$sha" | grep -Eq '^[0-9a-f]{64}$$'; then echo "FAIL: could not resolve oh-my-posh release digest"; exit 1; fi; \
+		curl -fsSL "$$url" -o "$(HOME)/.local/bin/oh-my-posh.tmp" && \
+		printf '%s  %s\n' "$$sha" "$(HOME)/.local/bin/oh-my-posh.tmp" | sha256sum -c - >/dev/null && \
+		chmod +x "$(HOME)/.local/bin/oh-my-posh.tmp" && mv "$(HOME)/.local/bin/oh-my-posh.tmp" "$(HOME)/.local/bin/oh-my-posh" || \
+		{ rm -f "$(HOME)/.local/bin/oh-my-posh.tmp"; exit 1; }; \
+	fi
+	@if ! command -v uv >/dev/null 2>&1; then \
+		arch="$$(uname -m)"; \
+		meta="$$(curl -fsSL https://api.github.com/repos/astral-sh/uv/releases/latest | jq -r --arg a "^uv-$${arch}-unknown-linux-gnu\\.tar\\.gz$$" '.assets[] | select(.name | test($$a)) | "\(.browser_download_url) \((.digest // "") | sub("^sha256:"; ""))"' | head -n1)"; \
+		url="$${meta%% *}"; sha="$${meta#* }"; \
+		if [ -z "$$url" ] || ! printf '%s\n' "$$sha" | grep -Eq '^[0-9a-f]{64}$$'; then echo "FAIL: could not resolve uv release digest"; exit 1; fi; \
+		tmp="$(HOME)/.local/bin/uv.tar.gz.tmp"; \
+		curl -fsSL "$$url" -o "$$tmp" && \
+		printf '%s  %s\n' "$$sha" "$$tmp" | sha256sum -c - >/dev/null && \
+		tar -xzf "$$tmp" -C "$(HOME)/.local/bin" --strip-components=1 "uv-$${arch}-unknown-linux-gnu/uv" "uv-$${arch}-unknown-linux-gnu/uvx" && \
+		rm -f "$$tmp" || { rm -f "$$tmp"; exit 1; }; \
+	fi
 	@command -v pylsp >/dev/null 2>&1 || uv tool install --with pylsp-mypy python-lsp-server
 	@for tool in $(UV_TOOLS); do \
 		command -v "$$tool" >/dev/null 2>&1 || uv tool install "$$tool"; \
 	done
 	@if ! command -v markdown-oxide >/dev/null 2>&1; then \
 		arch="$$(uname -m)"; \
-		url="$$(curl -fsSL https://api.github.com/repos/Feel-ix-343/markdown-oxide/releases/latest 2>/dev/null | jq -r --arg a "markdown-oxide-.*-$${arch}-unknown-linux-gnu$$" '.assets[] | select(.name | test($$a)) | .browser_download_url' | head -n1)"; \
-		if [ -n "$$url" ] && [ "$$url" != "null" ]; then \
-			echo "downloading prebuilt markdown-oxide ($$arch)..."; \
-			curl -fsSL "$$url" -o "$(HOME)/.local/bin/markdown-oxide" && chmod +x "$(HOME)/.local/bin/markdown-oxide"; \
+		meta="$$(curl -fsSL https://api.github.com/repos/Feel-ix-343/markdown-oxide/releases/latest 2>/dev/null | jq -r --arg a "^markdown-oxide-.*-$${arch}-unknown-linux-gnu$$" '.assets[] | select(.name | test($$a)) | "\(.browser_download_url) \((.digest // "") | sub("^sha256:"; ""))"' | head -n1)"; \
+		url="$${meta%% *}"; sha="$${meta#* }"; \
+		if [ -n "$$url" ] && printf '%s\n' "$$sha" | grep -Eq '^[0-9a-f]{64}$$'; then \
+			echo "downloading verified prebuilt markdown-oxide ($$arch)..."; \
+			curl -fsSL "$$url" -o "$(HOME)/.local/bin/markdown-oxide.tmp" && \
+			printf '%s  %s\n' "$$sha" "$(HOME)/.local/bin/markdown-oxide.tmp" | sha256sum -c - >/dev/null && \
+			chmod +x "$(HOME)/.local/bin/markdown-oxide.tmp" && \
+			mv "$(HOME)/.local/bin/markdown-oxide.tmp" "$(HOME)/.local/bin/markdown-oxide" || \
+			{ rm -f "$(HOME)/.local/bin/markdown-oxide.tmp"; exit 1; }; \
 		else \
 			CARGO_HOME="$(HOME)/.local/share/cargo" cargo install --root "$(HOME)/.local" --locked --git https://github.com/Feel-ix-343/markdown-oxide.git markdown-oxide && \
 			rm -rf "$(HOME)/.local/share/cargo" "$(HOME)/.cargo" "$(HOME)/.local/.crates.toml" "$(HOME)/.local/.crates2.json"; \
@@ -120,28 +147,60 @@ update:
 	@mkdir -p "$(HOME)/.local/bin"
 	sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y
 	@if command -v uv >/dev/null 2>&1; then \
-		uv self update 2>/dev/null || true; \
+		if ! uv self update 2>/dev/null; then \
+			arch="$$(uname -m)"; \
+			meta="$$(curl -fsSL https://api.github.com/repos/astral-sh/uv/releases/latest | jq -r --arg a "^uv-$${arch}-unknown-linux-gnu\\.tar\\.gz$$" '.assets[] | select(.name | test($$a)) | "\(.browser_download_url) \((.digest // "") | sub("^sha256:"; ""))"' | head -n1)"; \
+			url="$${meta%% *}"; sha="$${meta#* }"; \
+			if [ -n "$$url" ] && printf '%s\n' "$$sha" | grep -Eq '^[0-9a-f]{64}$$'; then \
+				tmp="$(HOME)/.local/bin/uv.tar.gz.tmp"; \
+				curl -fsSL "$$url" -o "$$tmp" && \
+				printf '%s  %s\n' "$$sha" "$$tmp" | sha256sum -c - >/dev/null && \
+				tar -xzf "$$tmp" -C "$(HOME)/.local/bin" --strip-components=1 "uv-$${arch}-unknown-linux-gnu/uv" "uv-$${arch}-unknown-linux-gnu/uvx" && \
+				rm -f "$$tmp" || { rm -f "$$tmp"; exit 1; }; \
+			fi; \
+		fi; \
 		uv tool upgrade --all; \
 	fi
 	@if command -v oh-my-posh >/dev/null 2>&1; then \
-		oh-my-posh upgrade --force || (curl -fsSL https://ohmyposh.dev/install.sh | bash -s -- -d "$(HOME)/.local/bin"); \
+		case "$$(uname -m)" in x86_64) goarch=amd64 ;; aarch64|arm64) goarch=arm64 ;; *) echo "FAIL: unsupported arch"; exit 1 ;; esac; \
+		meta="$$(curl -fsSL https://api.github.com/repos/JanDeDobbeleer/oh-my-posh/releases/latest | jq -r --arg a "^posh-linux-$${goarch}$$" '.assets[] | select(.name | test($$a)) | "\(.browser_download_url) \((.digest // "") | sub("^sha256:"; ""))"' | head -n1)"; \
+		url="$${meta%% *}"; sha="$${meta#* }"; \
+		if [ -n "$$url" ] && printf '%s\n' "$$sha" | grep -Eq '^[0-9a-f]{64}$$'; then \
+			echo "updating verified oh-my-posh ($$goarch)..."; \
+			curl -fsSL "$$url" -o "$(HOME)/.local/bin/oh-my-posh.tmp" && \
+			printf '%s  %s\n' "$$sha" "$(HOME)/.local/bin/oh-my-posh.tmp" | sha256sum -c - >/dev/null && \
+			chmod +x "$(HOME)/.local/bin/oh-my-posh.tmp" && \
+			mv "$(HOME)/.local/bin/oh-my-posh.tmp" "$(HOME)/.local/bin/oh-my-posh" || \
+			{ rm -f "$(HOME)/.local/bin/oh-my-posh.tmp"; exit 1; }; \
+		fi; \
 	fi
 	@arch="$$(uname -m)"; \
-	url="$$(curl -fsSL https://api.github.com/repos/Feel-ix-343/markdown-oxide/releases/latest 2>/dev/null | jq -r --arg a "markdown-oxide-.*-$${arch}-unknown-linux-gnu$$" '.assets[] | select(.name | test($$a)) | .browser_download_url' | head -n1)"; \
-	if [ -n "$$url" ] && [ "$$url" != "null" ]; then \
-		echo "updating markdown-oxide ($$arch)..."; \
-		curl -fsSL "$$url" -o "$(HOME)/.local/bin/markdown-oxide.tmp" && chmod +x "$(HOME)/.local/bin/markdown-oxide.tmp" && mv "$(HOME)/.local/bin/markdown-oxide.tmp" "$(HOME)/.local/bin/markdown-oxide"; \
+	meta="$$(curl -fsSL https://api.github.com/repos/Feel-ix-343/markdown-oxide/releases/latest 2>/dev/null | jq -r --arg a "^markdown-oxide-.*-$${arch}-unknown-linux-gnu$$" '.assets[] | select(.name | test($$a)) | "\(.browser_download_url) \((.digest // "") | sub("^sha256:"; ""))"' | head -n1)"; \
+	url="$${meta%% *}"; sha="$${meta#* }"; \
+	if [ -n "$$url" ] && printf '%s\n' "$$sha" | grep -Eq '^[0-9a-f]{64}$$'; then \
+		echo "updating verified markdown-oxide ($$arch)..."; \
+		curl -fsSL "$$url" -o "$(HOME)/.local/bin/markdown-oxide.tmp" && \
+		printf '%s  %s\n' "$$sha" "$(HOME)/.local/bin/markdown-oxide.tmp" | sha256sum -c - >/dev/null && \
+		chmod +x "$(HOME)/.local/bin/markdown-oxide.tmp" && \
+		mv "$(HOME)/.local/bin/markdown-oxide.tmp" "$(HOME)/.local/bin/markdown-oxide" || \
+		{ rm -f "$(HOME)/.local/bin/markdown-oxide.tmp"; exit 1; }; \
 	fi
 	@! command -v hx >/dev/null 2>&1 || (hx --grammar fetch && hx --grammar build && rm -rf "$(HOME)/.config/helix/runtime/grammars/sources")
 
 track:
-	@if [ -z "$(FILE)" ]; then echo "usage: make track FILE=<relative-path>"; exit 1; fi; \
-	rel="$(FILE)"; rel="$${rel#./}"; \
-	if [ ! -f "$(DOTFILES)/$$rel" ]; then \
+	@if [ -z "$${FILE:-}" ]; then echo "usage: make track FILE=<relative-path>"; exit 1; fi; \
+	if ! printf '%s\n' "$$FILE" | grep -Eq '^[A-Za-z0-9._/-]+$$'; then \
+		echo "FAIL: invalid path characters in FILE"; exit 1; \
+	fi; \
+	rel="$$(realpath -s --relative-to="$(DOTFILES)" "$(DOTFILES)/$$FILE" 2>/dev/null || true)"; \
+	if [ -z "$$rel" ] || [ "$$rel" = "." ] || [ "$${rel#../}" != "$$rel" ]; then \
+		echo "FAIL: FILE must resolve inside $(DOTFILES)"; exit 1; \
+	fi; \
+	if [ -L "$(DOTFILES)/$$rel" ] || [ ! -f "$(DOTFILES)/$$rel" ]; then \
 		echo "FAIL: $(DOTFILES)/$$rel does not exist or is not a regular file"; exit 1; \
 	fi; \
 	case "$$rel" in \
-		.config/zsh/private.sh|.config/zsh/.zshenv|.config/git/config.local|.config/gemini/rules/*|.config/helix/runtime/*) \
+		.config/zsh/private.sh|.config/zsh/.zshenv|.config/git/config.local|.config/ssh/config.local|*.local|.config/gemini/*|.config/helix/runtime/*) \
 			echo "FAIL: $$rel is an untracked local override and must never be tracked"; exit 1 ;; \
 	esac; \
 	dir="$$(dirname "$$rel")"; \
@@ -157,10 +216,23 @@ track:
 	echo "tracked $$rel (updated .gitignore and staged in git)"
 
 untrack:
-	@if [ -z "$(FILE)" ]; then echo "usage: make untrack FILE=<relative-path>"; exit 1; fi; \
-	rel="$(FILE)"; rel="$${rel#./}"; \
+	@if [ -z "$${FILE:-}" ]; then echo "usage: make untrack FILE=<relative-path>"; exit 1; fi; \
+	if ! printf '%s\n' "$$FILE" | grep -Eq '^[A-Za-z0-9._/-]+$$'; then \
+		echo "FAIL: invalid path characters in FILE"; exit 1; \
+	fi; \
+	rel="$$(realpath -s --relative-to="$(DOTFILES)" "$(DOTFILES)/$$FILE" 2>/dev/null || true)"; \
+	if [ -z "$$rel" ] || [ "$$rel" = "." ] || [ "$${rel#../}" != "$$rel" ]; then \
+		echo "FAIL: FILE must resolve inside $(DOTFILES)"; exit 1; \
+	fi; \
 	grep -vxF "!$$rel" "$(DOTFILES)/.gitignore" > "$(DOTFILES)/.gitignore.tmp" && mv "$(DOTFILES)/.gitignore.tmp" "$(DOTFILES)/.gitignore"; \
 	git -C "$(DOTFILES)" rm --cached --ignore-unmatch -- "$$rel"; \
+	dir="$$(dirname "$$rel")"; \
+	while [ "$$dir" != "." ]; do \
+		if [ -z "$$(git -C "$(DOTFILES)" ls-files "$$dir/")" ]; then \
+			grep -vxF "!$$dir/" "$(DOTFILES)/.gitignore" > "$(DOTFILES)/.gitignore.tmp" && mv "$(DOTFILES)/.gitignore.tmp" "$(DOTFILES)/.gitignore"; \
+		fi; \
+		dir="$$(dirname "$$dir")"; \
+	done; \
 	git -C "$(DOTFILES)" add -f -- ".gitignore"; \
 	echo "untracked $$rel (removed from .gitignore allowlist and git index)"
 
@@ -194,7 +266,9 @@ doctor:
 		printf "  [WARN] %-34s (missing — run 'make install' to scaffold)\n" "~/.config/zsh/private.sh"; \
 	fi
 	@if [ -f "$(HOME)/.ssh/config.local" ]; then \
-		printf "  [OK]   %-34s (mode %s)\n" "~/.ssh/config.local" "$$(stat -c '%a' "$(HOME)/.ssh/config.local")"; \
+		mode="$$(stat -c '%a' "$(HOME)/.ssh/config.local")"; \
+		if [ "$$mode" = "600" ]; then tag="[OK]  "; else tag="[WARN]"; fi; \
+		printf "  %s %-34s (mode %s)\n" "$$tag" "~/.ssh/config.local" "$$mode"; \
 	else \
 		printf "  [INFO] %-34s (optional local SSH overrides not present)\n" "~/.ssh/config.local"; \
 	fi
@@ -207,7 +281,9 @@ doctor:
 	printf "  [OK]   %-34s (%s local rule file(s))\n" "~/.config/gemini/rules/" "$$rules_count"
 	@for key in github_ed25519 github_signing_ed25519; do \
 		if [ -f "$(HOME)/.ssh/$$key" ]; then \
-			printf "  [OK]   %-34s (mode %s)\n" "~/.ssh/$$key" "$$(stat -c '%a' "$(HOME)/.ssh/$$key")"; \
+			mode="$$(stat -c '%a' "$(HOME)/.ssh/$$key")"; \
+			if [ "$$mode" = "600" ]; then tag="[OK]  "; else tag="[WARN]"; fi; \
+			printf "  %s %-34s (mode %s)\n" "$$tag" "~/.ssh/$$key" "$$mode"; \
 		else \
 			printf "  [WARN] %-34s (missing — restore from vault)\n" "~/.ssh/$$key"; \
 		fi; \
@@ -234,7 +310,8 @@ check:
 	@zsh -n "$(DOTFILES)/.zshenv" "$(DOTFILES)/.config/zsh/.zshrc" "$(DOTFILES)/.config/zsh/aliases.sh"
 	@sh -n "$(DOTFILES)/.config/git/hooks/pre-commit" "$(DOTFILES)/.config/git/hooks/pre-push"
 	@! command -v shellcheck >/dev/null 2>&1 || shellcheck "$(DOTFILES)/.config/git/hooks/pre-commit" "$(DOTFILES)/.config/git/hooks/pre-push" "$(DOTFILES)/.config/zsh/aliases.sh"
-	@! command -v tombi >/dev/null 2>&1 || tombi lint "$(DOTFILES)/.config/helix/config.toml" "$(DOTFILES)/.config/helix/languages.toml" "$(DOTFILES)/.config/oh-my-posh/vigil.toml" "$(DOTFILES)/.config/git/gitleaks.toml" >/dev/null 2>&1
+	@! command -v tombi >/dev/null 2>&1 || tombi lint "$(DOTFILES)/.config/helix/config.toml" "$(DOTFILES)/.config/helix/languages.toml" "$(DOTFILES)/.config/oh-my-posh/vigil.toml" "$(DOTFILES)/.config/git/gitleaks.toml" >/dev/null
+	@! command -v yamllint >/dev/null 2>&1 || yamllint -d relaxed "$(DOTFILES)/.github" >/dev/null
 	@git config --file "$(DOTFILES)/.config/git/config" --list >/dev/null
 	@ssh -F "$(DOTFILES)/.config/ssh/config" -G github.com >/dev/null
 	@tmux -L dotfiles-check -f "$(DOTFILES)/.config/tmux/tmux.conf" start-server \; source-file "$(DOTFILES)/.config/tmux/tmux.conf" \; kill-server
@@ -289,11 +366,25 @@ check:
 		if [ ! -e "$(DOTFILES)/$$p" ]; then \
 			echo "FAIL: .gitignore allowlists missing path: $$p"; exit 1; \
 		fi; \
+		case "$$p" in \
+			*/) \
+				if ! git -C "$(DOTFILES)" ls-files "$$p" | grep -q .; then \
+					echo "FAIL: .gitignore allowlists directory with no tracked files: $$p"; exit 1; \
+				fi ;; \
+			*) \
+				if ! git -C "$(DOTFILES)" ls-files --error-unmatch "$$p" >/dev/null 2>&1; then \
+					echo "FAIL: .gitignore allowlists untracked file: $$p"; exit 1; \
+				fi ;; \
+		esac; \
 	done
 	@for f in $$(git -C "$(DOTFILES)" ls-files); do \
 		if ! grep -qxF "!$$f" "$(DOTFILES)/.gitignore"; then \
 			echo "FAIL: tracked file missing from .gitignore allowlist: $$f"; exit 1; \
 		fi; \
+		case "$$f" in \
+			.config/zsh/private.sh|.config/zsh/.zshenv|.config/git/config.local|.config/ssh/config.local|*.local|.config/gemini/*|.config/helix/runtime/*) \
+				echo "FAIL: forbidden local override is tracked in git: $$f"; exit 1 ;; \
+		esac; \
 	done
 	@for d in "$(DOTFILES)/.config"/*; do \
 		[ -d "$$d" ] || continue; \
@@ -302,17 +393,14 @@ check:
 			echo "FAIL: unexpected directory in .config/: $$name"; exit 1 ;; \
 		esac; \
 	done
-	@untracked=$$(find "$(DOTFILES)/.config" "$(DOTFILES)/.agents" -type f \
-		! -path "$(DOTFILES)/.config/zsh/private.sh" \
-		! -path "$(DOTFILES)/.config/git/config.local" \
-		! -path "$(DOTFILES)/.config/gemini/rules/*" \
-		! -path "$(DOTFILES)/.config/helix/runtime/*" \
-		-printf '%P\n' | while read -r rel; do \
-			parent=$$(echo "$$rel" | cut -d/ -f1); \
-			case " $(DIRS) ssh skills " in *" $$parent "*) ;; *) continue ;; esac; \
-			git -C "$(DOTFILES)" ls-files --error-unmatch ".config/$$rel" >/dev/null 2>&1 || \
-			git -C "$(DOTFILES)" ls-files --error-unmatch ".agents/$$rel" >/dev/null 2>&1 || \
-			echo "$$rel"; \
+	@untracked=$$(cd "$(DOTFILES)" && find .config .agents -type f \
+		! -path ".config/zsh/private.sh" \
+		! -path ".config/git/config.local" \
+		! -path ".config/ssh/config.local" \
+		! -name "*.local" \
+		! -path ".config/gemini/rules/*" \
+		! -path ".config/helix/runtime/*" | while read -r rel; do \
+			git -C "$(DOTFILES)" ls-files --error-unmatch "$$rel" >/dev/null 2>&1 || echo "$$rel"; \
 		done); \
 	if [ -n "$$untracked" ]; then \
 		echo "FAIL: untracked files in managed dirs (run 'make track FILE=...' or remove):"; \
@@ -332,8 +420,8 @@ check:
 			if ! printf '%s\n' "$$base" | grep -Eq '^[a-z0-9]+(-[a-z0-9]+)+\.md$$' || [ "$${#slug}" -gt 64 ]; then \
 				echo "FAIL: notes/$$base must be multi-word lowercase kebab-case (<= 64 chars)"; exit 1; \
 			fi; \
-			if ! grep -Eq '^title: .+' "$$f" || ! grep -Eq '^tags: \[[a-z0-9-]+:[a-z0-9-]+' "$$f" || ! grep -Fxq '## Sources' "$$f"; then \
-				echo "FAIL: notes/$$base must include YAML title, tags: [<domain>:<subtopic>], and '## Sources'"; exit 1; \
+			if ! grep -Eq '^title: .+' "$$f" || ! grep -Eq '^tags: \[[a-z0-9-]+:[a-z0-9-]+' "$$f" || ! awk '/^## Sources$$/{s=1;next} s && /^- [^[:space:]]+/{ok=1} END{exit !ok}' "$$f"; then \
+				echo "FAIL: notes/$$base must include YAML title, tags: [<domain>:<subtopic>], and a non-empty '## Sources' bullet"; exit 1; \
 			fi; \
 			if grep -Eq '\[\[[^]]+\]\]' "$$f"; then \
 				echo "FAIL: notes/$$base contains [[wikilinks]]; use [text](slug.md)"; exit 1; \
@@ -351,5 +439,10 @@ check:
 		git -C "$(DOTFILES)" grep -I -n -F "$(USER)" -- .; \
 		exit 1; \
 	fi
-	@! command -v gitleaks >/dev/null 2>&1 || gitleaks git --redact --no-banner --config "$(DOTFILES)/.config/git/gitleaks.toml" "$(DOTFILES)"
+	@if ! command -v gitleaks >/dev/null 2>&1; then \
+		echo "FAIL: gitleaks not found in PATH (run 'make deps')"; exit 1; \
+	fi
+	@gitleaks git --redact --no-banner --config "$(DOTFILES)/.config/git/gitleaks.toml" "$(DOTFILES)"
+	@gitleaks git --pre-commit --redact --no-banner --config "$(DOTFILES)/.config/git/gitleaks.toml" "$(DOTFILES)"
+	@gitleaks git --pre-commit --staged --redact --no-banner --config "$(DOTFILES)/.config/git/gitleaks.toml" "$(DOTFILES)"
 	@echo "all checks passed."

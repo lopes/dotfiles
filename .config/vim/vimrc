@@ -47,7 +47,7 @@ nnoremap <leader>q :q<cr>
 " persistent undo (cache — regenerable)
 set undofile
 if !isdirectory($XDG_CACHE_HOME . '/vim/undodir')
-  call mkdir($XDG_CACHE_HOME . '/vim/undodir', 'p')
+  call mkdir($XDG_CACHE_HOME . '/vim/undodir', 'p', 0700)
 endif
 set undodir=$XDG_CACHE_HOME/vim/undodir
 set undolevels=1000
@@ -55,7 +55,7 @@ set undoreload=10000
 
 " file handling — viminfo is state (command/search history, marks), not cache
 if !isdirectory($XDG_STATE_HOME . '/vim')
-  call mkdir($XDG_STATE_HOME . '/vim', 'p')
+  call mkdir($XDG_STATE_HOME . '/vim', 'p', 0700)
 endif
 set viminfo='10,\"30,:40,%,n$XDG_STATE_HOME/vim/viminfo
 let g:netrw_dirhistmax = 0

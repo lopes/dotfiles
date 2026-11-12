@@ -11,10 +11,11 @@ body:
     attributes:
       label: Affected Subsystem
       options:
-        - "Zsh, Tmux & Prompt Configuration (.config/zsh/, .config/tmux/)"
-        - "Git Configuration & Global Gitleaks Hooks (.config/git/)"
-        - "Global AI Agent Rules & Skills (.config/agents/, .agents/)"
-        - "Makefile Installer (`make install` / `make check`)"
+        - "Zsh, Tmux & Prompt Configuration (.config/zsh/, .config/tmux/, .config/oh-my-posh/, .zshenv)"
+        - "Editor & LSP Configuration (.config/helix/, .config/vim/)"
+        - "Git, SSH & Global Gitleaks Hooks (.config/git/, .config/ssh/)"
+        - "Global AI Agent Rules & Skills (.config/agents/, .agents/, AGENTS.md)"
+        - "Makefile Lifecycle & Notes (`make bootstrap` / `make install` / `make doctor` / `make check` / `notes/`)"
     validations:
       required: true
   - type: textarea

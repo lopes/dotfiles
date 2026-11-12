@@ -43,7 +43,7 @@ The development environment is terminal-native (`tmux` + `hx`) so it runs identi
 | **Formatters** | Deterministic code formatting triggered automatically on save in Helix. | `ruff format` (Python), `shfmt` (Shell), `gofmt` (Go), `rustfmt` (Rust), `clang-format` (C/C++), `tombi format` (TOML) |
 
 ### 3. Managing the Repo
-`make install` creates symlinks from `~/.config/<tool>` (plus `~/.zshenv`, `~/.ssh/config`, `~/.gemini/config/`, and `~/.local/bin/fd`) directly into this repo. Editing either path edits the same file.
+`make install` creates symlinks from `~/.config/<tool>` (plus `~/.zshenv`, `~/.config/zsh/.zshenv`, `~/.ssh/config`, `~/.config/gemini/AGENTS.md`, `~/.gemini/config/{AGENTS.md,agents,rules,skills}`, and `~/.local/bin/fd`) directly into this repo. Editing either path edits the same file.
 
 | Command | Action |
 | :--- | :--- |

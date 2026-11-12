@@ -10,26 +10,29 @@ else
     GITLEAKS_BIN="$HOME/.local/bin/gitleaks"
   fi
 
-  if [ -n "$GITLEAKS_BIN" ]; then
-    REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
-    if [ -f "$REPO_ROOT/.gitleaks.toml" ]; then
-      GITLEAKS_CFG="$REPO_ROOT/.gitleaks.toml"
-    elif [ -f "$HOME/.config/git/gitleaks.toml" ]; then
-      GITLEAKS_CFG="$HOME/.config/git/gitleaks.toml"
-    else
-      GITLEAKS_CFG=""
-    fi
+  if [ -z "$GITLEAKS_BIN" ]; then
+    printf 'ERROR: gitleaks not found in PATH or ~/.local/bin (run "make deps" or set SKIP_GITLEAKS=1)\n' >&2
+    exit 1
+  fi
 
-    if [ -n "$GITLEAKS_CFG" ]; then
-      "$GITLEAKS_BIN" git --redact --no-banner --config "$GITLEAKS_CFG"
-    else
-      "$GITLEAKS_BIN" git --redact --no-banner
+  REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
+  GLOBAL_CFG="$HOME/.config/git/gitleaks.toml"
+  REPO_CFG="$REPO_ROOT/.gitleaks.toml"
+
+  if [ -f "$GLOBAL_CFG" ]; then
+    "$GITLEAKS_BIN" git --redact --no-banner --config "$GLOBAL_CFG"
+    if [ -f "$REPO_CFG" ] && [ "$(realpath "$REPO_CFG" 2>/dev/null || true)" != "$(realpath "$GLOBAL_CFG" 2>/dev/null || true)" ]; then
+      "$GITLEAKS_BIN" git --redact --no-banner --config "$REPO_CFG"
     fi
+  elif [ -f "$REPO_CFG" ]; then
+    "$GITLEAKS_BIN" git --redact --no-banner --config "$REPO_CFG"
+  else
+    "$GITLEAKS_BIN" git --redact --no-banner
   fi
 fi
 
 # Chain any repository-local pre-push hook so per-repo hooks keep working.
 GIT_DIR="$(git rev-parse --git-dir 2>/dev/null || true)"
-if [ -n "$GIT_DIR" ] && [ -x "$GIT_DIR/hooks/pre-push" ]; then
+if [ -n "$GIT_DIR" ] && [ -x "$GIT_DIR/hooks/pre-push" ] && [ "$(realpath "$GIT_DIR/hooks/pre-push" 2>/dev/null || true)" != "$(realpath "$0" 2>/dev/null || true)" ]; then
   exec "$GIT_DIR/hooks/pre-push" "$@"
 fi
