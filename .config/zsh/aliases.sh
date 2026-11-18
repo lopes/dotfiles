@@ -21,6 +21,7 @@ alias la="ls --color=auto -A"
 
 alias path='echo $PATH | tr ":" "\n"'
 alias ports="lsof -iTCP -sTCP:LISTEN -n -P"
+alias serve="python3 -u -c 'import argparse, functools, http.server as s; ap = argparse.ArgumentParser(prog=\"serve\"); ap.add_argument(\"port\", nargs=\"?\", type=int, default=1313); ap.add_argument(\"-d\", \"--directory\", default=\".\"); ap.add_argument(\"-b\", \"--bind\", default=\"127.0.0.1\"); a = ap.parse_args(); h = s.SimpleHTTPRequestHandler; h.extensions_map.update({\".md\": \"text/markdown\", \".markdown\": \"text/markdown\", **{e: \"text/plain\" for e in (\".yaml\", \".yml\", \".toml\", \".log\", \".sh\")}}); _gt = h.guess_type; h.guess_type = lambda self, p: (t := _gt(self, p)) + (\"; charset=utf-8\" if \"charset=\" not in t and (t.startswith(\"text/\") or t == \"application/json\") else \"\"); h.end_headers = lambda self: (self.send_header(\"Cache-Control\", \"no-store\"), s.BaseHTTPRequestHandler.end_headers(self)); s.test(HandlerClass=functools.partial(h, directory=a.directory), port=a.port, bind=a.bind)'"
 alias reload='exec "$SHELL" -l'
 
 alias grep="grep --color=auto"

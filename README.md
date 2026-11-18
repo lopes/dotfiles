@@ -68,7 +68,7 @@ The development environment is terminal-native (`tmux` + `hx`) so it runs identi
 ### Zsh & `fzf`
 - **Startup split**: `.zshenv` sets environment variables for all processes (`XDG_*`, `PATH`, `EDITOR`, `ZDOTDIR`, `umask 027`, `LEDGER_FILE`, and `~/.config/zsh/private.sh`). `.zshrc` runs only in interactive terminals.
 - **Local overrides (`private.sh`)**: Untracked machine-specific overrides live in `~/.config/zsh/private.sh` (`chmod 600` enforced automatically in `.zshenv` and scaffolded by `make install`), including `DEFAULT_USER` (to hide the normal login prefix in the prompt) and `HOST_PREFIX` (to strip a common hostname prefix in `oh-my-posh`, `zsh`, and `tmux`).
-- **Notable aliases**: `tmux0` (`tmux new -As0`), `psa` (`ps auxf` — avoids aliasing `ps` directly so system pre-exec hooks don't break), `ports` (listening TCP sockets), `reload` (`exec "$SHELL" -l`), `update-system` (`make -C "$HOME/Projects/dotfiles" update`), `aka` (`alias | grep`).
+- **Notable aliases**: `tmux0` (`tmux new -As0`), `psa` (`ps auxf` — avoids aliasing `ps` directly so system pre-exec hooks don't break), `ports` (listening TCP sockets), `serve` (local UTF-8/no-cache HTTP server on `127.0.0.1:1313`), `reload` (`exec "$SHELL" -l`), `update-system` (`make -C "$HOME/Projects/dotfiles" update`), `aka` (`alias | grep`).
 
 | Shortcut | Action |
 | :--- | :--- |
@@ -155,7 +155,7 @@ The development environment is terminal-native (`tmux` + `hx`) so it runs identi
 - **Local Workstation ↔ Remote Development Workstation**:
   - **Terminal & Multiplexer**: Connect from the local workstation's web terminal over SSH into `tmux0` (`tmux` + `hx`) on the remote development workstation.
   - **Clipboard Bridge (OSC-52)**: `set-clipboard on` in `tmux.conf` and `space y` in Helix copy selections directly from the remote development workstation to the local workstation clipboard over SSH.
-  - **Browser Preview & Transfer Bridge (`localhost:1313`)**: Forwarding local TCP port `1313` over SSH (`-L 1313:127.0.0.1:1313` in `~/.ssh/config.local` or ChromeOS Secure Shell SSH arguments) exposes `127.0.0.1:1313` on the remote development workstation to `http://localhost:1313` in the local workstation browser—used for local Hugo site previews (`make serve`) and rendered Markdown/JSON/YAML/CSV workspace previews and bidirectional file transfer (`make preview`).
+  - **Browser Preview & Transfer Bridge (`localhost:1313`)**: Forwarding local TCP port `1313` over SSH (`-L 1313:127.0.0.1:1313` in `~/.ssh/config.local` or ChromeOS Secure Shell SSH arguments) exposes `127.0.0.1:1313` on the remote development workstation to `http://localhost:1313` in the local workstation browser—used for ad-hoc directory/HTML/Markdown serving (`serve`), local Hugo site previews (`make serve`), and rendered Markdown/JSON/YAML/CSV workspace previews and bidirectional file transfer (`make preview`).
 
 Web terminals cannot read local OS fonts. To load standard **JetBrains Mono** in ChromeOS Secure Shell, open DevTools (`ctrl-shift-j`) and run:
 
